@@ -1,4 +1,6 @@
-﻿using Emgu.CV;
+﻿//Copyright (C) 2014 AlexVictorne, Nikita_blackbeard
+
+using Emgu.CV;
 using Emgu.CV.Structure;
 using System;
 using System.Drawing;

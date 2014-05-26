@@ -1,4 +1,6 @@
-﻿using Emgu.CV;
+﻿//Copyright (C) 2014 AlexVictorne, Nikita_blackbeard
+
+using Emgu.CV;
 using Emgu.CV.Structure;
 using System;
 using System.Collections.Generic;
@@ -245,7 +247,6 @@ namespace controlPrg
             }
         }
 
-
         private void minContLen_tb_Scroll(object sender, EventArgs e)
         {
             minContourLength = minContLen_tb.Value;
@@ -276,7 +277,6 @@ namespace controlPrg
             nfVal_label.Text = nfVal.ToString();
             Segm_Process();
         }
-
 
         private void autocont_chb_CheckedChanged(object sender, EventArgs e)
         {
@@ -314,11 +314,6 @@ namespace controlPrg
         {
             bitmapformat = Convert.ToInt32(bitmapformat_tb.Text);
         }
-
-
-
-
-
 
     }
 }

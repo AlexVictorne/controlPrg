@@ -1,4 +1,6 @@
-﻿using System.Threading;
+﻿//Copyright (C) 2014 AlexVictorne, Nikita_blackbeard
+
+using System.Threading;
 
 namespace controlPrg
 {
