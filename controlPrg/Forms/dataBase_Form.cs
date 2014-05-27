@@ -1,13 +1,6 @@
 ﻿//Copyright (C) 2014 AlexVictorne, Nikita_blackbeard
 
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace controlPrg
