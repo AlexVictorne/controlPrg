@@ -117,7 +117,6 @@
     </Compile>
     <EmbeddedResource Include="Forms\dataBase_Form.resx">
       <DependentUpon>dataBase_Form.cs</DependentUpon>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Editor_Form.resx">
       <DependentUpon>Editor_Form.cs</DependentUpon>
