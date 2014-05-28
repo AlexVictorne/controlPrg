@@ -850,7 +850,7 @@ SELECT Id, Value, Comment FROM [Table] WHERE (Id = @Id)";
         private void InitConnection() {
             this._connection = new global::System.Data.SqlClient.SqlConnection();
             this._connection.ConnectionString = "Data Source=(LocalDB)\\v11.0;AttachDbFilename=|DataDirectory|\\dataBase.mdf;Integra" +
-                "ted Security=True;Connect Timeout=30";
+                "ted Security=True";
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]

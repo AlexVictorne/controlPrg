@@ -12,7 +12,7 @@ namespace controlPrg
         List<ElementNeuron> list_neurons = new List<ElementNeuron>();
         List<ElementConnect> list_connect = new List<ElementConnect>();
         Graphics graphProc;
-        int layer_count = 0;
+        public int layer_count = 0;
         int width, heigth;
         public AnimateNetwork(Graphics e)
         {
@@ -20,9 +20,11 @@ namespace controlPrg
             width = (int)graphProc.VisibleClipBounds.Width;
             heigth = (int)graphProc.VisibleClipBounds.Height;
         }
-        
+
+        int previos_layer = 0;
         int previos_neuroncount = 0;
-        public void create_layer(int layer_type,int neuroncount)
+        public List<int> layer_capacity = new List<int>();
+        public void create_layer(int layer_type,int neuroncount,bool ret)
         {
             switch (layer_type)
             {
@@ -30,6 +32,8 @@ namespace controlPrg
                     list_neurons.Add(new ElementNeuron(width / 6, heigth / 2));
                     break;
                 case 1:
+                    current_layer_capacity = 0;
+                    current_connect_layer_capacity = 0;
                     layer_count++;
                     int first_new = list_neurons.Count;
                     int x = list_neurons[list_neurons.Count - 1].GetCoordPoint().X + width / 6;
@@ -38,19 +42,26 @@ namespace controlPrg
                     for (int i = 1; i < neuroncount+1;i++)
                     {
                         list_neurons.Add(new ElementNeuron(x, dy*i));
+                        current_layer_capacity++;
                     }
-
+                    previos_neuroncount = layer_capacity[layer_count - 1];
                     if (list_neurons.Count > neuroncount+1)
                         for (int i = first_new; i < first_new + neuroncount; i++)
                             for (int j = first_new - previos_neuroncount; j < first_new; j++)
+                            {
                                 Create_Connect(layer_count - 1, layer_count, j, i);
+                                current_connect_layer_capacity++;
+                            }
                     else
                         for (int i = first_new; i < first_new + neuroncount; i++)
+                        {
                             Create_Connect(layer_count - 1, layer_count, 0, i);
-                    previos_neuroncount = neuroncount;
+                            current_connect_layer_capacity++;
+                        }
                     break;
                 case 2:
                     layer_count++;
+                    previos_neuroncount = layer_capacity[layer_count - 1];
                     list_neurons.Add(new ElementNeuron(list_neurons[list_neurons.Count - 1].GetCoordPoint().X + width / 6, heigth / 2));
                     for (int i = list_neurons.Count - previos_neuroncount-1; i < list_neurons.Count - 1; i++)
                     {
@@ -60,6 +71,19 @@ namespace controlPrg
             }
         }
 
+        int current_layer_capacity = 0;
+        int current_connect_layer_capacity = 0;
+        public void delete_layer()
+        {
+            layer_count--;
+            int i = list_neurons.Count - 1;
+            for (int k = i; k > i- current_layer_capacity; k--)
+                list_neurons.RemoveAt(k);
+            i = list_connect.Count - 1;
+            for (int k = i; k > i - current_connect_layer_capacity; k--)
+                list_connect.RemoveAt(k);
+
+        }
         void Create_Connect(int layer1, int layer2, int e1, int e2)
         {
             list_connect.Add(new ElementConnect(layer1, layer2, list_neurons[e1].GetCoordPoint(), list_neurons[e2].GetCoordPoint()));

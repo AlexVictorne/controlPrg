@@ -16,7 +16,7 @@ namespace controlPrg
         public Main_Form()
         {
             InitializeComponent();
-            graphProc = pictureBox1.CreateGraphics();
+            pictureBox1.ContextMenuStrip = contextMenuStrip1;
         }
 
         //Анимация ИНС
@@ -38,20 +38,20 @@ namespace controlPrg
         }
         private void button1_Click_1(object sender, EventArgs e)
         {
+
+            graphProc = pictureBox1.CreateGraphics();
             if (an == null)
             {
-                this.Height = 600;
                 graphProc.Clear(Color.White);
                 an = new AnimateNetwork(graphProc);
-                an.create_layer(0,0);
-                an.create_layer(1,8);
-                an.create_layer(1,8);
-                an.create_layer(2,0);
+                an.create_layer(0,0,false);
+                an.create_layer(1, 8, false);
+                an.create_layer(1, 8, false);
+                an.create_layer(2, 0, false);
             }
             else
             {
                 an = null;
-                this.Height = 275;
                 graphProc.Clear(Color.White);
             }
         }
@@ -509,7 +509,81 @@ namespace controlPrg
         }
         private void db_btn_Click(object sender, EventArgs e)
         {
+            Data_Form df = new Data_Form();
+            df.Show();
         }
+
+        private void Main_Form_Resize(object sender, EventArgs e)
+        {
+            graphProc = pictureBox1.CreateGraphics();
+            if (an != null)
+            {
+                graphProc.Clear(Color.White);
+                an = new AnimateNetwork(graphProc);
+                an.create_layer(0, 0, false);
+                an.create_layer(1, 8, false);
+                an.create_layer(1, 8, false);
+                an.create_layer(2, 0, false);
+            }
+        }
+
+
+
+
+
+
+
+
+        //рисовалко нейронок
+        private void toolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            graphProc = pictureBox1.CreateGraphics();
+            graphProc.Clear(Color.White);
+            an = new AnimateNetwork(graphProc);
+            an.create_layer(0, 0, false);
+            an.layer_capacity.Add(1);
+        }
+
+
+        int current_num_of_neurons = 0;
+        private void toolStripMenuItem2_Click(object sender, EventArgs e)
+        {
+            if (current_num_of_neurons != 0)
+                an.delete_layer();
+            current_num_of_neurons++;
+            an.create_layer(1, current_num_of_neurons, false);
+            
+        }
+
+        private void toolStripMenuItem3_Click(object sender, EventArgs e)
+        {
+            an.layer_capacity.Add(current_num_of_neurons);
+            current_num_of_neurons = 0;
+        }
+
+        private void toolStripMenuItem4_Click(object sender, EventArgs e)
+        {
+            an.create_layer(2, 0, false);
+        }
+
+        private void pai_btn_Click(object sender, EventArgs e)
+        {
+            graphProc = pictureBox1.CreateGraphics();
+            if (an == null)
+            {
+                graphProc.Clear(Color.White);
+                an = new AnimateNetwork(graphProc);
+            }
+            else
+            {
+                an = null;
+                graphProc.Clear(Color.White);
+            }
+        }
+
+
+
+
     }
 
 
