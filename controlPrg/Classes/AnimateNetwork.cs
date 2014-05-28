@@ -24,7 +24,7 @@ namespace controlPrg
         int previos_layer = 0;
         int previos_neuroncount = 0;
         public List<int> layer_capacity = new List<int>();
-        public void create_layer(int layer_type,int neuroncount,bool ret)
+        public void create_layer(int layer_type,int neuroncount)
         {
             switch (layer_type)
             {

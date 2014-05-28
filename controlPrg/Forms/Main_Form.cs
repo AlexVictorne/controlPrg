@@ -44,10 +44,13 @@ namespace controlPrg
             {
                 graphProc.Clear(Color.White);
                 an = new AnimateNetwork(graphProc);
-                an.create_layer(0,0,false);
-                an.create_layer(1, 8, false);
-                an.create_layer(1, 8, false);
-                an.create_layer(2, 0, false);
+                an.create_layer(0,0);
+                an.layer_capacity.Add(1);
+                an.create_layer(1, 8);
+                an.layer_capacity.Add(8);
+                an.create_layer(1, 8);
+                an.layer_capacity.Add(8);
+                an.create_layer(2, 0);
             }
             else
             {
@@ -519,11 +522,18 @@ namespace controlPrg
             if (an != null)
             {
                 graphProc.Clear(Color.White);
+                List<int> newanlistlayer = new List<int>();
+                newanlistlayer = an.layer_capacity;
                 an = new AnimateNetwork(graphProc);
-                an.create_layer(0, 0, false);
-                an.create_layer(1, 8, false);
-                an.create_layer(1, 8, false);
-                an.create_layer(2, 0, false);
+                an.create_layer(0,0);
+                an.layer_capacity.Add(1);
+                newanlistlayer.RemoveAt(0);
+                foreach (int i in newanlistlayer)
+                {
+                    an.create_layer(1, i);
+                    an.layer_capacity.Add(i);
+                }
+                an.create_layer(2, 0);
             }
         }
 
@@ -540,7 +550,7 @@ namespace controlPrg
             graphProc = pictureBox1.CreateGraphics();
             graphProc.Clear(Color.White);
             an = new AnimateNetwork(graphProc);
-            an.create_layer(0, 0, false);
+            an.create_layer(0, 0);
             an.layer_capacity.Add(1);
         }
 
@@ -551,7 +561,7 @@ namespace controlPrg
             if (current_num_of_neurons != 0)
                 an.delete_layer();
             current_num_of_neurons++;
-            an.create_layer(1, current_num_of_neurons, false);
+            an.create_layer(1, current_num_of_neurons);
             
         }
 
@@ -563,7 +573,9 @@ namespace controlPrg
 
         private void toolStripMenuItem4_Click(object sender, EventArgs e)
         {
-            an.create_layer(2, 0, false);
+            an.layer_capacity.Add(current_num_of_neurons);
+            current_num_of_neurons = 0;
+            an.create_layer(2, 0);
         }
 
         private void pai_btn_Click(object sender, EventArgs e)
