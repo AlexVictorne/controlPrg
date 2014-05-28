@@ -177,13 +177,6 @@
     <Content Include="cudart32_55.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="dataBase.mdf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="dataBase_log.ldf">
-      <DependentUpon>dataBase.mdf</DependentUpon>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="opencv_core290.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

@@ -20,8 +20,18 @@ namespace controlPrg
         private void Data_Form_Load(object sender, EventArgs e)
         {
             // TODO: данная строка кода позволяет загрузить данные в таблицу "dataBaseDataSet.Table". При необходимости она может быть перемещена или удалена.
-            this.tableTableAdapter.Fill(this.dataBaseDataSet.Table);
+            
 
         }
+
+        public void Save_to_DataBase()
+        {
+
+        }
+        public void Read_from_DataBase()
+        {
+
+        }
+
     }
 }
