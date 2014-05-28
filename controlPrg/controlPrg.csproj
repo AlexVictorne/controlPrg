@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>controlPrg</RootNamespace>
     <AssemblyName>controlPrg</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>publish\</PublishUrl>
@@ -26,7 +26,6 @@
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -50,7 +49,6 @@
   <ItemGroup>
     <Reference Include="Emgu.CV">
       <HintPath>..\..\..\..\..\..\..\Emgu\emgucv-windows-universal-cuda 2.9.0.1922\bin\Emgu.CV.dll</HintPath>
-      <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="Emgu.CV.GPU">
       <HintPath>..\..\..\..\..\..\..\Emgu\emgucv-windows-universal-cuda 2.9.0.1922\bin\Emgu.CV.GPU.dll</HintPath>
@@ -82,12 +80,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>dataBaseDataSet.xsd</DependentUpon>
     </Compile>
-    <Compile Include="Forms\dataBase_Form.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\dataBase_Form.Designer.cs">
-      <DependentUpon>dataBase_Form.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\Editor_Form.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -117,9 +109,6 @@
     <Compile Include="Forms\Segment_Form.Designer.cs">
       <DependentUpon>Segment_Form.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="Forms\dataBase_Form.resx">
-      <DependentUpon>dataBase_Form.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Forms\Editor_Form.resx">
       <DependentUpon>Editor_Form.cs</DependentUpon>
     </EmbeddedResource>
@@ -134,7 +123,6 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
     </Compile>
     <EmbeddedResource Include="Forms\Sample_Form.resx">
       <DependentUpon>Sample_Form.cs</DependentUpon>

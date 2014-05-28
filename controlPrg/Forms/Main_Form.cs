@@ -509,8 +509,6 @@ namespace controlPrg
         }
         private void db_btn_Click(object sender, EventArgs e)
         {
-            dataBase_Form dbf = new dataBase_Form();
-            dbf.Show();
         }
     }
 
