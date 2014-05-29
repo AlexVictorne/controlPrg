@@ -76,10 +76,11 @@
   <ItemGroup>
     <Compile Include="Classes\AnimateNetwork.cs" />
     <Compile Include="Classes\DBWorker.cs" />
-    <Compile Include="dataBaseDataSet.Designer.cs">
+    <Compile Include="Classes\NeuronWithWeight.cs" />
+    <Compile Include="DatabaseDataSet.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>dataBaseDataSet.xsd</DependentUpon>
+      <DependentUpon>DatabaseDataSet.xsd</DependentUpon>
     </Compile>
     <Compile Include="Forms\Data_Form.cs">
       <SubType>Form</SubType>
@@ -149,16 +150,16 @@
     <EmbeddedResource Include="Forms\Segment_Form.resx">
       <DependentUpon>Segment_Form.cs</DependentUpon>
     </EmbeddedResource>
-    <None Include="dataBaseDataSet.xsc">
-      <DependentUpon>dataBaseDataSet.xsd</DependentUpon>
+    <None Include="DatabaseDataSet.xsc">
+      <DependentUpon>DatabaseDataSet.xsd</DependentUpon>
     </None>
-    <None Include="dataBaseDataSet.xsd">
+    <None Include="DatabaseDataSet.xsd">
       <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>dataBaseDataSet.Designer.cs</LastGenOutput>
+      <LastGenOutput>DatabaseDataSet.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </None>
-    <None Include="dataBaseDataSet.xss">
-      <DependentUpon>dataBaseDataSet.xsd</DependentUpon>
+    <None Include="DatabaseDataSet.xss">
+      <DependentUpon>DatabaseDataSet.xsd</DependentUpon>
     </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -176,6 +177,13 @@
   <ItemGroup>
     <Content Include="cudart32_55.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Database.mdf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Database_log.ldf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <DependentUpon>Database.mdf</DependentUpon>
     </Content>
     <Content Include="opencv_core290.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

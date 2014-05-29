@@ -17,6 +17,11 @@ namespace controlPrg
         {
             InitializeComponent();
             pictureBox1.ContextMenuStrip = contextMenuStrip1;
+            System.Globalization.CultureInfo ci = System.Globalization.CultureInfo.CreateSpecificCulture("ru-RU");
+            ci.NumberFormat.CurrencyDecimalSeparator = ".";
+            ci.NumberFormat.NumberDecimalSeparator = ".";
+
+            System.Threading.Thread.CurrentThread.CurrentCulture = ci;
         }
 
         //Анимация ИНС
@@ -591,6 +596,15 @@ namespace controlPrg
                 an = null;
                 graphProc.Clear(Color.White);
             }
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            DBWorker dbw = new DBWorker();
+            List<NeuronWithWeight> lnww = new List<NeuronWithWeight>();
+            lnww = dbw.Read_from_DataBase("канат");
+
+            int i = 0;
         }
 
 
