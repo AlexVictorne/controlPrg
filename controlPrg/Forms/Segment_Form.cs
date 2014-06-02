@@ -188,8 +188,6 @@ namespace controlPrg
             return result;
         }
 
-
-
         void saveToFolder_btn_Click(object sender, EventArgs e)
         {
             string folderName = @"images";

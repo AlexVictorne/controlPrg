@@ -160,7 +160,7 @@
             this.thresVal_label.Name = "thresVal_label";
             this.thresVal_label.Size = new System.Drawing.Size(38, 20);
             this.thresVal_label.TabIndex = 42;
-            this.thresVal_label.Text = "20";
+            this.thresVal_label.Text = "0";
             // 
             // maxContLenVal_label
             // 
@@ -209,7 +209,6 @@
             this.thres_tb.Size = new System.Drawing.Size(259, 45);
             this.thres_tb.TabIndex = 37;
             this.thres_tb.TickStyle = System.Windows.Forms.TickStyle.None;
-            this.thres_tb.Value = 2000;
             this.thres_tb.Scroll += new System.EventHandler(this.thres_tb_Scroll);
             // 
             // maxContLen_tb

@@ -607,6 +607,12 @@ namespace controlPrg
             int i = 0;
         }
 
+        private void vectorizerToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Vectorizer_Form vf = new Vectorizer_Form();
+            vf.Show();
+        }
+
 
 
 
