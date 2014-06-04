@@ -603,8 +603,6 @@ namespace controlPrg
             DBWorker dbw = new DBWorker();
             List<NeuronWithWeight> lnww = new List<NeuronWithWeight>();
             lnww = dbw.Read_from_DataBase("канат");
-
-            int i = 0;
         }
 
         private void vectorizerToolStripMenuItem_Click(object sender, EventArgs e)

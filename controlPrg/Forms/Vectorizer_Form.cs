@@ -1,18 +1,15 @@
 ﻿using Emgu.CV;
 using Emgu.CV.Structure;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
-using System.Linq;
 using System.Runtime.InteropServices;
+using System.Runtime.Serialization;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml;
 
 namespace controlPrg
 {
@@ -25,80 +22,22 @@ namespace controlPrg
             InitializeComponent();
         }
 
-       
-        List<Bitmap> contour_bitmap_list = new List<Bitmap>();
-
         string path_to_current_image;
         Image<Bgr, Byte> imgOriginal;
         Image<Gray, Byte> imgProcessed;
-        private void button1_Click(object sender, EventArgs e)
-        {
-            contours.Clear();
-            OpenFileDialog openFileDialog1 = new OpenFileDialog();
-            openFileDialog1.Filter = "BMP files (*.bmp)|*.bmp|Jpeg files (*.jpg)|*.jpg|All files (*.*)|*.*";
-            openFileDialog1.FilterIndex = 3;
-            openFileDialog1.RestoreDirectory = true;
-            
-            if (openFileDialog1.ShowDialog() == DialogResult.OK)
-            {
-                try
-                {
-                    path_to_current_image = openFileDialog1.FileName;
-                    imgOriginal = new Image<Bgr, byte>(path_to_current_image);
-                    ibOriginal.Image = imgOriginal;
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Error: Could not read file from disk. Original error: " + ex.Message);
-                }
-            }
-        }
 
-        private void button2_Click(object sender, EventArgs e)
-        {
-            int[,] bit = new int[imgOriginal.Bitmap.Height, imgOriginal.Bitmap.Width];
-            imgProcessed.Bitmap = ibOriginal.Image.Bitmap;
-            for (int i = 0; i < imgOriginal.Bitmap.Height; i++)
-                for (int j = 0; j < imgOriginal.Bitmap.Width;j++ )
-                {
-                    if (imgProcessed.Bitmap.GetPixel(j,i).ToArgb() == -1)
-                        bit[i, j] = 1;
-                    else
-                        bit[i, j] = 0;
-                }
 
-            Bitmap bm = new Bitmap(imgOriginal.Bitmap.Width, imgOriginal.Bitmap.Height);
-            ibProcessed.Image = new Image<Bgr, byte>(bm);
-            Skeletonizator s = new Skeletonizator(bit);
-            int[,] sk = new int[imgOriginal.Bitmap.Height, imgOriginal.Bitmap.Width];
-            sk = s.SkeletonZhangSuen();
-            for (int i = 0; i < imgOriginal.Bitmap.Height; i++)
-                for (int j = 0; j < imgOriginal.Bitmap.Width; j++)
-                {
-                    if (sk[i,j] == 1)
-                        bm.SetPixel(j, i, Color.Red);
-                    else
-                        bm.SetPixel(j, i, Color.White);
-                }
-            ibProcessed.Image = new Image<Bgr, byte>(bm);
-
-            
-
-        }
-
-        bool equalizeHist = false;
-        bool noiseFilter = true;
-        bool blur = false;
-        bool blackandwhite = true;
-        int maxContourLength = 418;
-        int minContourLength = 50;
-        int minContourArea = 0;
-        double thresVal = 0;
-        int nfVal = 100;
+        
         List<Contour<Point>> contours = new List<Contour<Point>>();
 
         void Segm_Process()
         {
+            bool equalizeHist =  autocont_chb.Checked;
+            bool noiseFilter = nf_chb.Checked;
+            bool blur = blur_chb.Checked;
+            double thresVal = (double)thres_tb.Value / 100;
+            int nfVal = (int)nf_tb.Value;
+
             //преобразование изображения в чб
             imgProcessed = imgOriginal.Convert<Gray, Byte>();
             //автоконтраст
@@ -142,11 +81,11 @@ namespace controlPrg
             while (con != null)
             {
                 //фильтруем по размеру
-                if (con.Total < minContourLength || con.Total > maxContourLength ||
-                        con.Area < minContourArea || con.Area > maxArea ||
+                if (con.Total < (int)minContLen_tb.Value || con.Total > (int)maxContLen_tb.Value ||
+                        con.Area < (int)minContAr_tb.Value || con.Area > maxArea ||
                         con.Area / con.Total <= 0.5)
                     goto next;
-                if (noiseFilter)
+                if (nf_chb.Checked)
                 {
                     //проверяем интенсивность если включен фильтр шума
                     Point p1 = con[0];
@@ -159,16 +98,6 @@ namespace controlPrg
                 con = con.HNext;
             }
             return results;
-        }
-
-        private void ibOriginal_Paint(object sender, PaintEventArgs e)
-        {
-            //очистить список с готовыми контурами
-            contour_bitmap_list.Clear();
-            if (contours != null)
-                foreach (var contour in contours)
-                    if (contour.Total > 1)
-                        e.Graphics.DrawPolygon(Pens.Red, contour.ToArray());
         }
 
         public static void FloodFill(Bitmap bitmap, int x, int y, Color color)
@@ -209,21 +138,8 @@ namespace controlPrg
             bitmap.UnlockBits(data);
         }
 
-        private Bitmap createnewpolygon()
-        {
-            Bitmap bm = new Bitmap(imgOriginal.Width, imgOriginal.Height);
-            foreach (var contour in contours)
-            {
-                if (contour.Total > 1)
-                {
-                    Graphics.FromImage((Image)bm).DrawPolygon(Pens.White, contour.ToArray());
-                }
-            }
-            contours.Clear();
-            return bm;
-        }
- 
-               
+        
+        
         //копируем часть изображения в битмап
         int bitmapformat = 64;
         Bitmap CopyBitmap(Image src, Rectangle rect)
@@ -291,96 +207,252 @@ namespace controlPrg
             return result;
         }
 
-        private void minContLen_tb_Scroll(object sender, EventArgs e)
-        {
-            minContourLength = (int)minContLen_tb.Value;
-            Segm_Process();
-        }
-        private void minContAr_tb_Scroll(object sender, EventArgs e)
-        {
-            minContourArea = (int)minContAr_tb.Value;
-            Segm_Process();
-        }
-        private void maxContLen_tb_Scroll(object sender, EventArgs e)
-        {
-            maxContourLength = (int)maxContLen_tb.Value;
-            Segm_Process();
-        }
-        private void thres_tb_Scroll(object sender, EventArgs e)
-        {
-            thresVal = (double)thres_tb.Value / 100;
-            Segm_Process();
-        }
-        private void nf_tb_Scroll(object sender, EventArgs e)
-        {
-            nfVal = (int)nf_tb.Value;
-            Segm_Process();
-        }
-
-        private void autocont_chb_CheckedChanged(object sender, EventArgs e)
-        {
-            if (equalizeHist)
-                equalizeHist = false;
-            else
-                equalizeHist = true;
-            Segm_Process();
-        }
-        private void blur_chb_CheckedChanged(object sender, EventArgs e)
-        {
-            if (blur)
-                blur = false;
-            else
-                blur = true;
-            Segm_Process();
-        }
-        private void nf_chb_CheckedChanged(object sender, EventArgs e)
-        {
-
-        }
 
 
+        private Bitmap createnewpolygon()
+        {
+            Bitmap bmm = new Bitmap(ibOriginal.Image.Bitmap.Width, ibOriginal.Image.Bitmap.Height);
+            foreach (var contour in contours)
+                if (contour.Total > 1)
+                    Graphics.FromImage((Image)bmm).DrawPolygon(Pens.Red, contour.ToArray());
+            return bmm;
+        }
 
+        Bitmap bm;
+        bool fill_is_started = false;
+        private void FloodyFill(int x, int y)
+        {
+            if (!fill_is_started)
+            {
+                bm = createnewpolygon();
+                fill_is_started = true;
+            }
+            contours.Clear();
+            int coordX = Convert.ToInt32(x / ibOriginal.ZoomScale + ibOriginal.HorizontalScrollBar.Value); ;// -ibOriginal.Location.X;
+            int coordY = Convert.ToInt32(y / ibOriginal.ZoomScale + ibOriginal.VerticalScrollBar.Value);// -ibOriginal.Location.Y;
+            FloodFill(bm, coordX, coordY, Color.White);
+            Graphics.FromImage((Image)bm).DrawEllipse(Pens.White, coordX - 1, coordY - 1, 2, 2);
+            ibOriginal.Image = new Image<Gray, byte>(bm);
+        }
 
+        private void GetSkelet()
+        {
+            int[,] bit = new int[ibOriginal.Image.Bitmap.Height, imgOriginal.Bitmap.Width];
+            imgProcessed.Bitmap = ibOriginal.Image.Bitmap;
+            for (int i = 0; i < ibOriginal.Image.Bitmap.Height; i++)
+                for (int j = 0; j < ibOriginal.Image.Bitmap.Width; j++)
+                {
+                    if (imgProcessed.Bitmap.GetPixel(j, i).ToArgb() == -1)
+                        bit[i, j] = 1;
+                    else
+                        bit[i, j] = 0;
+                }
+            Bitmap bm = new Bitmap(ibOriginal.Image.Bitmap.Width, ibOriginal.Image.Bitmap.Height);
+            ibProcessed.Image = new Image<Bgr, byte>(bm);
+            Skeletonizator s = new Skeletonizator(bit);
+            int[,] sk = new int[ibOriginal.Image.Bitmap.Height, ibOriginal.Image.Bitmap.Width];
+            sk = s.SkeletonZhangSuen();
+            for (int i = 0; i < ibOriginal.Image.Bitmap.Height; i++)
+                for (int j = 0; j < ibOriginal.Image.Bitmap.Width; j++)
+                {
+                    if (sk[i, j] == 1)
+                        bm.SetPixel(j, i, Color.Red);
+                    else
+                        bm.SetPixel(j, i, Color.White);
+                }
+            ibProcessed.Image = new Image<Bgr, byte>(bm);
+        }
 
+        private void LoadImage()
+        {
+            contours.Clear();
+            OpenFileDialog openFileDialog1 = new OpenFileDialog();
+            openFileDialog1.Filter = "BMP files (*.bmp)|*.bmp|Jpeg files (*.jpg)|*.jpg|All files (*.*)|*.*";
+            openFileDialog1.FilterIndex = 3;
+            openFileDialog1.RestoreDirectory = true;
+
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    path_to_current_image = openFileDialog1.FileName;
+                    imgOriginal = new Image<Bgr, byte>(path_to_current_image);
+                    ibOriginal.Image = imgOriginal;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error: Could not read file from disk. Original error: " + ex.Message);
+                }
+            }
+        }
+
+        private void Resize_to_contour_rectangle()
+        {
+            imgProcessed.Bitmap = ibOriginal.Image.Bitmap;
+            int max_x=0,max_y=0,min_x=imgOriginal.Bitmap.Width,min_y=ibOriginal.Image.Bitmap.Height;
+            for (int i = 0; i < ibOriginal.Image.Bitmap.Height; i++)
+                for (int j = 0; j < ibOriginal.Image.Bitmap.Width; j++)
+                {
+                    int c = imgProcessed.Bitmap.GetPixel(j, i).ToArgb();
+                    if (c == -1)
+                    {
+                        if (min_x > j)
+                            min_x = j;
+                        if (max_x < j)
+                            max_x = j;
+                        if (min_y > i)
+                            min_y = i;
+                        if (max_y < i)
+                            max_y = i;
+                    }
+                }
+            Console.WriteLine(min_x.ToString() + " " + min_y.ToString() + " " + max_x.ToString() + " " + max_y.ToString());
+            var ret = new Bitmap(max_x - min_x+2, max_y - min_y+2);
+            using (var g = Graphics.FromImage(ret))
+            {
+                g.DrawImage(imgProcessed.Bitmap, 1, 1, new Rectangle(min_x, min_y, max_x - min_x, max_y - min_y), GraphicsUnit.Pixel);
+            }
+            ibOriginal.Image = new Image<Gray, byte>(ret);
+        }
         
 
 
 
 
 
+        //xml функции
+        private void Save_to_xml()
+        {
+            Skeleton sk = new Skeleton();
+            sk.list_of_cell.Add(new Skeleton.cell());
+            sk.list_of_cell[0].add_node(1,1);
+            sk.list_of_cell[0].add_node(2, 3);
+            sk.list_of_cell.Add(new Skeleton.cell());
+            sk.list_of_cell[1].add_node(3, 4);
+            sk.list_of_cell[1].add_node(5, 6);
 
 
-        
+            var path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "//SerializationOverview.xml";
+
+            XmlTextWriter xw = new XmlTextWriter(path, Encoding.UTF8);
+            xw.Formatting = Formatting.Indented;
+            XmlDictionaryWriter writer = XmlDictionaryWriter.CreateDictionaryWriter(xw);
+            DataContractSerializer ser = new DataContractSerializer(typeof(Skeleton));
+            ser.WriteObject(writer, sk);
+            writer.Close();
+            xw.Close();
+        }
+        private void Read_from_xml()
+        {
+            Skeleton sk = new Skeleton();
+            var path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "//SerializationOverview.xml";
+
+            XmlTextReader xr = new XmlTextReader(path);
+            XmlDictionaryReader reader = XmlDictionaryReader.CreateDictionaryReader(xr);
+            DataContractSerializer ser = new DataContractSerializer(typeof(Skeleton));
+            sk = (Skeleton)ser.ReadObject(reader);
+            reader.Close();
+            xr.Close();
+        }
+
+
+
+        private void Set_path()
+        {
+            imgProcessed.Bitmap = ibProcessed.Image.Bitmap;
+            int max_var_path = 100;
+            int x = 0, y = 0;
+            for (int i = 0; i < imgProcessed.Bitmap.Height; i++)
+                for (int j = 0; j < imgProcessed.Bitmap.Width; j++)
+                {
+
+                    int c = imgProcessed.Bitmap.GetPixel(j, i).ToArgb();
+                    if (c == -11776948)
+                    {
+                        //if (j == 29)
+                        //    max_var_path++;
+                        int current_variable_path = 0;
+                        if ((j + 1 < imgProcessed.Bitmap.Width) && (imgProcessed.Bitmap.GetPixel(j + 1, i).ToArgb() == -11776948))
+                            current_variable_path++;
+                        if ((j + 1 < imgProcessed.Bitmap.Width) && (i + 1 < imgProcessed.Bitmap.Height) && (imgProcessed.Bitmap.GetPixel(j + 1, i + 1).ToArgb() == -11776948))
+                            current_variable_path++;
+                        if ((j + 1 < imgProcessed.Bitmap.Width) && (i - 1 > 0) && (imgProcessed.Bitmap.GetPixel(j + 1, i - 1).ToArgb() == -11776948))
+                            current_variable_path++;
+                        if ((i + 1 < imgProcessed.Bitmap.Height) && (imgProcessed.Bitmap.GetPixel(j, i + 1).ToArgb() == -11776948))
+                            current_variable_path++;
+                        if ((i - 1 > 0) && (imgProcessed.Bitmap.GetPixel(j, i - 1).ToArgb() == -11776948))
+                            current_variable_path++;
+                        if ((j - 1 > 0) && (imgProcessed.Bitmap.GetPixel(j - 1, i).ToArgb() == -11776948))
+                            current_variable_path++;
+                        if ((j - 1 > 0) && (i + 1 < imgProcessed.Bitmap.Height) && (imgProcessed.Bitmap.GetPixel(j - 1, i + 1).ToArgb() == -11776948))
+                            current_variable_path++;
+                        if ((j - 1 > 0) && (i - 1 > 0) && (imgProcessed.Bitmap.GetPixel(j - 1, i - 1).ToArgb() == -11776948))
+                            current_variable_path++;
+                        if (current_variable_path < max_var_path)
+                        {
+                            max_var_path = current_variable_path;
+                            x = j; y = i;
+                        }
+                    }
+                }
+            Console.WriteLine(max_var_path.ToString()+"   "+x.ToString()+" "+y.ToString());
+        }
+
+
+
+
+        private void change(object sender, EventArgs e)
+        {
+            Segm_Process();
+        }
+  
         private void button3_Click_1(object sender, EventArgs e)
         {
             Segm_Process();
         }
-
         private void button4_Click(object sender, EventArgs e)
         {
-            ibOriginal.Image = new Image<Gray, byte>(createnewpolygon());
+            Resize_to_contour_rectangle();
+        }
+        private void button5_Click(object sender, EventArgs e)
+        {
+            fill_is_started = false;
+            Segm_Process();
+        }
+        private void button1_Click(object sender, EventArgs e)
+        {
+            LoadImage();
+        }
+        private void button2_Click(object sender, EventArgs e)
+        {
+            GetSkelet();
         }
 
-
-        bool mouse_fill = true;
         private void ibOriginal_MouseClick(object sender, MouseEventArgs e)
         {
             if ((e.Button == MouseButtons.Left))
             {
-                Bitmap bm = createnewpolygon();
-                int coordX = Convert.ToInt32(e.X / ibOriginal.ZoomScale + ibOriginal.HorizontalScrollBar.Value); ;// -ibOriginal.Location.X;
-                int coordY = Convert.ToInt32(e.Y / ibOriginal.ZoomScale + ibOriginal.VerticalScrollBar.Value);// -ibOriginal.Location.Y;
-                FloodFill(bm, coordX, coordY, Color.White);
-                Graphics.FromImage((Image)bm).DrawEllipse(Pens.White, coordX - 1, coordY - 1, 2, 2);
-                ibOriginal.Image = new Image<Gray, byte>(bm);
+                FloodyFill(e.X, e.Y);
             }
         }
+        private void ibOriginal_Paint(object sender, PaintEventArgs e)
+        {
+            if (contours != null)
+                foreach (var contour in contours)
+                    if (contour.Total > 1)
+                        e.Graphics.DrawPolygon(Pens.Red, contour.ToArray());
+        }
 
-
-
+        private void button6_Click(object sender, EventArgs e)
+        {
+            Set_path();
+        }
+         
 
 
     }
+
+
 
 
     //Жанг Суен скелетонизация
@@ -526,5 +598,40 @@ namespace controlPrg
                     bitMap[i, j] -= markBmp[i, j];
         }
     }
+
+    [DataContract]
+    public class Skeleton
+    {
+        [DataMember(Name="Chains")]
+        public List<cell> list_of_cell = new List<cell>();
+        public Skeleton() {}
+        [DataContract(Name="Chain")]
+        public class cell
+        {
+            [DataMember(Name="Nodes")]
+            public List<node> list_of_node = new List<node>();
+            
+            public cell() { }
+
+            public void add_node(int x,int y)
+            {
+                list_of_node.Add(new node(x, y));
+            }
+        }
+        [DataContract(Name = "Node")]
+        public class node
+        {
+            [DataMember]
+            public int x, y;
+            public node(int x_,int y_)
+            {
+                x = x_;
+                y = y_;
+            }
+        }
+        
+
+    }
+
 
 }
