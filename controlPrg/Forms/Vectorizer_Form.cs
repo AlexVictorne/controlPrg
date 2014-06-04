@@ -372,22 +372,7 @@ namespace controlPrg
                         //if (j == 29)
                         //    max_var_path++;
                         int current_variable_path = 0;
-                        if ((j + 1 < imgProcessed.Bitmap.Width) && (imgProcessed.Bitmap.GetPixel(j + 1, i).ToArgb() == -11776948))
-                            current_variable_path++;
-                        if ((j + 1 < imgProcessed.Bitmap.Width) && (i + 1 < imgProcessed.Bitmap.Height) && (imgProcessed.Bitmap.GetPixel(j + 1, i + 1).ToArgb() == -11776948))
-                            current_variable_path++;
-                        if ((j + 1 < imgProcessed.Bitmap.Width) && (i - 1 > 0) && (imgProcessed.Bitmap.GetPixel(j + 1, i - 1).ToArgb() == -11776948))
-                            current_variable_path++;
-                        if ((i + 1 < imgProcessed.Bitmap.Height) && (imgProcessed.Bitmap.GetPixel(j, i + 1).ToArgb() == -11776948))
-                            current_variable_path++;
-                        if ((i - 1 > 0) && (imgProcessed.Bitmap.GetPixel(j, i - 1).ToArgb() == -11776948))
-                            current_variable_path++;
-                        if ((j - 1 > 0) && (imgProcessed.Bitmap.GetPixel(j - 1, i).ToArgb() == -11776948))
-                            current_variable_path++;
-                        if ((j - 1 > 0) && (i + 1 < imgProcessed.Bitmap.Height) && (imgProcessed.Bitmap.GetPixel(j - 1, i + 1).ToArgb() == -11776948))
-                            current_variable_path++;
-                        if ((j - 1 > 0) && (i - 1 > 0) && (imgProcessed.Bitmap.GetPixel(j - 1, i - 1).ToArgb() == -11776948))
-                            current_variable_path++;
+                        current_variable_path = Look_around(imgProcessed.Bitmap, j, i).Count;
                         if (current_variable_path < max_var_path)
                         {
                             max_var_path = current_variable_path;
@@ -395,9 +380,66 @@ namespace controlPrg
                         }
                     }
                 }
-            Console.WriteLine(max_var_path.ToString()+"   "+x.ToString()+" "+y.ToString());
-        }
 
+            Skeleton sk = new Skeleton();
+            sk.list_of_cell = new List<Skeleton.cell>();
+            sk.list_of_cell.Add(new Skeleton.cell());
+            List<Point> list_of_intersection = new List<Point>();
+            list_of_intersection.Add(new Point(x, y));
+
+
+            while (list_of_intersection.Count != 0)
+            {
+                sk.list_of_cell[sk.list_of_cell.Count - 1].add_node(x, y);
+                imgProcessed.Bitmap.SetPixel(x, y, Color.Indigo);
+                List<Point> lp = Look_around(imgProcessed.Bitmap, list_of_intersection[list_of_intersection.Count - 1].X, list_of_intersection[list_of_intersection.Count - 1].Y);
+                if (lp.Count>1)
+                {
+                    list_of_intersection.RemoveAt(0);
+                    list_of_intersection.AddRange(lp);
+                    x = list_of_intersection[0].X;
+                    y = list_of_intersection[0].Y;
+                }
+                else
+                {
+                    if ((lp.Count == 0)&&(list_of_intersection.Count>1))
+                    {
+                        list_of_intersection.RemoveAt(0);
+                        x = list_of_intersection[0].X;
+                        y = list_of_intersection[0].Y;
+                    }
+                    else
+                    {
+                        x = lp[0].X;
+                        y = lp[0].Y;
+                    }
+ 
+                }
+
+            }
+            //Console.WriteLine(max_var_path.ToString() + "  " + x.ToString() + " " + y.ToString());
+        }
+        private List<Point> Look_around(Bitmap bitmap, int x, int y)
+        {
+            List<Point> list_of_var_point = new List<Point>();
+            if ((x + 1 < bitmap.Width) && (bitmap.GetPixel(x + 1, y).ToArgb() == -11776948))
+                list_of_var_point.Add(new Point(x + 1, y));
+            if ((x + 1 < bitmap.Width) && (y + 1 < bitmap.Height) && (bitmap.GetPixel(x + 1, y + 1).ToArgb() == -11776948))
+                list_of_var_point.Add(new Point(x + 1, y + 1));
+            if ((x + 1 < bitmap.Width) && (y - 1 > 0) && (bitmap.GetPixel(x + 1, y - 1).ToArgb() == -11776948))
+                list_of_var_point.Add(new Point(x + 1, y - 1));
+            if ((y + 1 < bitmap.Height) && (bitmap.GetPixel(x, y + 1).ToArgb() == -11776948))
+                list_of_var_point.Add(new Point(x, y + 1));
+            if ((y - 1 > 0) && (bitmap.GetPixel(x, y - 1).ToArgb() == -11776948))
+                list_of_var_point.Add(new Point(x, y - 1));
+            if ((x - 1 > 0) && (bitmap.GetPixel(x - 1, y).ToArgb() == -11776948))
+                list_of_var_point.Add(new Point(x - 1, y));
+            if ((x - 1 > 0) && (y + 1 < bitmap.Height) && (bitmap.GetPixel(x - 1, y + 1).ToArgb() == -11776948))
+                list_of_var_point.Add(new Point(x - 1, y + 1));
+            if ((x - 1 > 0) && (y - 1 > 0) && (bitmap.GetPixel(x - 1, y - 1).ToArgb() == -11776948))
+                list_of_var_point.Add(new Point(x - 1, y - 1));
+            return list_of_var_point;
+        }
 
 
 
