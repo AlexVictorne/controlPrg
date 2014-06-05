@@ -35,52 +35,20 @@ namespace controlPrg.Classes
 
         }
 
-        public bool checkElement(Element e, int pos)
+        public bool checkElement(Element e1, Element e2)
         {
-            if (pos == 1)
-            {
-                if (e.Equals(e1))
+            if (this.e1.Equals(e1))
+                if (this.e2.Equals(e2))
                     return true;
-                else
-                    return false;
-            }
-            if (pos == 2)
-            {
-                if (e.Equals(e2))
-                {
-                    end_flag = true;
-                    return true;
-                }
-                else
-                    return false;
-            }
-            else
-                return false;
+            return false;
         }
 
-        public bool checkRelation(Relation r, int pos)
+        public bool checkRelation(Relation r, Element e)
         {
-            if (pos == 1)
-            {
-                if (r.Equals(r1))
-                {
+            if (this.r1.Equals(r))
+                if (this.e2.Equals(e))
                     return true;
-                }
-                else
-                    return false;
-            }
-            if (pos == 2)
-            {
-                if (r.Equals(r2))
-                {
-                    end_flag = true;
-                    return true;
-                }
-                else
-                    return false;
-            }
-            else
-                return false;
+            return false;
         }
 
         public char checkChar()

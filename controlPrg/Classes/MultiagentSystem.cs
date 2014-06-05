@@ -9,17 +9,33 @@ namespace controlPrg.Classes
 {
     class MultiagentSystem
     {
-        private Element[] templates;
+        private List<Element> templates;
         private const int SENSORS_COUNT = 5;
         private int relations_counter = 1;
+        private List<Agent> agents;
+        private List<Relation> relations;
 
-        public MultiagentSystem(int templates_count)
+        public MultiagentSystem()
         {
-            templates = new Element[templates_count];
+            templates = new List<Element>();
+            relations = new List<Relation>();
+            agents = new List<Agent>();
+        }
+
+        public void AddTemplate(Element e)
+        {
+            templates.Add(e); // клонировать?
+            agents.Add(new Agent(e, e.getStructSize()));
+        }
+
+        public void setRelation(Relation r)
+        {
+            relations.Add(r); // клонировать?
         }
 
         public void test()
         {
+            /*
             templates[0] = new Element(0, new Point(0, 0), new Point(0, 10), Math.PI * 5 * 0.5, 5); // первая дуга буквы х
             templates[1] = new Element(1, new Point(10, 0), new Point(10, 10), Math.PI * 5 * 0.5, 5); // вторая дуга буквы х
             templates[2] = new Element(0, new Point(2, 2), new Point(2, 12), Math.PI * 6 * 0.5, 6); // первая дуга буквы х
@@ -69,6 +85,37 @@ namespace controlPrg.Classes
                 }
             }
              */
+        }
+
+        public void getOut(Element[] input)
+        {
+            List<Element> agentsLayerOut = new List<Element>();
+            for (int i = 0; i < input.Length; i++)
+            {
+                for (int j = 0; j < agents.Count; j++)
+                {
+                    if (agents[j].getOut(input[i]))
+                    {
+                        agentsLayerOut.Add(agents[j].getSpecializationElement());
+                    }
+                }
+            }
+
+            if (agentsLayerOut.Count != input.Length) return;
+
+            Relation[] relation_buffer = new Relation[input.Length];
+
+            for (int i = 0; i < agentsLayerOut.Count; i++)
+            {
+                for (int j = 0; j < relations.Count; j++)
+                {
+                    if (relation_buffer.Length < 0)
+                        if (relations[j].checkElement(agentsLayerOut[i], agentsLayerOut[i + 1]))
+                        {
+                            //????????????????????????????????????????
+                        }
+                }
+            }
         }
     }
 }

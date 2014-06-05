@@ -613,7 +613,7 @@ namespace controlPrg
 
         private void button5_Click(object sender, EventArgs e)
         {
-            controlPrg.Classes.MultiagentSystem mas = new Classes.MultiagentSystem(4);
+            controlPrg.Classes.MultiagentSystem mas = new Classes.MultiagentSystem();
             mas.test();
         }
 

@@ -12,6 +12,7 @@ namespace controlPrg.Classes
         private int e_number, curvature;
         private Point Pe, Pb;
         private double length;
+        private int struct_size;
         public Element(int e_number, Point Pb, Point Pe, double length, int curvature)
         {
             this.e_number = e_number;
@@ -19,6 +20,7 @@ namespace controlPrg.Classes
             this.Pe = Pe;
             this.length = length;
             this.curvature = curvature;
+            struct_size = 5;
         }
 
         public int getNumber()
@@ -44,6 +46,11 @@ namespace controlPrg.Classes
         public double getLength()
         {
             return length;
+        }
+
+        public int getStructSize()
+        {
+            return struct_size;
         }
     }
 }
