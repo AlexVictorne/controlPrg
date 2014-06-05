@@ -1,0 +1,62 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace controlPrg.Classes
+{
+    class Agent
+    {
+        private int sensors_count;
+        private Element my_element, input_element;
+        public Agent(Element e, int sensors_count)
+        {
+            this.my_element = e;
+            this.sensors_count = sensors_count;
+        }
+
+        private double calcVectorLength(Point p1, Point p2)
+        {
+            return Math.Sqrt((p1.X - p2.X) * (p1.X - p2.X) + (p1.Y - p2.Y) * (p1.Y - p2.Y));
+        }
+
+        private double calcLengthDifference(double l1, double l2)
+        {
+            return l1 - l2;
+        }
+
+        private int calcCurvatureDifference(int c1, int c2)
+        {
+            return c1 - c2;
+        }
+
+        public void setInputElement(Element e)
+        {
+            this.input_element = e;
+        }
+
+        public bool getOut(Element e)
+        {
+            double result = compareElements(this.my_element, e);
+
+            if (result > 0.8) 
+                return true;
+            else 
+                return false;
+        }
+
+        private double compareElements(Element e1, Element e2)
+        {
+            double beginVectorLength = calcVectorLength(e1.getBeginPoint(), e2.getBeginPoint());
+            double endVectorLength = calcVectorLength(e1.getEndPoint(), e2.getEndPoint());
+            double lengthDifference = calcLengthDifference(e1.getLength(), e2.getLength());
+            double curvatureDifference = calcCurvatureDifference(e1.getCurvature(), e2.getCurvature());
+
+            return 0.5 * Math.Sqrt(beginVectorLength * beginVectorLength + endVectorLength * endVectorLength +
+                lengthDifference * lengthDifference +
+                curvatureDifference * curvatureDifference);
+        }
+    }
+}

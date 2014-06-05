@@ -75,9 +75,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\Agent.cs" />
     <Compile Include="Classes\AnimateNetwork.cs" />
     <Compile Include="Classes\DBWorker.cs" />
+    <Compile Include="Classes\Element.cs" />
     <Compile Include="Classes\NeuronWithWeight.cs" />
+    <Compile Include="Classes\Relation.cs" />
     <Compile Include="DatabaseDataSet.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
