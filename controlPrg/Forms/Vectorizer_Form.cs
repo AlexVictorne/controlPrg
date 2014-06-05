@@ -321,17 +321,8 @@ namespace controlPrg
 
 
         //xml функции
-        private void Save_to_xml()
+        private void Save_to_xml(Skeleton sk)
         {
-            Skeleton sk = new Skeleton();
-            sk.list_of_cell.Add(new Skeleton.cell());
-            sk.list_of_cell[0].add_node(1,1);
-            sk.list_of_cell[0].add_node(2, 3);
-            sk.list_of_cell.Add(new Skeleton.cell());
-            sk.list_of_cell[1].add_node(3, 4);
-            sk.list_of_cell[1].add_node(5, 6);
-
-
             var path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "//SerializationOverview.xml";
 
             XmlTextWriter xw = new XmlTextWriter(path, Encoding.UTF8);
@@ -342,10 +333,10 @@ namespace controlPrg
             writer.Close();
             xw.Close();
         }
-        private void Read_from_xml()
+        private Skeleton Read_from_xml(string filename)
         {
             Skeleton sk = new Skeleton();
-            var path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "//SerializationOverview.xml";
+            var path = filename;
 
             XmlTextReader xr = new XmlTextReader(path);
             XmlDictionaryReader reader = XmlDictionaryReader.CreateDictionaryReader(xr);
@@ -353,10 +344,11 @@ namespace controlPrg
             sk = (Skeleton)ser.ReadObject(reader);
             reader.Close();
             xr.Close();
+            return sk;
         }
 
 
-
+        
         private void Set_path()
         {
             imgProcessed.Bitmap = ibProcessed.Image.Bitmap;
@@ -369,10 +361,8 @@ namespace controlPrg
                     int c = imgProcessed.Bitmap.GetPixel(j, i).ToArgb();
                     if (c == -11776948)
                     {
-                        //if (j == 29)
-                        //    max_var_path++;
                         int current_variable_path = 0;
-                        current_variable_path = Look_around(imgProcessed.Bitmap, j, i).Count;
+                        current_variable_path = Look_around(imgProcessed.Bitmap, j, i, -11776948).Count;
                         if (current_variable_path < max_var_path)
                         {
                             max_var_path = current_variable_path;
@@ -382,65 +372,129 @@ namespace controlPrg
                 }
 
             Skeleton sk = new Skeleton();
+            sk.Size = new Point(imgProcessed.Bitmap.Width, imgProcessed.Bitmap.Height);
             sk.list_of_cell = new List<Skeleton.cell>();
             sk.list_of_cell.Add(new Skeleton.cell());
             List<Point> list_of_intersection = new List<Point>();
             list_of_intersection.Add(new Point(x, y));
 
-
+            Bitmap bitmap = new Bitmap(imgProcessed.Bitmap);
             while (list_of_intersection.Count != 0)
             {
                 sk.list_of_cell[sk.list_of_cell.Count - 1].add_node(x, y);
-                imgProcessed.Bitmap.SetPixel(x, y, Color.Indigo);
-                List<Point> lp = Look_around(imgProcessed.Bitmap, list_of_intersection[list_of_intersection.Count - 1].X, list_of_intersection[list_of_intersection.Count - 1].Y);
+                bitmap.SetPixel(x, y, Color.Blue);
+                List<Point> lp = Look_around(bitmap, x, y,-11776948);
                 if (lp.Count>1)
                 {
+                    foreach (Point p in lp)
+                    {
+                        bitmap.SetPixel(p.X, p.Y, Color.Blue);
+                        int k = bitmap.GetPixel(p.X, p.Y).ToArgb();
+                    }
                     list_of_intersection.RemoveAt(0);
-                    list_of_intersection.AddRange(lp);
+                    List<Point> buff_list = new List<Point>();
+                    buff_list.AddRange(lp);
+                    buff_list.AddRange(list_of_intersection);
+                    list_of_intersection = buff_list;
+                    sk.list_of_cell.Add(new Skeleton.cell());
                     x = list_of_intersection[0].X;
                     y = list_of_intersection[0].Y;
                 }
                 else
+                if (lp.Count==1)
                 {
-                    if ((lp.Count == 0)&&(list_of_intersection.Count>1))
+                    x = lp[0].X;
+                    y = lp[0].Y;
+                }
+                else
+                {
+                    //
+                    if (Look_around(bitmap, x, y, -16776961).Count > 1)
                     {
-                        list_of_intersection.RemoveAt(0);
+                        List<Point> pe = new List<Point>();
+                        pe = Look_around(bitmap, x, y, -16776961);
+                        if (Look_around(bitmap, pe[0].X, pe[0].Y,-11776948).Count==0)
+                        {
+                            list_of_intersection.Remove(new Point(pe[0].X, pe[0].Y));
+                            x = pe[0].X;
+                            y = pe[0].Y;
+                            sk.list_of_cell[sk.list_of_cell.Count - 1].add_node(x, y);
+                            bitmap.SetPixel(x, y, Color.Green);
+                        }
+                    }
+                    //
+                    list_of_intersection.RemoveAt(0);
+                    if (list_of_intersection.Count>0)
+                    {
+                        sk.list_of_cell.Add(new Skeleton.cell());
                         x = list_of_intersection[0].X;
                         y = list_of_intersection[0].Y;
                     }
                     else
                     {
-                        x = lp[0].X;
-                        y = lp[0].Y;
+                        Console.WriteLine(sk.list_of_cell.Count.ToString());
                     }
- 
                 }
-
             }
+            ibProcessed.Image = new Image<Gray, byte>(bitmap);
+            Save_to_xml(sk);
             //Console.WriteLine(max_var_path.ToString() + "  " + x.ToString() + " " + y.ToString());
         }
-        private List<Point> Look_around(Bitmap bitmap, int x, int y)
+        private void Read_path()
+        {
+            OpenFileDialog openFileDialog1 = new OpenFileDialog();
+            openFileDialog1.Filter = "XML files (*.xml)|*.xml";
+            openFileDialog1.FilterIndex = 1;
+            openFileDialog1.RestoreDirectory = true;
+            Skeleton sk = new Skeleton();
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    sk = Read_from_xml(openFileDialog1.FileName);
+                    Bitmap bm = new Bitmap(sk.Size.X,sk.Size.Y);
+                    foreach (Skeleton.cell sc in sk.list_of_cell)
+                    {
+                        foreach (Skeleton.node sn in sc.list_of_node)
+                        {
+                            bm.SetPixel(sn.x, sn.y, Color.White);
+                        }
+                    }
+                    ibProcessed.Image = new Image<Gray, byte>(bm);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error: Could not read file from disk. Original error: " + ex.Message);
+                }
+            }
+        }
+
+        //color red         -11776948
+        //color green 		-11842741	
+        //color blue 	    -16776961
+
+        private List<Point> Look_around(Bitmap bitmap, int x, int y, int color)
         {
             List<Point> list_of_var_point = new List<Point>();
-            if ((x + 1 < bitmap.Width) && (bitmap.GetPixel(x + 1, y).ToArgb() == -11776948))
+            if ((x + 1 < bitmap.Width) && (bitmap.GetPixel(x + 1, y).ToArgb() == color))
                 list_of_var_point.Add(new Point(x + 1, y));
-            if ((x + 1 < bitmap.Width) && (y + 1 < bitmap.Height) && (bitmap.GetPixel(x + 1, y + 1).ToArgb() == -11776948))
+            if ((x + 1 < bitmap.Width) && (y + 1 < bitmap.Height) && (bitmap.GetPixel(x + 1, y + 1).ToArgb() == color))
                 list_of_var_point.Add(new Point(x + 1, y + 1));
-            if ((x + 1 < bitmap.Width) && (y - 1 > 0) && (bitmap.GetPixel(x + 1, y - 1).ToArgb() == -11776948))
+            if ((x + 1 < bitmap.Width) && (y - 1 > 0) && (bitmap.GetPixel(x + 1, y - 1).ToArgb() == color))
                 list_of_var_point.Add(new Point(x + 1, y - 1));
-            if ((y + 1 < bitmap.Height) && (bitmap.GetPixel(x, y + 1).ToArgb() == -11776948))
+            if ((y + 1 < bitmap.Height) && (bitmap.GetPixel(x, y + 1).ToArgb() == color))
                 list_of_var_point.Add(new Point(x, y + 1));
-            if ((y - 1 > 0) && (bitmap.GetPixel(x, y - 1).ToArgb() == -11776948))
+            if ((y - 1 > 0) && (bitmap.GetPixel(x, y - 1).ToArgb() == color))
                 list_of_var_point.Add(new Point(x, y - 1));
-            if ((x - 1 > 0) && (bitmap.GetPixel(x - 1, y).ToArgb() == -11776948))
+            if ((x - 1 > 0) && (bitmap.GetPixel(x - 1, y).ToArgb() == color))
                 list_of_var_point.Add(new Point(x - 1, y));
-            if ((x - 1 > 0) && (y + 1 < bitmap.Height) && (bitmap.GetPixel(x - 1, y + 1).ToArgb() == -11776948))
+            if ((x - 1 > 0) && (y + 1 < bitmap.Height) && (bitmap.GetPixel(x - 1, y + 1).ToArgb() == color))
                 list_of_var_point.Add(new Point(x - 1, y + 1));
-            if ((x - 1 > 0) && (y - 1 > 0) && (bitmap.GetPixel(x - 1, y - 1).ToArgb() == -11776948))
+            if ((x - 1 > 0) && (y - 1 > 0) && (bitmap.GetPixel(x - 1, y - 1).ToArgb() == color))
                 list_of_var_point.Add(new Point(x - 1, y - 1));
             return list_of_var_point;
         }
-
+        //private List<Point> Look_
 
 
         private void change(object sender, EventArgs e)
@@ -488,6 +542,11 @@ namespace controlPrg
         private void button6_Click(object sender, EventArgs e)
         {
             Set_path();
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            Read_path();
         }
          
 
@@ -646,6 +705,8 @@ namespace controlPrg
     {
         [DataMember(Name="Chains")]
         public List<cell> list_of_cell = new List<cell>();
+        [DataMember(Name="Size")]
+        public Point Size;
         public Skeleton() {}
         [DataContract(Name="Chain")]
         public class cell
