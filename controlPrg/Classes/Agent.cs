@@ -11,6 +11,7 @@ namespace controlPrg.Classes
     {
         private int sensors_count;
         private Element my_element, input_element;
+        private const double t = 0.5;
         public Agent(Element e, int sensors_count)
         {
             this.my_element = e;
@@ -39,9 +40,9 @@ namespace controlPrg.Classes
 
         public bool getOut(Element e)
         {
-            double result = compareElements(this.my_element, e);
+            double result = activationFunction(compareElements(this.my_element, e));
 
-            if (result > 0.8) 
+            if (result < 0.8) 
                 return true;
             else 
                 return false;
@@ -57,6 +58,16 @@ namespace controlPrg.Classes
             return 0.5 * Math.Sqrt(beginVectorLength * beginVectorLength + endVectorLength * endVectorLength +
                 lengthDifference * lengthDifference +
                 curvatureDifference * curvatureDifference);
+        }
+
+        private double activationFunction(double x)
+        {
+            return 1 / ((double)(1 + Math.Pow(Math.E, (-t * x))));
+        }
+
+        public Element getSpecializationElement()
+        {
+            return my_element;
         }
     }
 }

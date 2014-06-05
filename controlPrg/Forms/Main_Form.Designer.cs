@@ -58,13 +58,14 @@
             this.segm_btn = new System.Windows.Forms.ToolStripMenuItem();
             this.edit_btn = new System.Windows.Forms.ToolStripMenuItem();
             this.db_btn = new System.Windows.Forms.ToolStripMenuItem();
+            this.vectorizerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.справкаToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
-            this.vectorizerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.button5 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.imageBox)).BeginInit();
@@ -178,6 +179,7 @@
             // 
             // splitContainer1.Panel2
             // 
+            this.splitContainer1.Panel2.Controls.Add(this.button5);
             this.splitContainer1.Panel2.Controls.Add(this.button4);
             this.splitContainer1.Panel2.Controls.Add(this.createISN_btn);
             this.splitContainer1.Panel2.Controls.Add(this.recImg_btn);
@@ -210,7 +212,7 @@
             this.tabPage1.Controls.Add(this.pictureBox1);
             this.tabPage1.Location = new System.Drawing.Point(4, 25);
             this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage1.Size = new System.Drawing.Size(375, 362);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Моделирование ИНС";
@@ -232,8 +234,8 @@
             this.tabPage2.Controls.Add(this.label1);
             this.tabPage2.Location = new System.Drawing.Point(4, 25);
             this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
-            this.tabPage2.Size = new System.Drawing.Size(377, 366);
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(375, 362);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Распознавание";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -241,7 +243,7 @@
             // button4
             // 
             this.button4.Location = new System.Drawing.Point(53, 50);
-            this.button4.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.button4.Margin = new System.Windows.Forms.Padding(2);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(56, 19);
             this.button4.TabIndex = 22;
@@ -361,30 +363,37 @@
             // samp_btn
             // 
             this.samp_btn.Name = "samp_btn";
-            this.samp_btn.Size = new System.Drawing.Size(152, 22);
+            this.samp_btn.Size = new System.Drawing.Size(149, 22);
             this.samp_btn.Text = "Выборщик";
             this.samp_btn.Click += new System.EventHandler(this.samp_btn_Click);
             // 
             // segm_btn
             // 
             this.segm_btn.Name = "segm_btn";
-            this.segm_btn.Size = new System.Drawing.Size(152, 22);
+            this.segm_btn.Size = new System.Drawing.Size(149, 22);
             this.segm_btn.Text = "Сегментатор";
             this.segm_btn.Click += new System.EventHandler(this.segm_btn_Click);
             // 
             // edit_btn
             // 
             this.edit_btn.Name = "edit_btn";
-            this.edit_btn.Size = new System.Drawing.Size(152, 22);
+            this.edit_btn.Size = new System.Drawing.Size(149, 22);
             this.edit_btn.Text = "Редактор";
             this.edit_btn.Click += new System.EventHandler(this.edit_btn_Click);
             // 
             // db_btn
             // 
             this.db_btn.Name = "db_btn";
-            this.db_btn.Size = new System.Drawing.Size(152, 22);
+            this.db_btn.Size = new System.Drawing.Size(149, 22);
             this.db_btn.Text = "Просмотр БД";
             this.db_btn.Click += new System.EventHandler(this.db_btn_Click);
+            // 
+            // vectorizerToolStripMenuItem
+            // 
+            this.vectorizerToolStripMenuItem.Name = "vectorizerToolStripMenuItem";
+            this.vectorizerToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+            this.vectorizerToolStripMenuItem.Text = "Vectorizer";
+            this.vectorizerToolStripMenuItem.Click += new System.EventHandler(this.vectorizerToolStripMenuItem_Click);
             // 
             // справкаToolStripMenuItem
             // 
@@ -430,12 +439,15 @@
             this.toolStripMenuItem4.Text = "Добавить конечный элемент";
             this.toolStripMenuItem4.Click += new System.EventHandler(this.toolStripMenuItem4_Click);
             // 
-            // vectorizerToolStripMenuItem
+            // button5
             // 
-            this.vectorizerToolStripMenuItem.Name = "vectorizerToolStripMenuItem";
-            this.vectorizerToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.vectorizerToolStripMenuItem.Text = "Vectorizer";
-            this.vectorizerToolStripMenuItem.Click += new System.EventHandler(this.vectorizerToolStripMenuItem_Click);
+            this.button5.Location = new System.Drawing.Point(138, 48);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(75, 23);
+            this.button5.TabIndex = 23;
+            this.button5.Text = "Тест сети";
+            this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
             // Main_Form
             // 
@@ -507,6 +519,7 @@
         private System.Windows.Forms.Button pai_btn;
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.ToolStripMenuItem vectorizerToolStripMenuItem;
+        private System.Windows.Forms.Button button5;
     }
 }
 

@@ -79,6 +79,7 @@
     <Compile Include="Classes\AnimateNetwork.cs" />
     <Compile Include="Classes\DBWorker.cs" />
     <Compile Include="Classes\Element.cs" />
+    <Compile Include="Classes\MultiagentSystem.cs" />
     <Compile Include="Classes\NeuronWithWeight.cs" />
     <Compile Include="Classes\Relation.cs" />
     <Compile Include="DatabaseDataSet.Designer.cs">
