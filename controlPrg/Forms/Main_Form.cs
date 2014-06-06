@@ -1,5 +1,6 @@
 ﻿//Copyright (C) 2014 AlexVictorne, Nikita_blackbeard
 
+using controlPrg.Classes;
 using Emgu.CV;
 using Emgu.CV.Structure;
 using System;
@@ -611,10 +612,32 @@ namespace controlPrg
             vf.Show();
         }
 
+        //TEST
         private void button5_Click(object sender, EventArgs e)
         {
-            controlPrg.Classes.MultiagentSystem mas = new Classes.MultiagentSystem();
-            mas.test();
+            MultiagentSystem mas = new MultiagentSystem();
+            // задаем шаблоны
+            Element template1 = new Element(0, new Point(0, 0), new Point(0, 10), Math.PI * 5 * 0.5, 5); // первая дуга буквы х
+            mas.AddTemplate(template1);
+            Element template2 = new Element(1, new Point(10, 0), new Point(10, 10), Math.PI * 5 * 0.5, 5); // вторая дуга буквы х
+            mas.AddTemplate(template2);
+            Element template3 = new Element(2, new Point(5, 0), new Point(5, 10), 10, 0); // палка буквы ж
+            mas.AddTemplate(template3);
+
+            // задаем отношения между шаблонами буквы х
+            mas.AddRelation(new Relation(template1, template2, 'х', true));// отношение дуг буквы х, финальный
+            // буквы ж
+            Relation first = new Relation(template1, template3, 'ж', false); // отношение первой дуги и палки буквы ж
+            mas.AddRelation(first);
+            mas.AddRelation(new Relation(first, template2, 'ж', true)); // отношение отношения первой дуги и палки и второй дуги буквы ж
+
+            Element[] input = new Element[3];
+            input[0] = new Element(0, new Point(2, 2), new Point(2, 12), Math.PI * 6 * 0.5, 6); // первая дуга буквы х (ж)
+            input[1] = new Element(2, new Point(7, 2), new Point(7, 12), 12, 2); // палка буквы ж
+            input[2] = new Element(1, new Point(12, 2), new Point(12, 12), Math.PI * 6 * 0.5, 6); // первая дуга буквы х (ж)
+            
+
+            Console.WriteLine(mas.getOut(input));
         }
 
 

@@ -28,7 +28,7 @@ namespace controlPrg.Classes
             agents.Add(new Agent(e, e.getStructSize()));
         }
 
-        public void setRelation(Relation r)
+        public void AddRelation(Relation r)
         {
             relations.Add(r); // клонировать?
         }
@@ -87,7 +87,7 @@ namespace controlPrg.Classes
              */
         }
 
-        public void getOut(Element[] input)
+        public string getOut(Element[] input)
         {
             List<Element> agentsLayerOut = new List<Element>();
             for (int i = 0; i < input.Length; i++)
@@ -101,21 +101,39 @@ namespace controlPrg.Classes
                 }
             }
 
-            if (agentsLayerOut.Count != input.Length) return;
+            if (agentsLayerOut.Count != input.Length) return "-1";
 
-            Relation[] relation_buffer = new Relation[input.Length];
+            Relation relation_buffer = null;
+            int elements_counter = 0;
+            char result = '-';
+            int k = 0;
 
-            for (int i = 0; i < agentsLayerOut.Count; i++)
+            // вообще не уверен в этом алгоритме
+            while (result == '-' && k < relations.Count)
             {
-                for (int j = 0; j < relations.Count; j++)
+                if (relation_buffer == null)
                 {
-                    if (relation_buffer.Length < 0)
-                        if (relations[j].checkElement(agentsLayerOut[i], agentsLayerOut[i + 1]))
-                        {
-                            //????????????????????????????????????????
-                        }
+                    if (relations[k].checkElement(agentsLayerOut[elements_counter], agentsLayerOut[elements_counter + 1]))
+                    {
+                        relation_buffer = relations[k]; // клонировать?
+                        elements_counter += 2;
+                        if ((result = relations[k].checkChar()) == '-')
+                            k = 0;
+                    }
                 }
+                else
+                {
+                    if (relations[k].checkRelation(relation_buffer, agentsLayerOut[elements_counter]))
+                    {
+                        relation_buffer = relations[k]; // клонировать?
+                        elements_counter++;
+                        if ((result = relations[k].checkChar()) == '-')
+                            k = 0;
+                    }
+                }
+                k++;
             }
+            return result.ToString();
         }
     }
 }
