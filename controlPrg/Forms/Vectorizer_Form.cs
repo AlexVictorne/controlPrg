@@ -22,13 +22,15 @@ namespace controlPrg
             InitializeComponent();
         }
 
-        string path_to_current_image;
-        Image<Bgr, Byte> imgOriginal;
-        Image<Gray, Byte> imgProcessed;
 
 
-        
+
+
+        Image<Bgr, Byte> OriginalImage;
         List<Contour<Point>> contours = new List<Contour<Point>>();
+
+
+
 
         void Segm_Process()
         {
@@ -39,7 +41,8 @@ namespace controlPrg
             int nfVal = (int)nf_tb.Value;
 
             //преобразование изображения в чб
-            imgProcessed = imgOriginal.Convert<Gray, Byte>();
+
+            Image<Gray, Byte> imgProcessed = OriginalImage.Convert<Gray, Byte>();
             //автоконтраст
             if (equalizeHist)
                 imgProcessed._EqualizeHist();
@@ -70,6 +73,7 @@ namespace controlPrg
             //фильтруем контуры
             contours = FilterContours(sourceContours, cannyFrame, imgProcessed.Width, imgProcessed.Height);
             ibOriginal.Image = imgProcessed;
+            toolStripStatusLabel1.Text= "Найдено "+contours.Count.ToString()+" контура(-ов).";
         }
 
         private List<Contour<Point>> FilterContours(Contour<Point> contours, Image<Gray, byte> canny, int Width, int Height)
@@ -139,10 +143,7 @@ namespace controlPrg
         }
 
         
-        
-        //копируем часть изображения в битмап
-        int bitmapformat = 64;
-        Bitmap CopyBitmap(Image src, Rectangle rect)
+        Bitmap CopyBitmap(Image src, Rectangle rect,int bitmapformat)
         {
             var ret = new Bitmap(rect.Width, rect.Height);
             using (var g = Graphics.FromImage(ret))
@@ -183,7 +184,6 @@ namespace controlPrg
             return new Rectangle(minX, minY, maxX - minX + 1, maxY - minY + 1);
         }
 
-        bool result_format = true;
         private Bitmap BlachAndWhite(Bitmap bmpImg, int P)
         {
             Bitmap result = new Bitmap(bmpImg.Width, bmpImg.Height);
@@ -208,7 +208,7 @@ namespace controlPrg
         }
 
 
-
+        //заливочные функции
         private Bitmap createnewpolygon()
         {
             Bitmap bmm = new Bitmap(ibOriginal.Image.Bitmap.Width, ibOriginal.Image.Bitmap.Height);
@@ -217,7 +217,6 @@ namespace controlPrg
                     Graphics.FromImage((Image)bmm).DrawPolygon(Pens.Red, contour.ToArray());
             return bmm;
         }
-
         Bitmap bm;
         bool fill_is_started = false;
         private void FloodyFill(int x, int y)
@@ -230,6 +229,7 @@ namespace controlPrg
             contours.Clear();
             int coordX = Convert.ToInt32(x / ibOriginal.ZoomScale + ibOriginal.HorizontalScrollBar.Value); ;// -ibOriginal.Location.X;
             int coordY = Convert.ToInt32(y / ibOriginal.ZoomScale + ibOriginal.VerticalScrollBar.Value);// -ibOriginal.Location.Y;
+            toolStripStatusLabel1.Text = "Точка " + coordX.ToString() + ", " + coordY.ToString() + " выбрана для заливки.";
             FloodFill(bm, coordX, coordY, Color.White);
             Graphics.FromImage((Image)bm).DrawEllipse(Pens.White, coordX - 1, coordY - 1, 2, 2);
             ibOriginal.Image = new Image<Gray, byte>(bm);
@@ -237,18 +237,16 @@ namespace controlPrg
 
         private void GetSkelet()
         {
-            int[,] bit = new int[ibOriginal.Image.Bitmap.Height, imgOriginal.Bitmap.Width];
-            imgProcessed.Bitmap = ibOriginal.Image.Bitmap;
+            int[,] bit = new int[ibOriginal.Image.Bitmap.Height, ibOriginal.Image.Bitmap.Width];
             for (int i = 0; i < ibOriginal.Image.Bitmap.Height; i++)
                 for (int j = 0; j < ibOriginal.Image.Bitmap.Width; j++)
                 {
-                    if (imgProcessed.Bitmap.GetPixel(j, i).ToArgb() == -1)
+                    if (ibOriginal.Image.Bitmap.GetPixel(j, i).ToArgb() == -1)
                         bit[i, j] = 1;
                     else
                         bit[i, j] = 0;
                 }
             Bitmap bm = new Bitmap(ibOriginal.Image.Bitmap.Width, ibOriginal.Image.Bitmap.Height);
-            ibProcessed.Image = new Image<Bgr, byte>(bm);
             Skeletonizator s = new Skeletonizator(bit);
             int[,] sk = new int[ibOriginal.Image.Bitmap.Height, ibOriginal.Image.Bitmap.Width];
             sk = s.SkeletonZhangSuen();
@@ -261,6 +259,7 @@ namespace controlPrg
                         bm.SetPixel(j, i, Color.White);
                 }
             ibProcessed.Image = new Image<Bgr, byte>(bm);
+            toolStripStatusLabel1.Text = "Скелет изображения построен.";
         }
 
         private void LoadImage()
@@ -275,9 +274,9 @@ namespace controlPrg
             {
                 try
                 {
-                    path_to_current_image = openFileDialog1.FileName;
-                    imgOriginal = new Image<Bgr, byte>(path_to_current_image);
-                    ibOriginal.Image = imgOriginal;
+                    OriginalImage = new Image<Bgr, byte>(openFileDialog1.FileName);
+                    ibOriginal.Image = OriginalImage;
+                    toolStripStatusLabel1.Text = "Загружено изображение: " + openFileDialog1.FileName;
                 }
                 catch (Exception ex)
                 {
@@ -285,15 +284,54 @@ namespace controlPrg
                 }
             }
         }
+        private void SaveImages(int bitmapformat,string format)
+        {
+            bool result_format = true;
+            if (format == ".jpg")
+                result_format = true;
+            else
+                result_format = false;
+            List<Bitmap> contour_bitmap_list = new List<Bitmap>();
+            foreach (var contour in contours)
+            {
+                //прямоугольник описывающий контур
+                Rectangle newrect = Contour(contour, 0, contour.Total);
+                //добавляем часть изображения в список с контурами
+                contour_bitmap_list.Add(new Bitmap(newrect.Width, newrect.Height));
+                contour_bitmap_list[contour_bitmap_list.Count - 1] = CopyBitmap(ibOriginal.Image.Bitmap, newrect, bitmapformat);
+            }
+            string folderName = @"images";
+            try { System.IO.Directory.Delete(folderName, true); }
+            catch { }
+            System.IO.Directory.CreateDirectory(folderName);
+            int i = 0;
+            foreach (Bitmap bit in contour_bitmap_list)
+            {
+                string fileName = i.ToString() + format;
+                string pathString = System.IO.Path.Combine(folderName, fileName);
+                Bitmap bm = bit;
+                try
+                {
+                    if (result_format)
+                        bm.Save(pathString, ImageFormat.Jpeg);
+                    else
+                        bm.Save(pathString, ImageFormat.Bmp);
+                }
+                catch { }
+                i++;
+            }
+            toolStripStatusLabel1.Text = "Сохранено " + i.ToString() + " изображений формата " + format + " , размером " + bitmapformat.ToString() + "*" + bitmapformat.ToString() + ".";
+        }
+
+
 
         private void Resize_to_contour_rectangle()
         {
-            imgProcessed.Bitmap = ibOriginal.Image.Bitmap;
-            int max_x=0,max_y=0,min_x=imgOriginal.Bitmap.Width,min_y=ibOriginal.Image.Bitmap.Height;
+            int max_x=0,max_y=0,min_x=ibOriginal.Image.Bitmap.Width,min_y=ibOriginal.Image.Bitmap.Height;
             for (int i = 0; i < ibOriginal.Image.Bitmap.Height; i++)
                 for (int j = 0; j < ibOriginal.Image.Bitmap.Width; j++)
                 {
-                    int c = imgProcessed.Bitmap.GetPixel(j, i).ToArgb();
+                    int c = ibOriginal.Image.Bitmap.GetPixel(j, i).ToArgb();
                     if (c == -1)
                     {
                         if (min_x > j)
@@ -306,26 +344,21 @@ namespace controlPrg
                             max_y = i;
                     }
                 }
-            Console.WriteLine(min_x.ToString() + " " + min_y.ToString() + " " + max_x.ToString() + " " + max_y.ToString());
             var ret = new Bitmap(max_x - min_x+2, max_y - min_y+2);
             using (var g = Graphics.FromImage(ret))
             {
-                g.DrawImage(imgProcessed.Bitmap, 1, 1, new Rectangle(min_x, min_y, max_x - min_x, max_y - min_y), GraphicsUnit.Pixel);
+                g.DrawImage(ibOriginal.Image.Bitmap, 1, 1, new Rectangle(min_x, min_y, max_x - min_x, max_y - min_y), GraphicsUnit.Pixel);
             }
             ibOriginal.Image = new Image<Gray, byte>(ret);
+            toolStripStatusLabel1.Text = "Изображение обрезано до размера контуров ("+ret.Width.ToString()+", "+ret.Height.ToString()+").";
         }
         
 
 
-
-
-
         //xml функции
-        private void Save_to_xml(Skeleton sk)
+        private void Save_to_xml(Skeleton sk,string filename)
         {
-            var path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "//SerializationOverview.xml";
-
-            XmlTextWriter xw = new XmlTextWriter(path, Encoding.UTF8);
+            XmlTextWriter xw = new XmlTextWriter(filename, Encoding.UTF8);
             xw.Formatting = Formatting.Indented;
             XmlDictionaryWriter writer = XmlDictionaryWriter.CreateDictionaryWriter(xw);
             DataContractSerializer ser = new DataContractSerializer(typeof(Skeleton));
@@ -348,10 +381,10 @@ namespace controlPrg
         }
 
 
-        
+        //векторизация
         private void Set_path()
         {
-            imgProcessed.Bitmap = ibProcessed.Image.Bitmap;
+            Image<Gray, Byte> imgProcessed = new Image<Gray, byte>(ibProcessed.Image.Bitmap);
             int max_var_path = 100;
             int x = 0, y = 0;
             for (int i = 0; i < imgProcessed.Bitmap.Height; i++)
@@ -370,14 +403,12 @@ namespace controlPrg
                         }
                     }
                 }
-
             Skeleton sk = new Skeleton();
             sk.Size = new Point(imgProcessed.Bitmap.Width, imgProcessed.Bitmap.Height);
             sk.list_of_cell = new List<Skeleton.cell>();
             sk.list_of_cell.Add(new Skeleton.cell());
             List<Point> list_of_intersection = new List<Point>();
             list_of_intersection.Add(new Point(x, y));
-
             Bitmap bitmap = new Bitmap(imgProcessed.Bitmap);
             while (list_of_intersection.Count != 0)
             {
@@ -408,7 +439,7 @@ namespace controlPrg
                 }
                 else
                 {
-                    //
+                    // последний элемент в замкнутых цепочках
                     if (Look_around(bitmap, x, y, -16776961).Count > 1)
                     {
                         List<Point> pe = new List<Point>();
@@ -430,15 +461,20 @@ namespace controlPrg
                         x = list_of_intersection[0].X;
                         y = list_of_intersection[0].Y;
                     }
-                    else
-                    {
-                        Console.WriteLine(sk.list_of_cell.Count.ToString());
-                    }
                 }
             }
             ibProcessed.Image = new Image<Gray, byte>(bitmap);
-            Save_to_xml(sk);
-            //Console.WriteLine(max_var_path.ToString() + "  " + x.ToString() + " " + y.ToString());
+            SaveFileDialog saveFileDialog1 = new SaveFileDialog();
+            saveFileDialog1.Filter = "XML files (*.xml)|*.xml";
+            saveFileDialog1.FilterIndex = 1;
+            saveFileDialog1.RestoreDirectory = true;
+            if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                Save_to_xml(sk, saveFileDialog1.FileName);
+                toolStripStatusLabel1.Text = "Найдено " + sk.list_of_cell.Count + " цепочек. Сохранено в " + saveFileDialog1.FileName;
+            }
+            else
+                toolStripStatusLabel1.Text = "Найдено " + sk.list_of_cell.Count + " цепочек.";
         }
         private void Read_path()
         {
@@ -461,6 +497,7 @@ namespace controlPrg
                         }
                     }
                     ibProcessed.Image = new Image<Gray, byte>(bm);
+                    toolStripStatusLabel1.Text = "Прочитан XML файл: " + openFileDialog1.FileName;
                 }
                 catch (Exception ex)
                 {
@@ -494,7 +531,6 @@ namespace controlPrg
                 list_of_var_point.Add(new Point(x - 1, y - 1));
             return list_of_var_point;
         }
-        //private List<Point> Look_
 
 
         private void change(object sender, EventArgs e)
@@ -504,7 +540,23 @@ namespace controlPrg
   
         private void button3_Click_1(object sender, EventArgs e)
         {
-            Segm_Process();
+            if (contours.Count != 0)
+            {
+                Save_contours_Form scf = new Save_contours_Form();
+                scf.ShowDialog();
+                if (scf.DialogResult == DialogResult.OK)
+                {
+                    int p = 0;
+                    string format = scf.comboBox1.Text;
+                    int size = Convert.ToInt32(scf.comboBox2.Text);
+                    SaveImages(size, format);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Контуров нет! Cохранять нечего!");
+            }
+            
         }
         private void button4_Click(object sender, EventArgs e)
         {
@@ -512,6 +564,7 @@ namespace controlPrg
         }
         private void button5_Click(object sender, EventArgs e)
         {
+            toolStripStatusLabel1.Text = "Буфер заливки очищен.";
             fill_is_started = false;
             Segm_Process();
         }
@@ -543,14 +596,12 @@ namespace controlPrg
         {
             Set_path();
         }
-
         private void button7_Click(object sender, EventArgs e)
         {
             Read_path();
         }
-         
 
-
+  
     }
 
 
@@ -699,7 +750,7 @@ namespace controlPrg
                     bitMap[i, j] -= markBmp[i, j];
         }
     }
-
+    //класс скелета
     [DataContract]
     public class Skeleton
     {
