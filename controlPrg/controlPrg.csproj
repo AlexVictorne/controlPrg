@@ -115,6 +115,12 @@
     <Compile Include="Classes\NeuralNetwork.cs" />
     <Compile Include="Classes\Neuron.cs" />
     <Compile Include="Classes\Program.cs" />
+    <Compile Include="Forms\Save_contours_Form.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Save_contours_Form.Designer.cs">
+      <DependentUpon>Save_contours_Form.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\Vectorizer_Form.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -145,6 +151,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Main_Form.resx">
       <DependentUpon>Main_Form.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Save_contours_Form.resx">
+      <DependentUpon>Save_contours_Form.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Vectorizer_Form.resx">
       <DependentUpon>Vectorizer_Form.cs</DependentUpon>
