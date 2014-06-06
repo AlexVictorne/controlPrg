@@ -1,6 +1,7 @@
 ﻿//Copyright (C) 2014 AlexVictorne, Nikita_blackbeard
 
 using controlPrg.Classes;
+using controlPrg.Forms;
 using Emgu.CV;
 using Emgu.CV.Structure;
 using System;
@@ -638,6 +639,12 @@ namespace controlPrg
             
 
             Console.WriteLine(mas.getOut(input));
+        }
+
+        private void oCRModulToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OCR_Form ocr_form = new OCR_Form();
+            ocr_form.Show();
         }
 
 

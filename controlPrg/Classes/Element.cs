@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace controlPrg.Classes
 {
-    class Element
+    public class Element
     {
         private int e_number, curvature;
         private Point Pe, Pb;

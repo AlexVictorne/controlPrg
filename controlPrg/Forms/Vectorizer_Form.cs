@@ -1,10 +1,12 @@
-﻿using Emgu.CV;
+﻿using controlPrg.Classes;
+using Emgu.CV;
 using Emgu.CV.Structure;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
 using System.Text;
@@ -380,6 +382,67 @@ namespace controlPrg
             return sk;
         }
 
+        public List<Element> Create_Elements_Database(string path_to_folder_with_xml_files)
+        {
+            List<Element> result = new List<Element>();
+            FolderBrowserDialog fbd = new FolderBrowserDialog();
+            fbd.SelectedPath = path_to_folder_with_xml_files;
+            string path_to_directory;
+            if (fbd.ShowDialog() == DialogResult.OK)
+            {
+                path_to_directory = fbd.SelectedPath;
+                DirectoryInfo dir = new DirectoryInfo(path_to_directory);
+                FileInfo[] fileList = dir.GetFiles();
+
+                for (int i = 0; i < fileList.Length; i++)
+                {
+                    Skeleton sk = Read_from_xml(fileList[i].FullName);
+                    Bitmap bm = new Bitmap(sk.Size.X, sk.Size.Y);
+                    foreach (Skeleton.cell sc in sk.list_of_cell)
+                    {
+                        int e_type = 0;
+                        Point Pb, Pe;
+                        double length = 0;
+                        int curvature = 0;
+                        double max_curvature = 0;
+
+                        // конечная и начальная точки элемента
+                        Pb = new Point(sc.list_of_node[0].x, sc.list_of_node[0].y);
+                        Pe = new Point(sc.list_of_node[sc.list_of_node.Count - 1].x, 
+                            sc.list_of_node[sc.list_of_node.Count - 1].y);
+                        double current_curvature = 0;
+                        foreach (Skeleton.node sn in sc.list_of_node)
+                        {
+                            
+                            bm.SetPixel(sn.x, sn.y, Color.White);
+                            length += 1;
+                            current_curvature = calcCurvature(Pe.Y - Pb.Y, -(Pe.X - Pb.X),
+                                (Pe.X - Pb.X) * Pb.Y + (Pe.Y - Pb.Y) * Pb.X,
+                                sn.x, sn.y
+                                );
+                            if (max_curvature < current_curvature)
+                            {
+                                max_curvature = current_curvature;
+                            }
+                        }
+                        // e_type = выход 1 слоя при входном изображении bm
+                        
+                        // длина элемента относительно общей длины скелета
+                        length /= sk.length;
+                        // кривизна элемента
+                        curvature = (int)max_curvature;
+                        result.Add(new Element(e_type, Pb, Pe, length, curvature));
+                    }
+                }
+            }
+            return result;
+        }
+
+        private double calcCurvature(double A, double B, double C, int x, int y)
+        {
+            return Math.Abs(A * x + B * y + C) / Math.Sqrt(A * A + B * B);
+        }
+
 
         //векторизация
         private void Set_path()
@@ -413,6 +476,7 @@ namespace controlPrg
             while (list_of_intersection.Count != 0)
             {
                 sk.list_of_cell[sk.list_of_cell.Count - 1].add_node(x, y);
+                sk.length++; // добавлено для вычисления общей длины скелета
                 bitmap.SetPixel(x, y, Color.Blue);
                 List<Point> lp = Look_around(bitmap, x, y,-11776948);
                 if (lp.Count>1)
@@ -758,6 +822,8 @@ namespace controlPrg
         public List<cell> list_of_cell = new List<cell>();
         [DataMember(Name="Size")]
         public Point Size;
+        [DataMember(Name = "Length")]
+        public int length;
         public Skeleton() {}
         [DataContract(Name="Chain")]
         public class cell

@@ -43,6 +43,7 @@
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.pai_btn = new System.Windows.Forms.Button();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.button5 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
             this.createISN_btn = new System.Windows.Forms.Button();
             this.recImg_btn = new System.Windows.Forms.Button();
@@ -65,7 +66,7 @@
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
-            this.button5 = new System.Windows.Forms.Button();
+            this.oCRModulToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.imageBox)).BeginInit();
@@ -240,6 +241,16 @@
             this.tabPage2.Text = "Распознавание";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
+            // button5
+            // 
+            this.button5.Location = new System.Drawing.Point(138, 48);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(75, 23);
+            this.button5.TabIndex = 23;
+            this.button5.Text = "Тест сети";
+            this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.button5_Click);
+            // 
             // button4
             // 
             this.button4.Location = new System.Drawing.Point(53, 50);
@@ -355,7 +366,8 @@
             this.segm_btn,
             this.edit_btn,
             this.db_btn,
-            this.vectorizerToolStripMenuItem});
+            this.vectorizerToolStripMenuItem,
+            this.oCRModulToolStripMenuItem});
             this.модулиToolStripMenuItem.Name = "модулиToolStripMenuItem";
             this.модулиToolStripMenuItem.Size = new System.Drawing.Size(63, 20);
             this.модулиToolStripMenuItem.Text = "Модули";
@@ -363,35 +375,35 @@
             // samp_btn
             // 
             this.samp_btn.Name = "samp_btn";
-            this.samp_btn.Size = new System.Drawing.Size(149, 22);
+            this.samp_btn.Size = new System.Drawing.Size(152, 22);
             this.samp_btn.Text = "Выборщик";
             this.samp_btn.Click += new System.EventHandler(this.samp_btn_Click);
             // 
             // segm_btn
             // 
             this.segm_btn.Name = "segm_btn";
-            this.segm_btn.Size = new System.Drawing.Size(149, 22);
+            this.segm_btn.Size = new System.Drawing.Size(152, 22);
             this.segm_btn.Text = "Сегментатор";
             this.segm_btn.Click += new System.EventHandler(this.segm_btn_Click);
             // 
             // edit_btn
             // 
             this.edit_btn.Name = "edit_btn";
-            this.edit_btn.Size = new System.Drawing.Size(149, 22);
+            this.edit_btn.Size = new System.Drawing.Size(152, 22);
             this.edit_btn.Text = "Редактор";
             this.edit_btn.Click += new System.EventHandler(this.edit_btn_Click);
             // 
             // db_btn
             // 
             this.db_btn.Name = "db_btn";
-            this.db_btn.Size = new System.Drawing.Size(149, 22);
+            this.db_btn.Size = new System.Drawing.Size(152, 22);
             this.db_btn.Text = "Просмотр БД";
             this.db_btn.Click += new System.EventHandler(this.db_btn_Click);
             // 
             // vectorizerToolStripMenuItem
             // 
             this.vectorizerToolStripMenuItem.Name = "vectorizerToolStripMenuItem";
-            this.vectorizerToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+            this.vectorizerToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.vectorizerToolStripMenuItem.Text = "Vectorizer";
             this.vectorizerToolStripMenuItem.Click += new System.EventHandler(this.vectorizerToolStripMenuItem_Click);
             // 
@@ -439,15 +451,12 @@
             this.toolStripMenuItem4.Text = "Добавить конечный элемент";
             this.toolStripMenuItem4.Click += new System.EventHandler(this.toolStripMenuItem4_Click);
             // 
-            // button5
+            // oCRModulToolStripMenuItem
             // 
-            this.button5.Location = new System.Drawing.Point(138, 48);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(75, 23);
-            this.button5.TabIndex = 23;
-            this.button5.Text = "Тест сети";
-            this.button5.UseVisualStyleBackColor = true;
-            this.button5.Click += new System.EventHandler(this.button5_Click);
+            this.oCRModulToolStripMenuItem.Name = "oCRModulToolStripMenuItem";
+            this.oCRModulToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.oCRModulToolStripMenuItem.Text = "OCR Modul";
+            this.oCRModulToolStripMenuItem.Click += new System.EventHandler(this.oCRModulToolStripMenuItem_Click);
             // 
             // Main_Form
             // 
@@ -520,6 +529,7 @@
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.ToolStripMenuItem vectorizerToolStripMenuItem;
         private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.ToolStripMenuItem oCRModulToolStripMenuItem;
     }
 }
 
