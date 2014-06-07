@@ -155,9 +155,7 @@ namespace controlPrg
             var res = new Bitmap(bitmapformat, bitmapformat);
             using (var g = Graphics.FromImage(res))
             {
-                //выбираем качество масштабирования
                 g.InterpolationMode = InterpolationMode.HighQualityBicubic;
-                //масштабируем битмап в 16*16
                 g.DrawImage(ret, new Rectangle(0, 0, bitmapformat, bitmapformat), new Rectangle(0, 0, rect.Width, rect.Height), GraphicsUnit.Pixel);
             }
             return res;
@@ -355,6 +353,34 @@ namespace controlPrg
             toolStripStatusLabel1.Text = "Изображение обрезано до размера контуров ("+ret.Width.ToString()+", "+ret.Height.ToString()+").";
         }
         
+        private Bitmap Resizez(Bitmap original_bm)
+        {
+            int max_x = 0, max_y = 0, min_x = original_bm.Width, min_y = original_bm.Height;
+            for (int i = 0; i < original_bm.Height; i++)
+                for (int j = 0; j < original_bm.Width; j++)
+                {
+                    int c = original_bm.GetPixel(j, i).ToArgb();
+                    if (c == -1)
+                    {
+                        if (min_x > j)
+                            min_x = j;
+                        if (max_x < j)
+                            max_x = j;
+                        if (min_y > i)
+                            min_y = i;
+                        if (max_y < i)
+                            max_y = i;
+                    }
+                }
+            var ret = new Bitmap(max_x - min_x + 3, max_y - min_y + 3);
+            using (var g = Graphics.FromImage(ret))
+            {
+                g.DrawImage(original_bm, 1, 1, new Rectangle(min_x, min_y, max_x - min_x+2, max_y - min_y+2), GraphicsUnit.Pixel);
+            }
+            return ret;
+        }
+
+
 
 
         //xml функции
@@ -478,7 +504,7 @@ namespace controlPrg
             else
                 toolStripStatusLabel1.Text = "Найдено " + sk.list_of_cell.Count + " цепочек.";
         }
-        private void Read_path()
+        private Skeleton Read_path()
         {
             OpenFileDialog openFileDialog1 = new OpenFileDialog();
             openFileDialog1.Filter = "XML files (*.xml)|*.xml";
@@ -498,7 +524,7 @@ namespace controlPrg
                             bm.SetPixel(sn.x, sn.y, Color.White);
                         }
                     }
-                    ibProcessed.Image = new Image<Gray, byte>(bm);
+                    ibReader.Image = new Image<Gray, byte>(bm);
                     toolStripStatusLabel1.Text = "Прочитан XML файл: " + openFileDialog1.FileName;
                 }
                 catch (Exception ex)
@@ -506,6 +532,7 @@ namespace controlPrg
                     MessageBox.Show("Error: Could not read file from disk. Original error: " + ex.Message);
                 }
             }
+            return sk;
         }
 
         //color red         -11776948
@@ -548,7 +575,6 @@ namespace controlPrg
                 scf.ShowDialog();
                 if (scf.DialogResult == DialogResult.OK)
                 {
-                    int p = 0;
                     string format = scf.comboBox1.Text;
                     int size = Convert.ToInt32(scf.comboBox2.Text);
                     SaveImages(size, format);
@@ -562,7 +588,8 @@ namespace controlPrg
         }
         private void button4_Click(object sender, EventArgs e)
         {
-            Resize_to_contour_rectangle();
+            ibOriginal.Image = new Image<Gray, byte>(Resizez(ibOriginal.Image.Bitmap));
+            toolStripStatusLabel1.Text = "Изображение обрезано до размера контуров (" + ibOriginal.Image.Bitmap.Width.ToString() + ", " + ibOriginal.Image.Bitmap.Height.ToString() + ").";
         }
         private void button5_Click(object sender, EventArgs e)
         {
@@ -598,10 +625,112 @@ namespace controlPrg
         {
             Set_path();
         }
+
+
+
+
+
+
+        Skeleton current_skelet_loaded;
         private void button7_Click(object sender, EventArgs e)
         {
-            Read_path();
+            listBox1.Items.Clear();
+            current_skelet_loaded = Read_path();
+            int i = 0;
+            foreach (Skeleton.cell c in current_skelet_loaded.list_of_cell)
+            {
+                i++;
+                listBox1.Items.Add(i);
+            }
         }
+        private void Paint_element(Skeleton.cell sc,int width,int height)
+        {
+            Bitmap bm = new Bitmap(width, height);
+            foreach (Skeleton.node sn in sc.list_of_node)
+            {
+                bm.SetPixel(sn.x, sn.y, Color.White);
+            }
+            ibReader.Image = new Image<Gray, byte>(bm);
+        }
+        private string Rename_element()
+        {
+            Entry_Form ef = new Entry_Form("Ввод: имя элемента");
+            ef.ShowDialog();
+            if (ef.DialogResult == DialogResult.OK)
+                return ef.textBox1.Text;
+            else
+                return "Текст не задан";
+        }
+
+
+
+
+        private void Save_parts_of_ckeleton(int serial)
+        {
+            Save_contours_Form scf = new Save_contours_Form();
+            scf.ShowDialog();
+            if (scf.DialogResult == DialogResult.OK)
+            {
+                string format = scf.comboBox1.Text;
+                int size = Convert.ToInt32(scf.comboBox2.Text);
+                string folderName = @"elements";
+                if (!Directory.Exists(folderName))
+                    System.IO.Directory.CreateDirectory(folderName);
+                bool result_format = true;
+                if (format == ".jpg")
+                    result_format = true;
+                else
+                    result_format = false;
+                for (int i = 0; i < current_skelet_loaded.list_of_cell.Count; i++)
+                {
+                    Bitmap bm = new Bitmap(current_skelet_loaded.Size.X, current_skelet_loaded.Size.Y);
+                    foreach (Skeleton.node sn in current_skelet_loaded.list_of_cell[i].list_of_node)
+                    {
+                        bm.SetPixel(sn.x, sn.y, Color.White);
+                    }
+                    bm = Resizez(bm);
+                    bm = CopyBitmap(bm, new Rectangle(0, 0, bm.Width, bm.Height),size);
+                    string bitmap_name = serial.ToString() + " " + listBox1.Items[i].ToString() + format;
+                    string pathString = System.IO.Path.Combine(folderName, bitmap_name);
+                    if (result_format)
+                        bm.Save(pathString, ImageFormat.Jpeg);
+                    else
+                        bm.Save(pathString, ImageFormat.Bmp);
+                }
+            }
+        }
+
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void listBox1_Click(object sender, EventArgs e)
+        {
+            if (listBox1.Items.Count>0)
+                Paint_element(current_skelet_loaded.list_of_cell[listBox1.SelectedIndex], current_skelet_loaded.Size.X, current_skelet_loaded.Size.Y);
+        }
+
+        private void listBox1_DoubleClick(object sender, EventArgs e)
+        {
+            if (listBox1.Items.Count > 0)
+            {
+                string new_name = Rename_element();
+                if (new_name != "Текст не задан")
+                    listBox1.Items[listBox1.SelectedIndex] = new_name;
+            }
+        }
+
+        private void button9_Click(object sender, EventArgs e)
+        {
+            Entry_Form ef = new Entry_Form("Ввод: номер блока");
+            ef.ShowDialog();
+            if (ef.DialogResult == DialogResult.OK)
+                Save_parts_of_ckeleton(Convert.ToInt32(ef.textBox1.Text));
+        }
+
+
 
   
     }

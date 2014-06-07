@@ -1,20 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 
-namespace controlPrg.Forms
+namespace controlPrg
 {
     public partial class Entry_Form : Form
     {
-        public Entry_Form()
+        public Entry_Form(string info_text)
         {
             InitializeComponent();
+            this.Text = info_text;
         }
     }
 }
