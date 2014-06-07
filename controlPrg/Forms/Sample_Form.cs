@@ -19,6 +19,7 @@ namespace controlPrg
 
         private const string mainPath = @"txt_file_sets\teach\saved_txt\";
         private const int SYMBOLS_COUNT = 32;
+        private const int ELEMETS_TYPES_COUNT = 3;
         bool convertSample_btn_pressed = false;
 
 
@@ -27,6 +28,47 @@ namespace controlPrg
         string text1;
         private bool continue_flag = false;
         private bool cancel_flag = false;
+
+        public void XML_Images_From_Directory_To_TXT(string path_to_directory)
+        {
+            DirectoryInfo dir = new DirectoryInfo(path_to_directory);
+            FileInfo[] fileList = dir.GetFiles();
+            Image<Gray, byte> img;
+            string pathToRenamedFiles = @"renamed_files_from_xml\";
+            string line;
+            string text = "";
+            for (int i = 0; i < fileList.Length; i++)
+            {
+                toolStripStatusLabel1.Text = "Введите тип элемента c изображения " + i.ToString();
+                if (fileList[i].FullName.Contains("Thumbs.db")) continue;
+                img = new Image<Gray, byte>(fileList[i].FullName);
+                imageBox.Image = img;
+                while (!continue_flag)
+                {
+                    if (cancel_flag)
+                    {
+                        break;
+                    }
+                }
+                if (cancel_flag)
+                {
+                    cancel_flag = false;
+                    continue;
+                }
+                continue_flag = false;
+                Console.WriteLine("textbox: " + textBox1.Text);
+                string fuck = toolStripStatusLabel1.Text;
+                string g = text1;//
+                line = IntArrayToString(convertToTXT(img)) + " " + getOutputVector(g[0]);
+                Directory.CreateDirectory(pathToRenamedFiles);
+                moveFile(fileList[i].FullName, pathToRenamedFiles, "0000" + g[0] + fileList[i].Extension); // последний символ будет типом элемента
+                text += line;
+            }
+            using (System.IO.StreamWriter file = new System.IO.StreamWriter(mainPath + "teach_set_program_from_xml.txt"))
+            {
+                file.WriteLine(text);
+            }
+        }
         public void ImagesFromDirectoryToTXT(string path_to_directory)
         {
             DirectoryInfo dir = new DirectoryInfo(path_to_directory);
@@ -117,6 +159,22 @@ namespace controlPrg
             return result;
         }
 
+        private string getOutputVectorForXML(int e_type)
+        {
+            string result = "";
+            for (int i = 0; i < ELEMETS_TYPES_COUNT; i++)
+            {
+                if (i == e_type)
+                {
+                    result += '1';
+                }
+                else
+                {
+                    result += '0'; // -1 ?
+                }
+            }
+            return result;
+        }
         private string getOutputVector(char symbol)
         {
             String result = "";
@@ -166,7 +224,7 @@ namespace controlPrg
             return result + "\r\n";
         }
 
-        private int[] convertToTXT(Image<Gray, Byte> img)
+        private int[] convertToTXT(Image<Gray, Byte> img) // возможно придется переписывать (бать среднее из квадрата, а не по отдельности)
         {
             double averageBrightness = 0;
 

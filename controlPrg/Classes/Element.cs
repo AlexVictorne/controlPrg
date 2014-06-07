@@ -9,13 +9,13 @@ namespace controlPrg.Classes
 {
     public class Element
     {
-        private int e_number, curvature;
+        private int e_type, curvature;
         private Point Pe, Pb;
         private double length;
         private int struct_size;
-        public Element(int e_number, Point Pb, Point Pe, double length, int curvature)
+        public Element(int e_type, Point Pb, Point Pe, double length, int curvature)
         {
-            this.e_number = e_number;
+            this.e_type = e_type;
             this.Pb = Pb;
             this.Pe = Pe;
             this.length = length;
@@ -23,9 +23,14 @@ namespace controlPrg.Classes
             struct_size = 5;
         }
 
-        public int getNumber()
+        public void SetType(int type)
         {
-            return e_number;
+            this.e_type = type;
+        }
+
+        public int getType()
+        {
+            return e_type;
         }
 
         public int getCurvature()

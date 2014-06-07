@@ -60,13 +60,13 @@
             this.edit_btn = new System.Windows.Forms.ToolStripMenuItem();
             this.db_btn = new System.Windows.Forms.ToolStripMenuItem();
             this.vectorizerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.oCRModulToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.справкаToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
-            this.oCRModulToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.imageBox)).BeginInit();
@@ -319,6 +319,7 @@
             this.createsample_btn.TabIndex = 21;
             this.createsample_btn.Text = "Создать выборку";
             this.createsample_btn.UseVisualStyleBackColor = true;
+            this.createsample_btn.Click += new System.EventHandler(this.createsample_btn_Click_1);
             // 
             // testwithout_btn
             // 
@@ -375,37 +376,44 @@
             // samp_btn
             // 
             this.samp_btn.Name = "samp_btn";
-            this.samp_btn.Size = new System.Drawing.Size(152, 22);
+            this.samp_btn.Size = new System.Drawing.Size(149, 22);
             this.samp_btn.Text = "Выборщик";
             this.samp_btn.Click += new System.EventHandler(this.samp_btn_Click);
             // 
             // segm_btn
             // 
             this.segm_btn.Name = "segm_btn";
-            this.segm_btn.Size = new System.Drawing.Size(152, 22);
+            this.segm_btn.Size = new System.Drawing.Size(149, 22);
             this.segm_btn.Text = "Сегментатор";
             this.segm_btn.Click += new System.EventHandler(this.segm_btn_Click);
             // 
             // edit_btn
             // 
             this.edit_btn.Name = "edit_btn";
-            this.edit_btn.Size = new System.Drawing.Size(152, 22);
+            this.edit_btn.Size = new System.Drawing.Size(149, 22);
             this.edit_btn.Text = "Редактор";
             this.edit_btn.Click += new System.EventHandler(this.edit_btn_Click);
             // 
             // db_btn
             // 
             this.db_btn.Name = "db_btn";
-            this.db_btn.Size = new System.Drawing.Size(152, 22);
+            this.db_btn.Size = new System.Drawing.Size(149, 22);
             this.db_btn.Text = "Просмотр БД";
             this.db_btn.Click += new System.EventHandler(this.db_btn_Click);
             // 
             // vectorizerToolStripMenuItem
             // 
             this.vectorizerToolStripMenuItem.Name = "vectorizerToolStripMenuItem";
-            this.vectorizerToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.vectorizerToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
             this.vectorizerToolStripMenuItem.Text = "Vectorizer";
             this.vectorizerToolStripMenuItem.Click += new System.EventHandler(this.vectorizerToolStripMenuItem_Click);
+            // 
+            // oCRModulToolStripMenuItem
+            // 
+            this.oCRModulToolStripMenuItem.Name = "oCRModulToolStripMenuItem";
+            this.oCRModulToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+            this.oCRModulToolStripMenuItem.Text = "OCR Modul";
+            this.oCRModulToolStripMenuItem.Click += new System.EventHandler(this.oCRModulToolStripMenuItem_Click);
             // 
             // справкаToolStripMenuItem
             // 
@@ -450,13 +458,6 @@
             this.toolStripMenuItem4.Size = new System.Drawing.Size(240, 22);
             this.toolStripMenuItem4.Text = "Добавить конечный элемент";
             this.toolStripMenuItem4.Click += new System.EventHandler(this.toolStripMenuItem4_Click);
-            // 
-            // oCRModulToolStripMenuItem
-            // 
-            this.oCRModulToolStripMenuItem.Name = "oCRModulToolStripMenuItem";
-            this.oCRModulToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.oCRModulToolStripMenuItem.Text = "OCR Modul";
-            this.oCRModulToolStripMenuItem.Click += new System.EventHandler(this.oCRModulToolStripMenuItem_Click);
             // 
             // Main_Form
             // 

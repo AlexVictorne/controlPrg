@@ -647,6 +647,11 @@ namespace controlPrg
             ocr_form.Show();
         }
 
+        private void createsample_btn_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
 
 
 
