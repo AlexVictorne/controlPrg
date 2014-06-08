@@ -665,14 +665,13 @@ namespace controlPrg
 
 
 
-
         private void Save_parts_of_ckeleton(int serial)
         {
             Save_contours_Form scf = new Save_contours_Form();
             scf.ShowDialog();
             if (scf.DialogResult == DialogResult.OK)
             {
-
+                
                 string format = scf.comboBox1.Text;
                 int size = Convert.ToInt32(scf.comboBox2.Text);
                 string folderName = @"elements";
@@ -695,7 +694,7 @@ namespace controlPrg
                         bm.SetPixel(sn.x, sn.y, Color.White);
                     }
                     bm = Resizez(bm);
-                    bm = CopyBitmap(bm, new Rectangle(0, 0, bm.Width, bm.Height), size);
+                    bm = CopyBitmap(bm, new Rectangle(0, 0, bm.Width, bm.Height),size);
                     string bitmap_name = files_count++.ToString() + "_" + serial.ToString() + " " + listBox1.Items[i].ToString() + format;
                     string pathString = System.IO.Path.Combine(folderName, bitmap_name);
                     if (result_format)
@@ -705,7 +704,6 @@ namespace controlPrg
                 }
             }
         }
-
 
 
         private void button8_Click(object sender, EventArgs e)
@@ -735,12 +733,6 @@ namespace controlPrg
             ef.ShowDialog();
             if (ef.DialogResult == DialogResult.OK)
                 Save_parts_of_ckeleton(Convert.ToInt32(ef.textBox1.Text));
-        }
-
-        private void button8_Click_1(object sender, EventArgs e)
-        {
-            DBWorker dbw = new DBWorker();
-            dbw.saveXml_to_database("1", "1", current_skelet_loaded);
         }
 
 
@@ -895,7 +887,43 @@ namespace controlPrg
         }
     }
     //класс скелета
+    [DataContract]
+    public class Skeleton
+    {
+        [DataMember(Name="Chains")]
+        public List<cell> list_of_cell = new List<cell>();
+        [DataMember(Name="Size")]
+        public Point Size;
+        [DataMember(Name = "Length")]
+        public int length;
+        public Skeleton() {}
+        [DataContract(Name="Chain")]
+        public class cell
+        {
+            [DataMember(Name="Nodes")]
+            public List<node> list_of_node = new List<node>();
+            
+            public cell() { }
 
+            public void add_node(int x,int y)
+            {
+                list_of_node.Add(new node(x, y));
+            }
+        }
+        [DataContract(Name = "Node")]
+        public class node
+        {
+            [DataMember]
+            public int x, y;
+            public node(int x_,int y_)
+            {
+                x = x_;
+                y = y_;
+            }
+        }
+        
+
+    }
 
 
 }

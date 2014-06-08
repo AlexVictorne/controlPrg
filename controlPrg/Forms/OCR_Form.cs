@@ -76,6 +76,7 @@ namespace controlPrg.Forms
 
             for (int i = 0; i < fileList.Length; i++)
             {
+                if (!fileList[i].Extension.Equals(".xml")) continue;
                 Skeleton sk = vf.Read_from_xml(fileList[i].FullName);
                 foreach (Skeleton.cell sc in sk.list_of_cell)
                 {
