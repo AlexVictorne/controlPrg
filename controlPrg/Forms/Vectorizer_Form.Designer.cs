@@ -64,6 +64,7 @@
             this.button7 = new System.Windows.Forms.Button();
             this.button9 = new System.Windows.Forms.Button();
             this.listBox1 = new System.Windows.Forms.ListBox();
+            this.button8 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
             this.splitContainer2.Panel1.SuspendLayout();
             this.splitContainer2.Panel2.SuspendLayout();
@@ -495,6 +496,7 @@
             // 
             // splitContainer5.Panel2
             // 
+            this.splitContainer5.Panel2.Controls.Add(this.button8);
             this.splitContainer5.Panel2.Controls.Add(this.button7);
             this.splitContainer5.Panel2.Controls.Add(this.button9);
             this.splitContainer5.Size = new System.Drawing.Size(493, 496);
@@ -541,6 +543,16 @@
             this.listBox1.TabIndex = 0;
             this.listBox1.Click += new System.EventHandler(this.listBox1_Click);
             this.listBox1.DoubleClick += new System.EventHandler(this.listBox1_DoubleClick);
+            // 
+            // button8
+            // 
+            this.button8.Location = new System.Drawing.Point(234, 8);
+            this.button8.Name = "button8";
+            this.button8.Size = new System.Drawing.Size(75, 23);
+            this.button8.TabIndex = 69;
+            this.button8.Text = "button8";
+            this.button8.UseVisualStyleBackColor = true;
+            this.button8.Click += new System.EventHandler(this.button8_Click_1);
             // 
             // Vectorizer_Form
             // 
@@ -629,6 +641,7 @@
         private System.Windows.Forms.Button button9;
         private System.Windows.Forms.ListBox listBox1;
         private System.Windows.Forms.Button button7;
+        private System.Windows.Forms.Button button8;
 
 
     }

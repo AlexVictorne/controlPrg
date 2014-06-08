@@ -1,11 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.OleDb;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 //ghkgkgg я хуй
 namespace controlPrg
 {
@@ -13,6 +8,21 @@ namespace controlPrg
     {
         public DBWorker()
         { }
+
+
+
+        public void saveXml_to_database(string set, string decsription, Skeleton data)
+        {
+            string str = "INSERT INTO [Table_Data] (set,description,data) VALUES ('" + set + "', N'" + decsription + "', " + data + ")";
+            string strConnection = @"Data Source=(LocalDB)\v11.0;AttachDbFilename=|DataDirectory|\Database.mdf;Integrated Security=True";
+
+            SqlConnection connection = new SqlConnection(strConnection);
+
+            connection.Open();
+            SqlCommand command = new SqlCommand(str, connection);
+            command.ExecuteNonQuery();
+            connection.Close();
+        }
 
 
         public void Save_to_DataBase(int neuron,double weight,string classifier)

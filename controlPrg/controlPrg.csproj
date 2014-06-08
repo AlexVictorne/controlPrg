@@ -82,6 +82,7 @@
     <Compile Include="Classes\MultiagentSystem.cs" />
     <Compile Include="Classes\NeuronWithWeight.cs" />
     <Compile Include="Classes\Relation.cs" />
+    <Compile Include="Classes\Skeleton.cs" />
     <Compile Include="DatabaseDataSet.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
