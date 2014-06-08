@@ -419,7 +419,6 @@ namespace controlPrg
             xr.Close();
             return sk;
         }
-
         public Skeleton Read_from_string(string str)
         {
             Skeleton sk = new Skeleton();
@@ -762,12 +761,12 @@ namespace controlPrg
         int k = 0;
         private void button8_Click_1(object sender, EventArgs e)
         {
-
             string xml_data = Save_to_xml_string(current_skelet_loaded);
             Console.WriteLine(xml_data);
             DBWorker dbw = new DBWorker();
-            dbw.saveXml_to_database(k.ToString(),"Pizdic",xml_data);
+            dbw.saveXml_to_database("Поц","Drost",xml_data);
             k++;
+            dbw.Save_to_DataBase(1, 0.33, "Поц");
         }
 
         private void button10_Click(object sender, EventArgs e)
