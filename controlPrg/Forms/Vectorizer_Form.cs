@@ -671,11 +671,16 @@ namespace controlPrg
             scf.ShowDialog();
             if (scf.DialogResult == DialogResult.OK)
             {
+                
                 string format = scf.comboBox1.Text;
                 int size = Convert.ToInt32(scf.comboBox2.Text);
                 string folderName = @"elements";
+                int files_count = 0;
                 if (!Directory.Exists(folderName))
                     System.IO.Directory.CreateDirectory(folderName);
+                else
+                    files_count = Directory.GetFiles(folderName).Length;
+
                 bool result_format = true;
                 if (format == ".jpg")
                     result_format = true;
@@ -690,7 +695,7 @@ namespace controlPrg
                     }
                     bm = Resizez(bm);
                     bm = CopyBitmap(bm, new Rectangle(0, 0, bm.Width, bm.Height),size);
-                    string bitmap_name = serial.ToString() + " " + listBox1.Items[i].ToString() + format;
+                    string bitmap_name = files_count++.ToString() + "_" + serial.ToString() + " " + listBox1.Items[i].ToString() + format;
                     string pathString = System.IO.Path.Combine(folderName, bitmap_name);
                     if (result_format)
                         bm.Save(pathString, ImageFormat.Jpeg);
