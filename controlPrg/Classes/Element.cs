@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Drawing;
 
 namespace controlPrg.Classes
 {
@@ -57,5 +52,6 @@ namespace controlPrg.Classes
         {
             return struct_size;
         }
+
     }
 }

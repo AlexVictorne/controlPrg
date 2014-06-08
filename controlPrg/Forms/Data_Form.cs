@@ -20,6 +20,8 @@ namespace controlPrg
 
         private void Data_Form_Load(object sender, EventArgs e)
         {
+            // TODO: данная строка кода позволяет загрузить данные в таблицу "databaseDataSet1.Table_Data". При необходимости она может быть перемещена или удалена.
+            this.table_DataTableAdapter.Fill(this.databaseDataSet1.Table_Data,"1","1",0,0);
             // TODO: данная строка кода позволяет загрузить данные в таблицу "databaseDataSet.Table". При необходимости она может быть перемещена или удалена.
             this.tableTableAdapter.Fill(this.databaseDataSet.Table, 1, "друзь", 0.1, 0, 0, 0);
         }
@@ -49,6 +51,24 @@ namespace controlPrg
                 weight = Convert.ToDouble(textBox3.Text);
             }
             this.tableTableAdapter.Fill(this.databaseDataSet.Table, neuron, clasifier, weight, par2, par1, par3);
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            int par1 = 0, par2 = 0;
+            string classifier = "";
+            string description = "";
+            if (textBox4.Text != "")
+            {
+                par1 = 1;
+                classifier = textBox4.Text;
+            }
+            if (textBox5.Text != "")
+            {
+                par2 = 1;
+                description = textBox5.Text;
+            }
+            this.table_DataTableAdapter.Fill(this.databaseDataSet1.Table_Data, classifier, description, par1, par2);
         }
 
         
