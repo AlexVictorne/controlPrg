@@ -46,7 +46,6 @@ namespace controlPrg.Forms
                 path_to_directory = fbd.SelectedPath;
                 List<Element> db = new List<Element>();
                 db = Create_Elements_Database_From_Template_XML(path_to_directory, ANN);
-                int a = 0;
             }
         }
 
