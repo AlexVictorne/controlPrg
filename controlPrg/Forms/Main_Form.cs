@@ -615,8 +615,16 @@ namespace controlPrg
         }
 
         //TEST
+        OCR_System ocr;
         private void button5_Click(object sender, EventArgs e)
         {
+            ocr = new OCR_System();
+            ocr.teachFirstLayer(@"C:\Users\Никита\Documents\GitHub\controlPrg\controlPrg\bin\Debug\elements");
+            Console.WriteLine("Первый слой обучен");
+
+            
+
+            /*
             MultiagentSystem mas = new MultiagentSystem();
             // задаем шаблоны
             Element template1 = new Element(0, new Point(0, 0), new Point(0, 10), Math.PI * 5 * 0.5, 5); // первая дуга буквы х
@@ -640,6 +648,7 @@ namespace controlPrg
             
 
             Console.WriteLine(mas.getOut(input));
+            //*/
         }
 
         private void oCRModulToolStripMenuItem_Click(object sender, EventArgs e)
@@ -651,6 +660,25 @@ namespace controlPrg
         private void createsample_btn_Click_1(object sender, EventArgs e)
         {
 
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            if (ocr == null) return;
+            OpenFileDialog openFileDialog1 = new OpenFileDialog();
+            openFileDialog1.Filter = "BMP files (*.bmp)|*.bmp|Jpeg files (*.jpg)|*.jpg|All files (*.*)|*.*";
+            openFileDialog1.FilterIndex = 1;
+            openFileDialog1.RestoreDirectory = true;
+            int[] result;
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                result = ocr.testFirstLayer(openFileDialog1.FileName);
+                for (int i = 0; i < result.Length; i++)
+                {
+                    Console.Write(result[i] + " ");
+                }
+                Console.WriteLine();
+            }
         }
 
 

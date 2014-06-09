@@ -329,6 +329,11 @@ namespace controlPrg
             Console.WriteLine("Создана выборка");
         }
 
+        private void button4_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
 
 
 

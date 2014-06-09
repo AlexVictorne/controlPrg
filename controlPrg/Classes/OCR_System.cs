@@ -51,13 +51,47 @@ namespace controlPrg.Classes
             }
         }
 
-        public void teachFirstLayer(string path_to_teach_set)
+        public bool teachFirstLayer(string path_to_folder_with_images)
         {
-            readTeachSet(path_to_teach_set, inputList, outputList);
+            if (!Directory.Exists(path_to_folder_with_images)) return false;
+
+            DirectoryInfo dir = new DirectoryInfo(path_to_folder_with_images);
+            FileInfo[] fileList = dir.GetFiles();
+            Image<Gray, byte> img;
+            string line;
+            string teach_set = "";
+
+            for (int i = 0; i < fileList.Length; i++)
+            {
+                if (fileList[i].FullName.Contains("Thumbs.db")) continue;
+                img = new Image<Gray, byte>(fileList[i].FullName);
+                line = IntArrayToString(convertToTXT(img.Bitmap));
+                int e_type = fileList[i].FullName.ElementAt(fileList[i].FullName.LastIndexOf('.') - 1) - 48;
+                line += ' ';
+                for (int k = 0; k < NEURONS_COUNT; k++)
+                {
+                    if (k == e_type)
+                        line += '1';
+                    else
+                        line += '0';
+                }
+                teach_set += line + "\n";
+            }
+
+            parseTechSetFromString(teach_set, inputList, outputList);
             for (int i = 0; i < inputList.Count() - 1; i++)
             {
                 FirstLayer.teach(inputList[i], outputList[i]);
             }
+
+            return true;
+        }
+
+        public int[] testFirstLayer(string path_to_image)
+        {
+            Image<Gray, byte> img = new Image<Gray, byte>(path_to_image);
+            int[] input = convertToTXT(img.Bitmap);
+            return FirstLayer.Raspozn(input);
         }
 
         private void readTeachSet(string path, List<int[]> inputL, List<int[]> outputL)
@@ -195,6 +229,36 @@ namespace controlPrg.Classes
                 }
             }
             return result;
+        }
+
+        private string IntArrayToString(int[] array)
+        {
+            string result = "";
+            for (int i = 0; i < array.Length; i++)
+            {
+                result += Convert.ToString(array[i]);
+            }
+            return result;
+        }
+
+        private void parseTechSetFromString(string teach_set, List<int[]> inputL, List<int[]> outputL)
+        {
+            int[] input = new int[INPUTS_COUNT];
+            int[] output = new int[NEURONS_COUNT];
+            string line = "";
+            string[] words;
+            string[] teach_set_lines = teach_set.Split('\n');
+
+            for (int i = 0; i < teach_set_lines.Length; i++ )
+            {
+                line = teach_set_lines[i];
+                if (line == "") continue;
+                words = line.Split(' ');
+                input = stringToIntArray(words[0]);
+                inputL.Add((int[])input.Clone());
+                output = stringToIntArray(words[1]); // если пустая строка - ругается
+                outputL.Add((int[])output.Clone());
+            }
         }
     }
 }
