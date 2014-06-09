@@ -28,11 +28,6 @@ namespace controlPrg.Classes
             this.final_relation = final_relation;
         }
 
-        public Relation(Element e, Relation r, char c, bool final_relation)
-        {
-
-        }
-
         public Relation(Relation r1, Relation r2, char c, bool final_relation)
         {
 

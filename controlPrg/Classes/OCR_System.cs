@@ -9,6 +9,10 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+/*
+ * написано с божьей помощью
+ */
+
 namespace controlPrg.Classes
 {
     class OCR_System
@@ -189,7 +193,6 @@ namespace controlPrg.Classes
                         if (fl_out[k] == 1)
                         {
                             e_type = k;
-                            break;
                         }
                     }
                     // длина элемента относительно общей длины скелета
@@ -265,7 +268,7 @@ namespace controlPrg.Classes
 
         public void addRelations()
         {
-
+            //?!?!?!?!??!?!?!?!?!?!?
         }
     }
 }
