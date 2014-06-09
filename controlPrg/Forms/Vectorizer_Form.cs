@@ -1,5 +1,4 @@
-﻿using controlPrg.Classes;
-using Emgu.CV;
+﻿using Emgu.CV;
 using Emgu.CV.Structure;
 using System;
 using System.Collections.Generic;
@@ -9,7 +8,6 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Windows.Forms;
 using System.Xml;
@@ -146,7 +144,7 @@ namespace controlPrg
         }
 
         
-        public static Bitmap CopyBitmap(Image src, Rectangle rect,int bitmapformat)
+        Bitmap CopyBitmap(Image src, Rectangle rect,int bitmapformat)
         {
             var ret = new Bitmap(rect.Width, rect.Height);
             using (var g = Graphics.FromImage(ret))
@@ -354,7 +352,7 @@ namespace controlPrg
             toolStripStatusLabel1.Text = "Изображение обрезано до размера контуров ("+ret.Width.ToString()+", "+ret.Height.ToString()+").";
         }
         
-        private Bitmap Resizez(Bitmap original_bm)
+        public static Bitmap Resizez(Bitmap original_bm)
         {
             int max_x = 0, max_y = 0, min_x = original_bm.Width, min_y = original_bm.Height;
             for (int i = 0; i < original_bm.Height; i++)

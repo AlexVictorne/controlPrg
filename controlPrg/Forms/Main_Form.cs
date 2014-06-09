@@ -22,59 +22,9 @@ namespace controlPrg
             System.Globalization.CultureInfo ci = System.Globalization.CultureInfo.CreateSpecificCulture("ru-RU");
             ci.NumberFormat.CurrencyDecimalSeparator = ".";
             ci.NumberFormat.NumberDecimalSeparator = ".";
-
             System.Threading.Thread.CurrentThread.CurrentCulture = ci;
         }
 
-        //Анимация ИНС
-        AnimateNetwork an;
-        Graphics graphProc;
-        private void pictureBox1_Paint(object sender, PaintEventArgs e)
-        {
-            if (an!=null)
-                an.Paint_Structure(e.Graphics);
-        }
-        private void tick_tack_Tick(object sender, EventArgs e)
-        {
-            pictureBox1.Invalidate();
-        }
-        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            if (an!=null)
-                an.StopAllPulsar();
-        }
-        private void button1_Click_1(object sender, EventArgs e)
-        {
-
-            graphProc = pictureBox1.CreateGraphics();
-            if (an == null)
-            {
-                graphProc.Clear(Color.White);
-                an = new AnimateNetwork(graphProc);
-                an.create_layer(0,0);
-                an.layer_capacity.Add(1);
-                an.create_layer(1, 8);
-                an.layer_capacity.Add(8);
-                an.create_layer(1, 8);
-                an.layer_capacity.Add(8);
-                an.create_layer(2, 0);
-            }
-            else
-            {
-                an = null;
-                graphProc.Clear(Color.White);
-            }
-        }
-        private void button2_Click_1(object sender, EventArgs e)
-        {
-            an.Pulsar_Layer(0, 1);
-            an.Pulsar_Layer(1, 2);
-            an.Pulsar_Layer(2, 3);
-        }
-        private void button3_Click_1(object sender, EventArgs e)
-        {
-            an.StopAllPulsar();
-        }
 
         //ИНС РАБОТА
         private const int IMAGE_SIZE = 16;
@@ -553,37 +503,113 @@ namespace controlPrg
 
 
         //рисовалко нейронок
-        private void toolStripMenuItem1_Click(object sender, EventArgs e)
+
+        //Анимация ИНС
+        AnimateNetwork an;
+        Graphics graphProc;
+        List<Point> lp = new List<Point>();
+        class connect
         {
+            Point begin;
+            Point end;
+            public connect(Point b,Point e)
+            {
+                this.begin = b;
+                this.end = e;
+            }
+            public void Paint(Graphics e)
+            {
+                e.DrawLine(Pens.Black,begin,end);
+            }
+        }
+        List<connect> lc = new List<connect>();
+        List<Point> lr = new List<Point>();
+        private void pictureBox1_Paint(object sender, PaintEventArgs e)
+        {
+            foreach (Point p in lp)
+            {
+                e.Graphics.DrawEllipse(Pens.Black, p.X - 2, p.Y - 2, 4, 4);
+            }
+            foreach (Point r in lr)
+            {
+                e.Graphics.FillEllipse(Brushes.Black, r.X - 3, r.Y - 3, 6, 6);
+            }
+            foreach (connect c in lc)
+            {
+                c.Paint(e.Graphics);
+            }
+        }
+        private void tick_tack_Tick(object sender, EventArgs e)
+        {
+            pictureBox1.Invalidate();
+        }
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (an != null)
+                an.StopAllPulsar();
+        }
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+
             graphProc = pictureBox1.CreateGraphics();
-            graphProc.Clear(Color.White);
-            an = new AnimateNetwork(graphProc);
-            an.create_layer(0, 0);
-            an.layer_capacity.Add(1);
+            if (an == null)
+            {
+                graphProc.Clear(Color.White);
+                an = new AnimateNetwork(graphProc);
+                an.create_layer(0, 0);
+                an.layer_capacity.Add(1);
+                an.create_layer(1, 8);
+                an.layer_capacity.Add(8);
+                an.create_layer(1, 8);
+                an.layer_capacity.Add(8);
+                an.create_layer(2, 0);
+            }
+            else
+            {
+                an = null;
+                graphProc.Clear(Color.White);
+            }
+        }
+        private void button2_Click_1(object sender, EventArgs e)
+        {
+            an.Pulsar_Layer(0, 1);
+            an.Pulsar_Layer(1, 2);
+            an.Pulsar_Layer(2, 3);
+        }
+        private void button3_Click_1(object sender, EventArgs e)
+        {
+            an.StopAllPulsar();
         }
 
 
-        int current_num_of_neurons = 0;
+        private void toolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            lp.Add(current_click_point);
+        }
+
+
+        //int current_num_of_neurons = 0;
         private void toolStripMenuItem2_Click(object sender, EventArgs e)
         {
-            if (current_num_of_neurons != 0)
-                an.delete_layer();
-            current_num_of_neurons++;
-            an.create_layer(1, current_num_of_neurons);
+            lr.Add(current_click_point);
+            //if (current_num_of_neurons != 0)
+            //    an.delete_layer();
+            //current_num_of_neurons++;
+            //an.create_layer(1, current_num_of_neurons);
             
         }
 
         private void toolStripMenuItem3_Click(object sender, EventArgs e)
         {
-            an.layer_capacity.Add(current_num_of_neurons);
-            current_num_of_neurons = 0;
+            //an.layer_capacity.Add(current_num_of_neurons);
+            //current_num_of_neurons = 0;
         }
 
         private void toolStripMenuItem4_Click(object sender, EventArgs e)
         {
-            an.layer_capacity.Add(current_num_of_neurons);
-            current_num_of_neurons = 0;
-            an.create_layer(2, 0);
+            //an.layer_capacity.Add(current_num_of_neurons);
+            //current_num_of_neurons = 0;
+            //an.create_layer(2, 0);
         }
 
         private void pai_btn_Click(object sender, EventArgs e)
@@ -614,6 +640,54 @@ namespace controlPrg
             vf.Show();
         }
 
+
+        Point current_click_point;
+        bool first_targeting = false;
+        Point first_point;
+        private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+                current_click_point = new Point(e.X, e.Y);
+            if (e.Button == MouseButtons.Left)
+            {
+                int checkin = check_in_circle(new Point(e.X, e.Y));
+                if (checkin>-1)
+                {
+                    if (first_targeting)
+                    {
+                        lc.Add(new connect(first_point, lp[checkin]));
+                        first_targeting = false;
+                    }
+                    else
+                    {
+                        first_targeting = true;
+                        first_point = lp[checkin];
+                    }
+                }
+            }
+                
+        }
+
+        private int check_in_circle(Point xy)
+        {
+            for (int i =0;i<lp.Count;i++)
+                if ((xy.X > lp[i].X - 2) && (xy.X < lp[i].X + 2) && (xy.Y > lp[i].Y - 2) && (xy.Y < lp[i].Y + 2))
+                    return i;
+            return -1;
+        }
+
+
+        private void pictureBox1_MouseClick(object sender, MouseEventArgs e)
+        {
+            
+        }
+
+
+
+
+
+
+
         //TEST
         OCR_System ocr;
         private void button5_Click(object sender, EventArgs e)
@@ -621,8 +695,8 @@ namespace controlPrg
             ocr = new OCR_System();
             ocr.teachFirstLayer(@"C:\Users\Никита\Documents\GitHub\controlPrg\controlPrg\bin\Debug\elements");
             Console.WriteLine("Первый слой обучен");
-            ocr.teachAgents(@"C:\Users\Никита\Documents\GitHub\controlPrg\controlPrg\bin\Debug\xml_files_test");
-            int a = 0;
+
+            
 
             /*
             MultiagentSystem mas = new MultiagentSystem();
@@ -681,8 +755,9 @@ namespace controlPrg
             }
         }
 
+ 
 
-
+      
 
     }
 
