@@ -11,9 +11,9 @@ namespace controlPrg
 
 
 
-        public void saveXml_to_database(string set, string decsription, Skeleton data)
+        public void saveXml_to_database(string set, string decsription, string xml_data)
         {
-            string str = "INSERT INTO [Table_Data] (set,description,data) VALUES ('" + set + "', N'" + decsription + "', " + data + ")";
+            string str = "INSERT INTO [Table_Data] (Classifier, Description, Data) VALUES (N'" + set + "', N'" + decsription + "', N'" + xml_data + "')";
             string strConnection = @"Data Source=(LocalDB)\v11.0;AttachDbFilename=|DataDirectory|\Database.mdf;Integrated Security=True";
 
             SqlConnection connection = new SqlConnection(strConnection);
@@ -38,6 +38,27 @@ namespace controlPrg
             connection.Close();
         }
         
+        public string ReadXml_from_DataBase(string Classifier)
+        {
+            Skeleton sk = new Skeleton();
+            string connectionString = @"Data Source=(LocalDB)\v11.0;AttachDbFilename=|DataDirectory|\Database.mdf;Integrated Security=True";
+            string queryString = "SELECT Description, Data FROM  [Table_Data] where classifier=N'" + Classifier + "'";
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command =
+                    new SqlCommand(queryString, connection);
+                connection.Open();
+                SqlDataReader reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    return reader[1].ToString();
+                }
+                reader.Close();
+                connection.Close();
+            }
+            return "000";
+        }
+
         public List<NeuronWithWeight> Read_from_DataBase(string classifier)
         {
             List<NeuronWithWeight> list_nww = new List<NeuronWithWeight>();
