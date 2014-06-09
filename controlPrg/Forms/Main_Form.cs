@@ -105,7 +105,6 @@ namespace controlPrg
             try
             {
                 file =  new StreamReader(path);
-                
             }
             catch
             {
@@ -333,9 +332,11 @@ namespace controlPrg
         {
             if (test_inputList.Count() == 0)
                 readSet(mainPath + "test_set_program.txt", test_inputList, test_outputList);
+
             int[] result = new int[NEURONS_COUNT];
             int success = 0;
             int pos_result = 0, pos_output = 0;
+
             for (int i = 0; i < test_inputList.Count(); i++)
             {
                 result = nn.Raspozn(test_inputList[i]);

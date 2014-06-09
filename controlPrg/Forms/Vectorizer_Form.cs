@@ -394,7 +394,7 @@ namespace controlPrg
             writer.Close();
             xw.Close();
         }
-        public Skeleton Read_from_xml(string filename)
+        public static Skeleton Read_from_xml(string filename)
         {
             Skeleton sk = new Skeleton();
             var path = filename;

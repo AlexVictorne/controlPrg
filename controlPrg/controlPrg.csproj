@@ -81,6 +81,7 @@
     <Compile Include="Classes\Element.cs" />
     <Compile Include="Classes\MultiagentSystem.cs" />
     <Compile Include="Classes\NeuronWithWeight.cs" />
+    <Compile Include="Classes\OCR_System.cs" />
     <Compile Include="Classes\Relation.cs" />
     <Compile Include="Classes\Skeleton.cs" />
     <Compile Include="DatabaseDataSet.Designer.cs">
