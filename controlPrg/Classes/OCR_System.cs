@@ -181,7 +181,9 @@ namespace controlPrg.Classes
                         }
                     }
                     // e_type = выход 1 слоя при входном изображении bm
-                    int[] fl_out = FirstLayer.Raspozn(convertToTXT(bm));
+                    int[] fl_out = FirstLayer.Raspozn(convertToTXT(
+                            Vectorizer_Form.CopyBitmap(bm, new Rectangle(0,0,bm.Width,bm.Height), 64)
+                        ));
                     for (int k = 0; k < fl_out.Length; k++)
                     {
                         if (fl_out[k] == 1)
@@ -259,6 +261,11 @@ namespace controlPrg.Classes
                 output = stringToIntArray(words[1]); // если пустая строка - ругается
                 outputL.Add((int[])output.Clone());
             }
+        }
+
+        public void addRelations()
+        {
+
         }
     }
 }

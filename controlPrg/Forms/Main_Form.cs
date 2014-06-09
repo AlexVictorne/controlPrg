@@ -621,8 +621,8 @@ namespace controlPrg
             ocr = new OCR_System();
             ocr.teachFirstLayer(@"C:\Users\Никита\Documents\GitHub\controlPrg\controlPrg\bin\Debug\elements");
             Console.WriteLine("Первый слой обучен");
-
-            
+            ocr.teachAgents(@"C:\Users\Никита\Documents\GitHub\controlPrg\controlPrg\bin\Debug\xml_files_test");
+            int a = 0;
 
             /*
             MultiagentSystem mas = new MultiagentSystem();

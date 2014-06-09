@@ -146,7 +146,7 @@ namespace controlPrg
         }
 
         
-        Bitmap CopyBitmap(Image src, Rectangle rect,int bitmapformat)
+        public static Bitmap CopyBitmap(Image src, Rectangle rect,int bitmapformat)
         {
             var ret = new Bitmap(rect.Width, rect.Height);
             using (var g = Graphics.FromImage(ret))
@@ -354,7 +354,7 @@ namespace controlPrg
             toolStripStatusLabel1.Text = "Изображение обрезано до размера контуров ("+ret.Width.ToString()+", "+ret.Height.ToString()+").";
         }
         
-        public static Bitmap Resizez(Bitmap original_bm)
+        private Bitmap Resizez(Bitmap original_bm)
         {
             int max_x = 0, max_y = 0, min_x = original_bm.Width, min_y = original_bm.Height;
             for (int i = 0; i < original_bm.Height; i++)
