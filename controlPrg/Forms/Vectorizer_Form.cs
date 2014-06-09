@@ -518,7 +518,7 @@ namespace controlPrg
             saveFileDialog1.RestoreDirectory = true;
             if (saveFileDialog1.ShowDialog() == DialogResult.OK)
             {
-                sk.sort(); // хуйня
+                sk.sort();
                 Save_to_xml_file(sk, saveFileDialog1.FileName);
                 toolStripStatusLabel1.Text = "Найдено " + sk.list_of_cell.Count + " цепочек. Сохранено в " + saveFileDialog1.FileName;
             }
