@@ -50,10 +50,10 @@ namespace controlPrg.Classes
 
         private double compareElements(Element e1, Element e2)
         {
-            double beginVectorLength = calcVectorLength(e1.getBeginPoint(), e2.getBeginPoint());
-            double endVectorLength = calcVectorLength(e1.getEndPoint(), e2.getEndPoint());
-            double lengthDifference = calcLengthDifference(e1.getLength(), e2.getLength());
-            double curvatureDifference = calcCurvatureDifference(e1.getCurvature(), e2.getCurvature());
+            double beginVectorLength = calcVectorLength(e1.BeginPoint, e2.BeginPoint);
+            double endVectorLength = calcVectorLength(e1.EndPoint, e2.EndPoint);
+            double lengthDifference = calcLengthDifference(e1.Length, e2.Length);
+            double curvatureDifference = calcCurvatureDifference(e1.Curvature, e2.Curvature);
 
             return 0.5 * Math.Sqrt(beginVectorLength * beginVectorLength + endVectorLength * endVectorLength +
                 lengthDifference * lengthDifference +

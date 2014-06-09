@@ -1,17 +1,56 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace controlPrg.Classes
 {
-    class Relation
+    [DataContract]
+    public class Relation
     {
+        [DataMember]
+        private Point coordinate;
+        [DataMember]
+        private bool was_chosen = false;
+        [DataMember]
         private Element e1, e2;
+        [DataMember]
         private Relation r1, r2;
+        [DataMember]
         private bool end_flag = false, final_relation;
+        [DataMember]
         private char my_char;
+        public Relation(Element e1, Element e2,int x,int y)
+        { 
+            this.e1 = e1;
+            this.e2 = e2;
+            this.coordinate.X = x;
+            this.coordinate.Y = y;
+        }
+        public Relation(Relation r,Element e1,int x,int y)
+        {
+            this.e1 = e1;
+            this.r1 = r;
+            this.coordinate.X = x;
+            this.coordinate.Y = y;
+        }
+        public void Paint(Graphics g)
+        {
+            if (was_chosen)
+                g.FillEllipse(Brushes.Red, coordinate.X - 4, coordinate.Y - 4, 8, 8);
+            else
+                g.FillEllipse(Brushes.Black, coordinate.X - 4, coordinate.Y - 4, 8, 8);
+            g.DrawLine(Pens.Black, e1.Coordinate,coordinate);
+            if (e2!=null)
+                g.DrawLine(Pens.Black, e2.Coordinate,coordinate);
+            else
+                g.DrawLine(Pens.Black, r1.coordinate, coordinate);
+
+        }
+
         public Relation(Element e1, Element e2, char c, bool final_relation)
         {
             this.e1 = e1;
@@ -69,5 +108,18 @@ namespace controlPrg.Classes
             else
                 return '-';
         }
+
+        public Point Coordinate
+        {
+            get { return coordinate; }
+            set { coordinate = value; }
+        }
+
+        public bool Was_chosen
+        {
+            get { return was_chosen; }
+            set { was_chosen = value; }
+        }
+
     }
 }

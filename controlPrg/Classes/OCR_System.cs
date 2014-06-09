@@ -50,7 +50,38 @@ namespace controlPrg.Classes
                 ms.AddTemplate(e);
             }
         }
-
+        public void AddElement(Element el)
+        {
+            ms.AddTemplate(el);
+        }
+        public Element GetElement(int number)
+        {
+            return ms.GetElement(number);
+        }
+        public List<Element> GetElements()
+        {
+            return ms.GetElements();
+        }
+        public int GetCountOfElements()
+        {
+            return ms.GetCountElements();
+        }
+        public void AddRelation(Relation r)
+        {
+            ms.AddRelation(r);
+        }
+        public Relation GetRelation(int number)
+        {
+            return ms.GetRelation(number);
+        }
+        public List<Relation> GetRelations()
+        {
+            return ms.GetRelations();
+        }
+        public int GetCountOfRelations()
+        {
+            return ms.GetCountRelations();
+        }
         public bool teachFirstLayer(string path_to_folder_with_images)
         {
             if (!Directory.Exists(path_to_folder_with_images)) return false;
@@ -263,9 +294,6 @@ namespace controlPrg.Classes
             }
         }
 
-        public void addRelations()
-        {
 
-        }
     }
 }

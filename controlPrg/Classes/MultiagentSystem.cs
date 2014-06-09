@@ -25,14 +25,36 @@ namespace controlPrg.Classes
         public void AddTemplate(Element e)
         {
             templates.Add(e); // клонировать?
-            agents.Add(new Agent(e, e.getStructSize()));
+            agents.Add(new Agent(e, e.Struct_Size));
         }
-
         public void AddRelation(Relation r)
         {
             relations.Add(r); // клонировать?
         }
-
+        public Element GetElement(int number)
+        {
+            return templates[number];
+        }
+        public Relation GetRelation(int number)
+        {
+            return relations[number];
+        }
+        public List<Element> GetElements()
+        {
+            return templates;
+        }
+        public List<Relation> GetRelations()
+        {
+            return relations;
+        }
+        public int GetCountElements()
+        {
+            return templates.Count;
+        }
+        public int GetCountRelations()
+        {
+            return relations.Count;
+        }
         public void test()
         {
             /*

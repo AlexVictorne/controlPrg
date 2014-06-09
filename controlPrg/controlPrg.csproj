@@ -84,6 +84,7 @@
     <Compile Include="Classes\OCR_System.cs" />
     <Compile Include="Classes\Relation.cs" />
     <Compile Include="Classes\Skeleton.cs" />
+    <Compile Include="Classes\Structure.cs" />
     <Compile Include="DatabaseDataSet.cs">
       <DependentUpon>DatabaseDataSet.xsd</DependentUpon>
       <SubType>Component</SubType>

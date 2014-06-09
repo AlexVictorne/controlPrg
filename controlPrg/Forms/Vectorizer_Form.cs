@@ -144,7 +144,7 @@ namespace controlPrg
         }
 
         
-        Bitmap CopyBitmap(Image src, Rectangle rect,int bitmapformat)
+        public static Bitmap CopyBitmap(Image src, Rectangle rect,int bitmapformat)
         {
             var ret = new Bitmap(rect.Width, rect.Height);
             using (var g = Graphics.FromImage(ret))
