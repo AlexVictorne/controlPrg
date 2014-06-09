@@ -354,7 +354,7 @@ namespace controlPrg
             toolStripStatusLabel1.Text = "Изображение обрезано до размера контуров ("+ret.Width.ToString()+", "+ret.Height.ToString()+").";
         }
         
-        private Bitmap Resizez(Bitmap original_bm)
+        public static Bitmap Resizez(Bitmap original_bm)
         {
             int max_x = 0, max_y = 0, min_x = original_bm.Width, min_y = original_bm.Height;
             for (int i = 0; i < original_bm.Height; i++)
@@ -406,7 +406,7 @@ namespace controlPrg
         }
 
 
-        public Skeleton Read_from_xml(string filename)
+        public static Skeleton Read_from_xml(string filename)
         {
             Skeleton sk = new Skeleton();
             var path = filename;

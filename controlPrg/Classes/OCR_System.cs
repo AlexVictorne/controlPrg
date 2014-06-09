@@ -1,0 +1,200 @@
+﻿using Emgu.CV;
+using Emgu.CV.Structure;
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace controlPrg.Classes
+{
+    class OCR_System
+    {
+        //ИНС РАБОТА
+        private int IMAGE_SIZE = 64;
+        private int NEURONS_COUNT = 3;
+        private int INPUTS_COUNT;
+        private List<int[]> inputList = new List<int[]>();
+        private List<int[]> outputList = new List<int[]>();
+        private NeuralNetwork FirstLayer;
+        private string mainPath = @"txt_file_sets\teach\saved_txt\";
+
+        //агенты
+        MultiagentSystem ms;
+
+        public OCR_System(int size_of_element_image, int element_types_count)
+        {
+            IMAGE_SIZE = size_of_element_image;
+            NEURONS_COUNT = element_types_count;
+            initSystem();
+        }
+
+        public OCR_System() { initSystem(); }
+
+        private void initSystem()
+        {
+            INPUTS_COUNT = IMAGE_SIZE * IMAGE_SIZE;
+            FirstLayer = new NeuralNetwork(NEURONS_COUNT, INPUTS_COUNT);
+            ms = new MultiagentSystem();
+        }
+
+        public void teachAgents(string path_to_folder_with_xml_files)
+        {
+            List<Element> templates = Create_Elements_Database_From_Template_XML(path_to_folder_with_xml_files);
+
+            foreach (Element e in templates)
+            {
+                ms.AddTemplate(e);
+            }
+        }
+
+        public void teachFirstLayer(string path_to_teach_set)
+        {
+            readTeachSet(path_to_teach_set, inputList, outputList);
+            for (int i = 0; i < inputList.Count() - 1; i++)
+            {
+                FirstLayer.teach(inputList[i], outputList[i]);
+            }
+        }
+
+        private void readTeachSet(string path, List<int[]> inputL, List<int[]> outputL)
+        {
+            int[] input = new int[INPUTS_COUNT];
+            int[] output = new int[NEURONS_COUNT];
+            string line = "";
+            string[] words;
+
+            StreamReader file;
+            try
+            {
+                file = new StreamReader(path);
+            }
+            catch
+            {
+                OpenFileDialog ofd = new OpenFileDialog();
+                ofd.Filter = "TXT Files(*.txt)|*.txt|All files (*.*)|*.*";
+                ofd.RestoreDirectory = true;
+                if (ofd.ShowDialog() == DialogResult.OK)
+                    path = ofd.FileName;
+                else
+                    return;
+            }
+            file = new StreamReader(path);
+            while ((line = file.ReadLine()) != null)
+            {
+                if (line == "") continue;
+                words = line.Split(' ');
+                input = stringToIntArray(words[0]);
+                inputL.Add((int[])input.Clone());
+                output = stringToIntArray(words[1]); // если пустая строка - ругается
+                outputL.Add((int[])output.Clone());
+            }
+        }
+
+        private int[] stringToIntArray(string str)
+        {
+            int[] result = new int[str.Length];
+            char[] buffer = str.ToCharArray();
+            for (int i = 0; i < buffer.Length; i++)
+            {
+                result[i] = (int)buffer[i] - 48;
+            }
+            return result;
+        }
+
+        public List<Element> Create_Elements_Database_From_Template_XML(string path_to_folder_with_xml_files)
+        {
+            List<Element> result = new List<Element>();
+            string path_to_directory = path_to_folder_with_xml_files;
+            DirectoryInfo dir = new DirectoryInfo(path_to_directory);
+            FileInfo[] fileList = dir.GetFiles();
+
+            for (int i = 0; i < fileList.Length; i++)
+            {
+                Skeleton sk = Vectorizer_Form.Read_from_xml(fileList[i].FullName);
+                Bitmap bm = new Bitmap(sk.Size.X, sk.Size.Y);
+                int all_length = 0;
+                foreach (Skeleton.cell sc in sk.list_of_cell)
+                    all_length += sc.list_of_node.Count;
+
+                foreach (Skeleton.cell sc in sk.list_of_cell)
+                {
+                    int e_type = 0;
+                    Point Pb, Pe;
+                    double length = 0;
+                    int curvature = 0;
+                    double max_curvature = 0;
+
+                    // конечная и начальная точки элемента
+                    Pb = new Point(sc.list_of_node[0].x, sc.list_of_node[0].y);
+                    Pe = new Point(sc.list_of_node[sc.list_of_node.Count - 1].x,
+                        sc.list_of_node[sc.list_of_node.Count - 1].y);
+                    double current_curvature = 0;
+                    foreach (Skeleton.node sn in sc.list_of_node)
+                    {
+                        bm.SetPixel(sn.x, sn.y, Color.White);
+                        length += 1;
+                        current_curvature = calcCurvature(Pe.Y - Pb.Y, -(Pe.X - Pb.X),
+                            (Pe.X - Pb.X) * Pb.Y + (Pe.Y - Pb.Y) * Pb.X,
+                            sn.x, sn.y
+                            );
+                        if (max_curvature < current_curvature)
+                        {
+                            max_curvature = current_curvature;
+                        }
+                    }
+                    // e_type = выход 1 слоя при входном изображении bm
+                    int[] fl_out = FirstLayer.Raspozn(convertToTXT(bm));
+                    for (int k = 0; k < fl_out.Length; k++)
+                    {
+                        if (fl_out[k] == 1)
+                        {
+                            e_type = k;
+                            break;
+                        }
+                    }
+                    // длина элемента относительно общей длины скелета
+                    length /= all_length;
+                    // кривизна элемента
+                    curvature = (int)max_curvature;
+                    result.Add(new Element(e_type, Pb, Pe, length, curvature));
+                }
+            }
+            return result;
+        }
+
+        private double calcCurvature(double A, double B, double C, int x, int y)
+        {
+            return Math.Abs(A * x + B * y + C) / Math.Sqrt(A * A + B * B);
+        }
+
+        private int[] convertToTXT(Bitmap img)
+        {
+            double averageBrightness = 0;
+
+            for (int y = 0; y < img.Height; y++)
+            {
+                for (int x = 0; x < img.Width; x++)
+                {
+                    averageBrightness += img.GetPixel(x, y).R;
+                }
+            }
+            averageBrightness /= (img.Width * img.Height);
+            int[] result = new int[img.Width * img.Height];
+            for (int y = 0; y < img.Height; y++)
+            {
+                for (int x = 0; x < img.Width; x++)
+                {
+                    if (img.GetPixel(x, y).R < averageBrightness)
+                        result[img.Width * y + x] = 0;
+                    else
+                        result[img.Width * y + x] = 1;
+                }
+            }
+            return result;
+        }
+    }
+}
