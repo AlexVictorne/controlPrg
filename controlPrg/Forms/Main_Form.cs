@@ -27,20 +27,11 @@ namespace controlPrg
             System.Threading.Thread.CurrentThread.CurrentCulture = ci;
         }
 
-
         private void db_btn_Click(object sender, EventArgs e)
         {
             Data_Form df = new Data_Form();
             df.Show();
         }
-
-
-
-
-
-
-
-
 
         //Анимация ИНС
         List<Element> le = new List<Element>();
@@ -61,7 +52,6 @@ namespace controlPrg
         {
             pictureBox1.Invalidate();
         }
-
 
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
         {
@@ -118,7 +108,6 @@ namespace controlPrg
                     }
                 }
             }
-
         }
         private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
         {
@@ -143,7 +132,6 @@ namespace controlPrg
             current_chosen_element = -1;
             current_chosen_relation = -1;
         }
-
 
         private int check_in_circle_el(Point xy)
         {
@@ -189,8 +177,6 @@ namespace controlPrg
             le.Clear();
             lr.Clear();
         }
-
-
 
         private void button4_Click(object sender, EventArgs e)
         {
@@ -276,43 +262,13 @@ namespace controlPrg
             vf.Show();
         }
 
-
-
         //TEST
         OCR_System ocr = new OCR_System();
         private void button5_Click(object sender, EventArgs e)
         {
             ocr = new OCR_System();
-            ocr.teachFirstLayer(@"C:\Users\Никита\Documents\GitHub\controlPrg\controlPrg\bin\Debug\elements");
+            ocr.teachFirstLayer(@"elements\");
             Console.WriteLine("Первый слой обучен");
-
-            
-
-            /*
-            MultiagentSystem mas = new MultiagentSystem();
-            // задаем шаблоны
-            Element template1 = new Element(0, new Point(0, 0), new Point(0, 10), Math.PI * 5 * 0.5, 5); // первая дуга буквы х
-            mas.AddTemplate(template1);
-            Element template2 = new Element(1, new Point(10, 0), new Point(10, 10), Math.PI * 5 * 0.5, 5); // вторая дуга буквы х
-            mas.AddTemplate(template2);
-            Element template3 = new Element(2, new Point(5, 0), new Point(5, 10), 10, 0); // палка буквы ж
-            mas.AddTemplate(template3);
-
-            // задаем отношения между шаблонами буквы х
-            mas.AddRelation(new Relation(template1, template2, 'х', true));// отношение дуг буквы х, финальный
-            // буквы ж
-            Relation first = new Relation(template1, template3, 'ж', false); // отношение первой дуги и палки буквы ж
-            mas.AddRelation(first);
-            mas.AddRelation(new Relation(first, template2, 'ж', true)); // отношение отношения первой дуги и палки и второй дуги буквы ж
-
-            Element[] input = new Element[3];
-            input[0] = new Element(0, new Point(2, 2), new Point(2, 12), Math.PI * 6 * 0.5, 6); // первая дуга буквы х (ж)
-            input[1] = new Element(2, new Point(7, 2), new Point(7, 12), 12, 2); // палка буквы ж
-            input[2] = new Element(1, new Point(12, 2), new Point(12, 12), Math.PI * 6 * 0.5, 6); // первая дуга буквы х (ж)
-            
-
-            Console.WriteLine(mas.getOut(input));
-            //*/
         }
         private void button6_Click(object sender, EventArgs e)
         {
@@ -332,19 +288,5 @@ namespace controlPrg
                 Console.WriteLine();
             }
         }
-
-
-        
-
-        
     }
-
-
-
-
-
-
-
-
-
 }
