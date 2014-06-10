@@ -36,16 +36,8 @@ namespace controlPrg
 
 
 
-
-
-
-
-
-
-        //Анимация ИНС
         List<Element> le = new List<Element>();
         List<Relation> lr = new List<Relation>();
-
         private void pictureBox1_Paint(object sender, PaintEventArgs e)
         {
             foreach (Element el in ocr.GetElements())
@@ -61,8 +53,6 @@ namespace controlPrg
         {
             pictureBox1.Invalidate();
         }
-
-
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
         {
             ocr.AddElement(new Element(current_click_point.X, current_click_point.Y));
@@ -106,16 +96,12 @@ namespace controlPrg
                 mouse_down = true;
                 int res = check_in_circle_el(new Point(e.X, e.Y));
                 if (res > -1)
-                {
                     current_chosen_element = res;
-                }
                 else
                 {
                     res = check_in_circle_rel(new Point(e.X, e.Y));
                     if (res > -1)
-                    {
                         current_chosen_relation = res;
-                    }
                 }
             }
 
@@ -123,19 +109,11 @@ namespace controlPrg
         private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
         {
             if (mouse_down)
-            {
                 if (current_chosen_element > -1)
-                {
                     ocr.GetElement(current_chosen_element).Coordinate = new Point(e.X, e.Y);
-                }
                 else
-                {
                     if (current_chosen_relation > -1)
-                    {
                         ocr.GetRelation(current_chosen_relation).Coordinate = new Point(e.X, e.Y);
-                    }
-                }
-            }
         }
         private void pictureBox1_MouseUp(object sender, MouseEventArgs e)
         {
@@ -202,9 +180,7 @@ namespace controlPrg
             saveFileDialog1.FilterIndex = 1;
             saveFileDialog1.RestoreDirectory = true;
             if (saveFileDialog1.ShowDialog() == DialogResult.OK)
-            {
                 Save_to_xml_file(s, saveFileDialog1.FileName);
-            }
         }
         private void button7_Click(object sender, EventArgs e)
         {
@@ -260,7 +236,6 @@ namespace controlPrg
         {
             Structure s = new Structure();
             var path = filename;
-
             XmlTextReader xr = new XmlTextReader(path);
             XmlDictionaryReader reader = XmlDictionaryReader.CreateDictionaryReader(xr);
             DataContractSerializer ser = new DataContractSerializer(typeof(Structure));
@@ -332,6 +307,31 @@ namespace controlPrg
                 Console.WriteLine();
             }
         }
+
+        private void pictureBox1_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button==MouseButtons.Left)
+            {
+                int res = check_in_circle_el(new Point(e.X,e.Y));
+                if (res>-1)
+                {
+                    ViewProperties_Form vpf = new ViewProperties_Form(ocr.GetElement(res));
+                    vpf.Show();
+                    //вызов окна от элемента
+                }
+                else
+                {
+                    res = check_in_circle_rel(new Point(e.X, e.Y));
+                    if (res>-1)
+                    {
+                        //вызов окна от отношения
+                    }
+                }
+            }
+            
+        }
+
+
 
 
         

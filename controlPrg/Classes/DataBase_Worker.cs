@@ -8,16 +8,11 @@ namespace controlPrg
     {
         public DBWorker()
         { }
-
-
-
         public void saveXml_to_database(string set, string decsription, string xml_data)
         {
             string str = "INSERT INTO [Table_Data] (Classifier, Description, Data) VALUES (N'" + set + "', N'" + decsription + "', N'" + xml_data + "')";
             string strConnection = @"Data Source=(LocalDB)\v11.0;AttachDbFilename=|DataDirectory|\Database.mdf;Integrated Security=True";
-
             SqlConnection connection = new SqlConnection(strConnection);
-
             connection.Open();
             SqlCommand command = new SqlCommand(str, connection);
             command.ExecuteNonQuery();

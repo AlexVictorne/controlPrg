@@ -76,7 +76,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Classes\Agent.cs" />
-    <Compile Include="Classes\DBWorker.cs" />
+    <Compile Include="Classes\DataBase_Worker.cs" />
     <Compile Include="Classes\Element.cs" />
     <Compile Include="Classes\MultiagentSystem.cs" />
     <Compile Include="Classes\NeuronWithWeight.cs" />
@@ -84,6 +84,7 @@
     <Compile Include="Classes\Relation.cs" />
     <Compile Include="Classes\Skeleton.cs" />
     <Compile Include="Classes\Structure.cs" />
+    <Compile Include="Classes\XML_Worker.cs" />
     <Compile Include="DatabaseDataSet.cs">
       <DependentUpon>DatabaseDataSet.xsd</DependentUpon>
       <SubType>Component</SubType>
@@ -141,6 +142,12 @@
     <Compile Include="Forms\Vectorizer_Form.Designer.cs">
       <DependentUpon>Vectorizer_Form.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\ViewProperties_Form.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ViewProperties_Form.Designer.cs">
+      <DependentUpon>ViewProperties_Form.cs</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Forms\Data_Form.resx">
       <DependentUpon>Data_Form.cs</DependentUpon>
@@ -159,6 +166,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Vectorizer_Form.resx">
       <DependentUpon>Vectorizer_Form.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ViewProperties_Form.resx">
+      <DependentUpon>ViewProperties_Form.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
