@@ -55,6 +55,7 @@ namespace controlPrg.Classes
         {
             return relations.Count;
         }
+
         public string getOut(Element[] input)
         {
             List<Element> agentsLayerOut = new List<Element>();
