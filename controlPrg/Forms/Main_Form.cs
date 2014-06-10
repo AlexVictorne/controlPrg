@@ -314,7 +314,6 @@ namespace controlPrg
             Console.WriteLine(mas.getOut(input));
             //*/
         }
-
         private void button6_Click(object sender, EventArgs e)
         {
             if (ocr == null) return;
