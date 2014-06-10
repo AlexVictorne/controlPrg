@@ -13,7 +13,7 @@ namespace controlPrg
         private void Data_Form_Load(object sender, EventArgs e)
         {
             // TODO: данная строка кода позволяет загрузить данные в таблицу "databaseDataSet1.Table_Data". При необходимости она может быть перемещена или удалена.
-            this.table_DataTableAdapter.Fill(this.databaseDataSet1.Table_Data,"1","1",0,0);
+            this.table_DataTableAdapter.Fill(this.databaseDataSet.Table_Data,"1","1",0,0);
             // TODO: данная строка кода позволяет загрузить данные в таблицу "databaseDataSet.Table". При необходимости она может быть перемещена или удалена.
             this.tableTableAdapter.Fill(this.databaseDataSet.Table, 1, "друзь", 0.1, 0, 0, 0);
         }
@@ -60,7 +60,7 @@ namespace controlPrg
                 par2 = 1;
                 description = textBox5.Text;
             }
-            this.table_DataTableAdapter.Fill(this.databaseDataSet1.Table_Data, classifier, description, par1, par2);
+            this.table_DataTableAdapter.Fill(this.databaseDataSet.Table_Data, classifier, description, par1, par2);
         }
 
         

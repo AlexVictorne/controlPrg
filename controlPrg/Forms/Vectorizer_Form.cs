@@ -383,51 +383,51 @@ namespace controlPrg
 
 
         //xml функции
-        private void Save_to_xml_file(Skeleton sk,string filename)
-        {
-            XmlTextWriter xw = new XmlTextWriter(filename, Encoding.UTF8);
-            xw.Formatting = Formatting.Indented;
-            XmlDictionaryWriter writer = XmlDictionaryWriter.CreateDictionaryWriter(xw);
-            DataContractSerializer ser = new DataContractSerializer(typeof(Skeleton));
-            ser.WriteObject(writer, sk);
-            writer.Close();
-            xw.Close();
-        }
+        //private void Save_to_xml_file(Skeleton sk,string filename)
+        //{
+        //    XmlTextWriter xw = new XmlTextWriter(filename, Encoding.UTF8);
+        //    xw.Formatting = Formatting.Indented;
+        //    XmlDictionaryWriter writer = XmlDictionaryWriter.CreateDictionaryWriter(xw);
+        //    DataContractSerializer ser = new DataContractSerializer(typeof(Skeleton));
+        //    ser.WriteObject(writer, sk);
+        //    writer.Close();
+        //    xw.Close();
+        //}
 
-        private string Save_to_xml_string(Skeleton sk)
-        {
-            DataContractSerializer ser = new DataContractSerializer(typeof(Skeleton));
-            StringWriter output = new StringWriter();
-            XmlTextWriter writer = new XmlTextWriter(output);
-            ser.WriteObject(writer,sk);
-            return output.GetStringBuilder().ToString();
-        }
+        //private string Save_to_xml_string(Skeleton sk)
+        //{
+        //    DataContractSerializer ser = new DataContractSerializer(typeof(Skeleton));
+        //    StringWriter output = new StringWriter();
+        //    XmlTextWriter writer = new XmlTextWriter(output);
+        //    ser.WriteObject(writer,sk);
+        //    return output.GetStringBuilder().ToString();
+        //}
 
 
-        public static Skeleton Read_from_xml(string filename)
-        {
-            Skeleton sk = new Skeleton();
-            var path = filename;
+        //public static Skeleton Read_from_xml(string filename)
+        //{
+        //    Skeleton sk = new Skeleton();
+        //    var path = filename;
 
-            XmlTextReader xr = new XmlTextReader(path);
-            XmlDictionaryReader reader = XmlDictionaryReader.CreateDictionaryReader(xr);
-            DataContractSerializer ser = new DataContractSerializer(typeof(Skeleton));
-            sk = (Skeleton)ser.ReadObject(reader);
-            reader.Close();
-            xr.Close();
-            return sk;
-        }
-        public Skeleton Read_from_string(string str)
-        {
-            Skeleton sk = new Skeleton();
-            DataContractSerializer ser = new DataContractSerializer(typeof(Skeleton));
-            StringReader input = new StringReader(str);
-            XmlTextReader reader = new XmlTextReader(input);
-            sk = (Skeleton)ser.ReadObject(reader);
-            reader.Close();
-            input.Close();
-            return sk;
-        }
+        //    XmlTextReader xr = new XmlTextReader(path);
+        //    XmlDictionaryReader reader = XmlDictionaryReader.CreateDictionaryReader(xr);
+        //    DataContractSerializer ser = new DataContractSerializer(typeof(Skeleton));
+        //    sk = (Skeleton)ser.ReadObject(reader);
+        //    reader.Close();
+        //    xr.Close();
+        //    return sk;
+        //}
+        //public Skeleton Read_from_string(string str)
+        //{
+        //    Skeleton sk = new Skeleton();
+        //    DataContractSerializer ser = new DataContractSerializer(typeof(Skeleton));
+        //    StringReader input = new StringReader(str);
+        //    XmlTextReader reader = new XmlTextReader(input);
+        //    sk = (Skeleton)ser.ReadObject(reader);
+        //    reader.Close();
+        //    input.Close();
+        //    return sk;
+        //}
         //векторизация
         private void Set_path()
         {
@@ -519,7 +519,7 @@ namespace controlPrg
             if (saveFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 sk.sort();
-                Save_to_xml_file(sk, saveFileDialog1.FileName);
+                XML_Worker.Save_to_xml_file(typeof(Skeleton), sk, saveFileDialog1.FileName);
                 toolStripStatusLabel1.Text = "Найдено " + sk.list_of_cell.Count + " цепочек. Сохранено в " + saveFileDialog1.FileName;
             }
             else
@@ -536,7 +536,7 @@ namespace controlPrg
             {
                 try
                 {
-                    sk = Read_from_xml(openFileDialog1.FileName);
+                    sk = (Skeleton)XML_Worker.Read_from_xml(typeof(Skeleton),openFileDialog1.FileName);
                     Bitmap bm = new Bitmap(sk.Size.X,sk.Size.Y);
                     foreach (Skeleton.cell sc in sk.list_of_cell)
                     {
@@ -683,6 +683,9 @@ namespace controlPrg
                 return "Текст не задан";
         }
 
+
+
+
         private void Save_parts_of_ckeleton(int serial)
         {
             Save_contours_Form scf = new Save_contours_Form();
@@ -757,7 +760,7 @@ namespace controlPrg
         int k = 0;
         private void button8_Click_1(object sender, EventArgs e)
         {
-            string xml_data = Save_to_xml_string(current_skelet_loaded);
+            string xml_data = XML_Worker.Save_to_xml_string(typeof(Skeleton),current_skelet_loaded);
             Console.WriteLine(xml_data);
             DBWorker dbw = new DBWorker();
             dbw.saveXml_to_database("Поц","Drost",xml_data);
@@ -769,7 +772,7 @@ namespace controlPrg
         {
             DBWorker dbw = new DBWorker();
             string new_xml = dbw.ReadXml_from_DataBase("1");
-            Skeleton sk = Read_from_string(new_xml);
+            Skeleton sk = (Skeleton)XML_Worker.Read_from_string(typeof(Skeleton),new_xml);
         }
 
 

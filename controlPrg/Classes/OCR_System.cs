@@ -179,7 +179,7 @@ namespace controlPrg.Classes
 
             for (int i = 0; i < fileList.Length; i++)
             {
-                Skeleton sk = Vectorizer_Form.Read_from_xml(fileList[i].FullName);
+                Skeleton sk = (Skeleton)XML_Worker.Read_from_xml(typeof(Skeleton),fileList[i].FullName);
                 Bitmap bm = new Bitmap(sk.Size.X, sk.Size.Y);
                 int all_length = 0;
                 foreach (Skeleton.cell sc in sk.list_of_cell)
