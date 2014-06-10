@@ -153,7 +153,12 @@ namespace controlPrg
                  if (res>-1)
                  {
                      ViewProperties_Form vpf = new ViewProperties_Form(ocr.GetElement(res));
-                     vpf.Show();
+                     vpf.ShowDialog();
+                     if (vpf.DialogResult==DialogResult.OK)
+                     {
+                         ocr.SetElementParametrs(res, vpf.Return_Element());
+                         Element ep = ocr.GetElement(res);
+                     }
                      //вызов окна от элемента
                  }
                  else
