@@ -58,12 +58,11 @@ namespace controlPrg
             }
             return "000";
         }
-
         public List<NeuronWithWeight> Read_from_DataBase(string classifier)
         {
             List<NeuronWithWeight> list_nww = new List<NeuronWithWeight>();
             string connectionString = @"Data Source=(LocalDB)\v11.0;AttachDbFilename=|DataDirectory|\Database.mdf;Integrated Security=True";
-            string queryString = "SELECT neuron, weight FROM  [Table] where classifier=N'"+classifier+"'";
+            string queryString = "SELECT neuron, weight FROM  [Table] where classifier=N'" + classifier + "'";
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 SqlCommand command =
@@ -79,6 +78,7 @@ namespace controlPrg
             }
             return list_nww;
         }
+        
 
     }
 }
