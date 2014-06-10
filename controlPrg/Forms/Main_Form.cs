@@ -26,13 +26,26 @@ namespace controlPrg
             ci.NumberFormat.NumberDecimalSeparator = ".";
             System.Threading.Thread.CurrentThread.CurrentCulture = ci;
         }
+
+
         private void db_btn_Click(object sender, EventArgs e)
         {
             Data_Form df = new Data_Form();
             df.Show();
         }
+
+
+
+
+
+
+
+
+
+        //Анимация ИНС
         List<Element> le = new List<Element>();
         List<Relation> lr = new List<Relation>();
+
         private void pictureBox1_Paint(object sender, PaintEventArgs e)
         {
             foreach (Element el in ocr.GetElements())
@@ -48,10 +61,13 @@ namespace controlPrg
         {
             pictureBox1.Invalidate();
         }
+
+
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
         {
             ocr.AddElement(new Element(current_click_point.X, current_click_point.Y));
         }
+
         int number_of_first_element=-1;
         int number_of_second_element=-1;
         int number_of_relation = -1;
@@ -59,6 +75,7 @@ namespace controlPrg
         int current_chosen_element=-1;
         int current_chosen_relation=-1;
         bool mouse_down = false;
+
         private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Right)
@@ -89,12 +106,16 @@ namespace controlPrg
                 mouse_down = true;
                 int res = check_in_circle_el(new Point(e.X, e.Y));
                 if (res > -1)
+                {
                     current_chosen_element = res;
+                }
                 else
                 {
                     res = check_in_circle_rel(new Point(e.X, e.Y));
                     if (res > -1)
+                    {
                         current_chosen_relation = res;
+                    }
                 }
             }
 
@@ -102,11 +123,19 @@ namespace controlPrg
         private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
         {
             if (mouse_down)
+            {
                 if (current_chosen_element > -1)
+                {
                     ocr.GetElement(current_chosen_element).Coordinate = new Point(e.X, e.Y);
+                }
                 else
+                {
                     if (current_chosen_relation > -1)
+                    {
                         ocr.GetRelation(current_chosen_relation).Coordinate = new Point(e.X, e.Y);
+                    }
+                }
+            }
         }
         private void pictureBox1_MouseUp(object sender, MouseEventArgs e)
         {
@@ -114,6 +143,8 @@ namespace controlPrg
             current_chosen_element = -1;
             current_chosen_relation = -1;
         }
+
+
         private int check_in_circle_el(Point xy)
         {
             for (int i =0;i<ocr.GetCountOfElements();i++)
@@ -152,11 +183,15 @@ namespace controlPrg
                 number_of_relation = -1;
             }
         }
+
         private void toolStripMenuItem3_Click(object sender, EventArgs e)
         {
             le.Clear();
             lr.Clear();
         }
+
+
+
         private void button4_Click(object sender, EventArgs e)
         {
             Structure s = new Structure();
@@ -167,7 +202,9 @@ namespace controlPrg
             saveFileDialog1.FilterIndex = 1;
             saveFileDialog1.RestoreDirectory = true;
             if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+            {
                 Save_to_xml_file(s, saveFileDialog1.FileName);
+            }
         }
         private void button7_Click(object sender, EventArgs e)
         {
@@ -223,6 +260,7 @@ namespace controlPrg
         {
             Structure s = new Structure();
             var path = filename;
+
             XmlTextReader xr = new XmlTextReader(path);
             XmlDictionaryReader reader = XmlDictionaryReader.CreateDictionaryReader(xr);
             DataContractSerializer ser = new DataContractSerializer(typeof(Structure));
@@ -231,11 +269,15 @@ namespace controlPrg
             xr.Close();
             return s;
         }
+
         private void vectorizerToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Vectorizer_Form vf = new Vectorizer_Form();
             vf.Show();
         }
+
+
+
         //TEST
         OCR_System ocr = new OCR_System();
         private void button5_Click(object sender, EventArgs e)
@@ -243,6 +285,34 @@ namespace controlPrg
             ocr = new OCR_System();
             ocr.teachFirstLayer(@"C:\Users\Никита\Documents\GitHub\controlPrg\controlPrg\bin\Debug\elements");
             Console.WriteLine("Первый слой обучен");
+
+            
+
+            /*
+            MultiagentSystem mas = new MultiagentSystem();
+            // задаем шаблоны
+            Element template1 = new Element(0, new Point(0, 0), new Point(0, 10), Math.PI * 5 * 0.5, 5); // первая дуга буквы х
+            mas.AddTemplate(template1);
+            Element template2 = new Element(1, new Point(10, 0), new Point(10, 10), Math.PI * 5 * 0.5, 5); // вторая дуга буквы х
+            mas.AddTemplate(template2);
+            Element template3 = new Element(2, new Point(5, 0), new Point(5, 10), 10, 0); // палка буквы ж
+            mas.AddTemplate(template3);
+
+            // задаем отношения между шаблонами буквы х
+            mas.AddRelation(new Relation(template1, template2, 'х', true));// отношение дуг буквы х, финальный
+            // буквы ж
+            Relation first = new Relation(template1, template3, 'ж', false); // отношение первой дуги и палки буквы ж
+            mas.AddRelation(first);
+            mas.AddRelation(new Relation(first, template2, 'ж', true)); // отношение отношения первой дуги и палки и второй дуги буквы ж
+
+            Element[] input = new Element[3];
+            input[0] = new Element(0, new Point(2, 2), new Point(2, 12), Math.PI * 6 * 0.5, 6); // первая дуга буквы х (ж)
+            input[1] = new Element(2, new Point(7, 2), new Point(7, 12), 12, 2); // палка буквы ж
+            input[2] = new Element(1, new Point(12, 2), new Point(12, 12), Math.PI * 6 * 0.5, 6); // первая дуга буквы х (ж)
+            
+
+            Console.WriteLine(mas.getOut(input));
+            //*/
         }
         private void button6_Click(object sender, EventArgs e)
         {
@@ -262,27 +332,19 @@ namespace controlPrg
                 Console.WriteLine();
             }
         }
-        private void pictureBox1_MouseDoubleClick(object sender, MouseEventArgs e)
-        {
-            if (e.Button==MouseButtons.Left)
-            {
-                int res = check_in_circle_el(new Point(e.X,e.Y));
-                if (res>-1)
-                {
-                    ViewProperties_Form vpf = new ViewProperties_Form(ocr.GetElement(res));
-                    vpf.Show();
-                    //вызов окна от элемента
-                }
-                else
-                {
-                    res = check_in_circle_rel(new Point(e.X, e.Y));
-                    if (res>-1)
-                    {
-                        //вызов окна от отношения
-                    }
-                }
-            }
-            
-        }
+
+
+        
+
+        
     }
+
+
+
+
+
+
+
+
+
 }
