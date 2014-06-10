@@ -294,6 +294,10 @@ namespace controlPrg.Classes
             }
         }
 
+        public void SetElementParametrs(int number,Element e)
+        {
+            ms.SetElementParametrs(number,e);
+        }
 
     }
 }

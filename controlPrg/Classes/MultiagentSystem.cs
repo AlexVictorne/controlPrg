@@ -55,6 +55,17 @@ namespace controlPrg.Classes
         {
             return relations.Count;
         }
+        public void SetElementParametrs(int number, Element e)
+        {
+            templates[number].BeginPoint = e.BeginPoint;
+            templates[number].EndPoint = e.EndPoint;
+            templates[number].Curvature = e.Curvature;
+            templates[number].Type = e.Type;
+            templates[number].Length = e.Length;
+            templates[number].Struct_Size = e.Struct_Size;
+        }
+
+
 
         public string getOut(Element[] input)
         {
