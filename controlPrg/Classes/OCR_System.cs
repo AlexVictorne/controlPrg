@@ -25,8 +25,6 @@ namespace controlPrg.Classes
         //агенты
         MultiagentSystem ms;
 
-
-
         public OCR_System(int size_of_element_image, int element_types_count)
         {
             IMAGE_SIZE = size_of_element_image;
