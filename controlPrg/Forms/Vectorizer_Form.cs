@@ -683,9 +683,6 @@ namespace controlPrg
                 return "Текст не задан";
         }
 
-
-
-
         private void Save_parts_of_ckeleton(int serial)
         {
             Save_contours_Form scf = new Save_contours_Form();

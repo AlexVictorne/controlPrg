@@ -298,5 +298,10 @@ namespace controlPrg.Classes
         {
             ms.SetElementParametrs(number,e);
         }
+
+        public void SetRelationParametrs(int number, Relation r)
+        {
+            ms.SetRelationParametrs(number, r);
+        }
     }
 }

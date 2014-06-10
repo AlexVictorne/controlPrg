@@ -1,6 +1,7 @@
 ﻿//Copyright (C) 2014 AlexVictorne, Nikita_blackbeard
 
 using controlPrg.Classes;
+using controlPrg.Forms;
 using Emgu.CV;
 using Emgu.CV.Structure;
 using System;
@@ -33,14 +34,6 @@ namespace controlPrg
             Data_Form df = new Data_Form();
             df.Show();
         }
-
-
-
-
-
-
-
-
 
         //Анимация ИНС
         List<Element> le = new List<Element>();
@@ -157,7 +150,6 @@ namespace controlPrg
                      if (vpf.DialogResult==DialogResult.OK)
                      {
                          ocr.SetElementParametrs(res, vpf.Return_Element());
-                         Element ep = ocr.GetElement(res);
                      }
                      //вызов окна от элемента
                  }
@@ -166,6 +158,12 @@ namespace controlPrg
                      res = check_in_circle_rel(new Point(e.X, e.Y));
                      if (res>-1)
                      {
+                         ViewRelationProperies_Form vrpf = new ViewRelationProperies_Form(ocr.GetRelation(res));
+                         vrpf.ShowDialog();
+                         if (vrpf.DialogResult == DialogResult.OK)
+                         {
+                             ocr.SetRelationParametrs(res, vrpf.GetRelation());
+                         }
                          //вызов окна от отношения
                      }
                  }
@@ -189,6 +187,7 @@ namespace controlPrg
         }
         private void toolStripMenuItem2_Click(object sender, EventArgs e)
         {
+
             if ((number_of_first_element>-1)&&(number_of_second_element>-1))
             {
                 ocr.GetElement(number_of_first_element).Was_chosen = false;

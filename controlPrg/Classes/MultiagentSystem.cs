@@ -65,7 +65,11 @@ namespace controlPrg.Classes
             templates[number].Struct_Size = e.Struct_Size;
         }
 
-
+        public void SetRelationParametrs(int number, Relation r)
+        {
+            relations[number].Specialization_Char = r.Specialization_Char;
+            relations[number].setFinal(r.isFinal());
+        }
 
         public string getOut(Element[] input)
         {

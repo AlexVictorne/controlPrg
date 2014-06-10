@@ -20,7 +20,7 @@ namespace controlPrg.Classes
         [DataMember]
         private Relation r1, r2;
         [DataMember]
-        private bool end_flag = false, final_relation;
+        private bool end_flag = false, final_relation = false;
         [DataMember]
         private char my_char;
         public Relation(Element e1, Element e2,int x,int y)
@@ -50,7 +50,7 @@ namespace controlPrg.Classes
                 g.DrawLine(Pens.Black, r1.coordinate, coordinate);
 
         }
-
+        /*
         public Relation(Element e1, Element e2, char c, bool final_relation)
         {
             this.e1 = e1;
@@ -66,11 +66,7 @@ namespace controlPrg.Classes
             this.my_char = c;
             this.final_relation = final_relation;
         }
-
-        public Relation(Relation r1, Relation r2, char c, bool final_relation)
-        {
-
-        }
+         */
 
         public bool checkElement(Element e1, Element e2)
         {
@@ -116,5 +112,20 @@ namespace controlPrg.Classes
             set { was_chosen = value; }
         }
 
+        public bool isFinal()
+        {
+            return final_relation;
+        }
+
+        public void setFinal(bool value)
+        {
+            this.final_relation = value;
+        }
+
+        public char Specialization_Char
+        {
+            get { return my_char; }
+            set { my_char = value; }
+        }
     }
 }
