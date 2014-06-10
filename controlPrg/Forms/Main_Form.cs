@@ -145,6 +145,29 @@ namespace controlPrg
         }
 
 
+         private void pictureBox1_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+             if (e.Button==MouseButtons.Left)
+             {
+                 int res = check_in_circle_el(new Point(e.X,e.Y));
+                 if (res>-1)
+                 {
+                     ViewProperties_Form vpf = new ViewProperties_Form(ocr.GetElement(res));
+                     vpf.Show();
+                     //вызов окна от элемента
+                 }
+                 else
+                 {
+                     res = check_in_circle_rel(new Point(e.X, e.Y));
+                     if (res>-1)
+                     {
+                         //вызов окна от отношения
+                     }
+                 }
+             }
+             
+         }
+
         private int check_in_circle_el(Point xy)
         {
             for (int i =0;i<ocr.GetCountOfElements();i++)
