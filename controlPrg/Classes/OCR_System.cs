@@ -19,7 +19,7 @@ namespace controlPrg.Classes
         private int INPUTS_COUNT;
         private List<int[]> inputList = new List<int[]>();
         private List<int[]> outputList = new List<int[]>();
-        private NeuralNetwork FirstLayer;
+        public static NeuralNetwork FirstLayer;
         private string mainPath = @"txt_file_sets\teach\saved_txt\";
 
         //агенты
@@ -233,12 +233,12 @@ namespace controlPrg.Classes
             return result;
         }
 
-        private double calcCurvature(double A, double B, double C, int x, int y)
+        public static double calcCurvature(double A, double B, double C, int x, int y)
         {
             return Math.Abs(A * x + B * y + C) / Math.Sqrt(A * A + B * B);
         }
 
-        private int[] convertToTXT(Bitmap img)
+        public static int[] convertToTXT(Bitmap img)
         {
             double averageBrightness = 0;
 
@@ -298,6 +298,5 @@ namespace controlPrg.Classes
         {
             ms.SetElementParametrs(number,e);
         }
-
     }
 }

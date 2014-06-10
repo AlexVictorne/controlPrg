@@ -31,13 +31,10 @@ namespace controlPrg
         Skeleton current_skelet_loaded;
         private void button2_Click(object sender, EventArgs e)
         {
-            if (this.Width == 398)
-            {
-                this.Width = 885;
+            
                 ibReader.Visible = true;
                 listBox1.Visible = true;
                 button3.Visible = true;
-            }
 
             listBox1.Items.Clear();
             current_skelet_loaded = Read_path();
@@ -77,7 +74,6 @@ namespace controlPrg
             }
             else
             {
-                this.Width = 398;
                 ibReader.Visible = false;
                 listBox1.Visible = false;
                 button3.Visible = false;
@@ -98,7 +94,7 @@ namespace controlPrg
         }
         private void listBox1_Click(object sender, EventArgs e)
         {
-            if (listBox1.Items.Count > 0)
+            if ((listBox1.Items.Count > 0)&&(listBox1.SelectedIndex>-1))
                 Paint_element(current_skelet_loaded.list_of_cell[listBox1.SelectedIndex], current_skelet_loaded.Size.X, current_skelet_loaded.Size.Y);
         }
         private void listBox1_DoubleClick(object sender, EventArgs e)
@@ -143,5 +139,64 @@ namespace controlPrg
             this.el.Struct_Size = Convert.ToInt32(this.textBox6.Text);
         }
 
+        private void button3_Click(object sender, EventArgs e)
+        {
+            Skeleton sk = current_skelet_loaded;
+            Bitmap bm = new Bitmap(sk.Size.X, sk.Size.Y);
+            int all_length = 0;
+            foreach (Skeleton.cell sc in sk.list_of_cell)
+                all_length += sc.list_of_node.Count;
+
+            Skeleton.cell selected_cell = sk.list_of_cell[listBox1.SelectedIndex];
+            int e_type = 0;
+            Point Pb, Pe;
+            double length = 0;
+            int curvature = 0;
+            double max_curvature = 0;
+
+            // конечная и начальная точки элемента
+            Pb = new Point(selected_cell.list_of_node[0].x, selected_cell.list_of_node[0].y);
+            Pe = new Point(selected_cell.list_of_node[selected_cell.list_of_node.Count - 1].x,
+                selected_cell.list_of_node[selected_cell.list_of_node.Count - 1].y);
+            double current_curvature = 0;
+            foreach (Skeleton.node sn in selected_cell.list_of_node)
+            {
+                bm.SetPixel(sn.x, sn.y, Color.White);
+                length += 1;
+                current_curvature = Classes.OCR_System.calcCurvature(Pe.Y - Pb.Y, -(Pe.X - Pb.X),
+                    (Pe.X - Pb.X) * Pb.Y + (Pe.Y - Pb.Y) * Pb.X,
+                    sn.x, sn.y
+                    );
+                if (max_curvature < current_curvature)
+                {
+                    max_curvature = current_curvature;
+                }
+            }
+            // e_type = выход 1 слоя при входном изображении bm
+            int[] fl_out = Classes.OCR_System.FirstLayer.Raspozn(Classes.OCR_System.convertToTXT(
+                    Vectorizer_Form.CopyBitmap(bm, new Rectangle(0, 0, bm.Width, bm.Height), 64)
+                ));
+            for (int k = 0; k < fl_out.Length; k++)
+            {
+                if (fl_out[k] == 1)
+                {
+                    e_type = k;
+                    break;
+                }
+            }
+            // длина элемента относительно общей длины скелета
+            length /= all_length;
+            // кривизна элемента
+            curvature = (int)max_curvature;
+
+            textBox1.Text = e_type.ToString();
+            textBox2.Text = curvature.ToString();
+            textBox3.Text = Pe.X.ToString();
+            textBox9.Text = Pe.Y.ToString();
+            textBox5.Text = Pb.X.ToString();
+            textBox10.Text = Pb.Y.ToString();
+            textBox4.Text = length.ToString();
+            textBox6.Text = Classes.Element.struct_size.ToString();
+        }
     }
 }

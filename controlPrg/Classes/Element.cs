@@ -17,7 +17,7 @@ namespace controlPrg.Classes
         [DataMember]
         private double length;
         [DataMember]
-        private int struct_size;
+        public static int struct_size;
 
 
         public void Paint(Graphics g)
