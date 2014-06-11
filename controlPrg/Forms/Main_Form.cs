@@ -69,83 +69,80 @@ namespace controlPrg
         int current_chosen_relation=-1;
         bool mouse_down = false;
 
+
+        private void clear_all_chosen()
+        {
+            if (number_of_first_element > -1)
+            {
+                ocr.GetElement(number_of_first_element).Was_chosen = false;
+                number_of_first_element = -1;
+            }
+            if (number_of_second_element > -1)
+            {
+                ocr.GetElement(number_of_second_element).Was_chosen = false;
+                number_of_second_element = -1;
+            }
+            if (number_of_relation > -1)
+            {
+                ocr.GetRelation(number_of_relation).Was_chosen = false;
+                number_of_relation = -1;
+            }
+        }
         private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
         {
-            
             if (e.Button == MouseButtons.Right)
                 current_click_point = new Point(e.X, e.Y);
             if (e.Button == MouseButtons.Left)
             {
-                int res = check_in_circle_el(new Point(e.X,e.Y));
-                if (res > -1 && res != number_of_first_element)
+                int res = check_in_circle_el(new Point(e.X, e.Y));
+                if (res > -1)
                 {
                     if (number_of_first_element == -1)
+                    {
                         number_of_first_element = res;
+                        ocr.GetElement(res).Was_chosen = true;
+                    }
                     else
-                        number_of_second_element = res;
-                    ocr.GetElement(res).Was_chosen = true;
+                    {
+                        if ((number_of_relation == -1) && (number_of_second_element == -1))
+                        {
+                            number_of_second_element = res;
+                            ocr.GetElement(res).Was_chosen = true;
+                        }
+                        else
+                            clear_all_chosen();
+                    }
                 }
                 else
                 {
                     res = check_in_circle_rel(new Point(e.X, e.Y));
-                    if (res > -1)
+                    if ((res > -1) && (number_of_second_element == -1) && (number_of_relation == -1))
                     {
                         number_of_relation = res;
                         ocr.GetRelation(res).Was_chosen = true;
                     }
+                    else
+                    {
+                        clear_all_chosen();
+                    }
                 }
             }
-            if (e.Button==MouseButtons.Middle)
+            if (e.Button == MouseButtons.Middle)
             {
                 mouse_down = true;
                 int res = check_in_circle_el(new Point(e.X, e.Y));
                 if (res > -1)
-                {
                     current_chosen_element = res;
-                }
                 else
                 {
                     res = check_in_circle_rel(new Point(e.X, e.Y));
                     if (res > -1)
-                    {
                         current_chosen_relation = res;
-                    }
                 }
             }
-            int chose_counter = 0;
-            for (int i = 0; i < ocr.GetCountOfRelations(); i++)
-            {
-                if (ocr.GetRelation(i).Was_chosen)
-                    chose_counter++;
-                if (chose_counter > 2)
-                {
-                    Deselect();
-                    return;
-                }
-            }
-            for (int i = 0; i < ocr.GetCountOfElements(); i++)
-            {
-                if (ocr.GetElement(i).Was_chosen)
-                    chose_counter++;
-                if (chose_counter > 2)
-                {
-                    Deselect();
-                    return;
-                }
-            }
+
         }
 
-        private void Deselect()
-        {
-            for (int i = 0; i < ocr.GetCountOfRelations(); i++)
-            {
-                ocr.GetRelation(i).Was_chosen = false;
-            }
-            for (int i = 0; i < ocr.GetCountOfElements(); i++)
-            {
-                ocr.GetElement(i).Was_chosen = false;
-            }
-        }
         private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
         {
             if (mouse_down)
