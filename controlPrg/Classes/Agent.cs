@@ -42,7 +42,7 @@ namespace controlPrg.Classes
         {
             double result = activationFunction(compareElements(this.my_element, e));
 
-            if (result < 0.8) 
+            if (result < 0.7) 
                 return true;
             else 
                 return false;

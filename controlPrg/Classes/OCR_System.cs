@@ -170,7 +170,7 @@ namespace controlPrg.Classes
             return result;
         }
 
-        public List<Element> Create_Elements_Database_From_Template_XML(string path_to_folder_with_xml_files)
+        public static List<Element> Create_Elements_Database_From_Template_XML(string path_to_folder_with_xml_files)
         {
             List<Element> result = new List<Element>();
             string path_to_directory = path_to_folder_with_xml_files;
@@ -233,6 +233,64 @@ namespace controlPrg.Classes
             return result;
         }
 
+
+
+        public static List<Element> GetElementsFromXML(string path_to_xml)
+        {
+            List<Element> result = new List<Element>();
+            Skeleton sk = (Skeleton)XML_Worker.Read_from_xml(typeof(Skeleton), path_to_xml);
+            Bitmap bm = new Bitmap(sk.Size.X, sk.Size.Y);
+            int all_length = 0;
+            foreach (Skeleton.cell sc in sk.list_of_cell)
+                all_length += sc.list_of_node.Count;
+
+            foreach (Skeleton.cell sc in sk.list_of_cell)
+            {
+                int e_type = 0;
+                Point Pb, Pe;
+                double length = 0;
+                int curvature = 0;
+                double max_curvature = 0;
+
+                // конечная и начальная точки элемента
+                Pb = new Point(sc.list_of_node[0].x, sc.list_of_node[0].y);
+                Pe = new Point(sc.list_of_node[sc.list_of_node.Count - 1].x,
+                    sc.list_of_node[sc.list_of_node.Count - 1].y);
+                double current_curvature = 0;
+                foreach (Skeleton.node sn in sc.list_of_node)
+                {
+                    bm.SetPixel(sn.x, sn.y, Color.White);
+                    length += 1;
+                    current_curvature = calcCurvature(Pe.Y - Pb.Y, -(Pe.X - Pb.X),
+                        (Pe.X - Pb.X) * Pb.Y + (Pe.Y - Pb.Y) * Pb.X,
+                        sn.x, sn.y
+                        );
+                    if (max_curvature < current_curvature)
+                    {
+                        max_curvature = current_curvature;
+                    }
+                }
+                // e_type = выход 1 слоя при входном изображении bm
+                int[] fl_out = FirstLayer.Raspozn(convertToTXT(
+                        Vectorizer_Form.CopyBitmap(bm, new Rectangle(0, 0, bm.Width, bm.Height), 64)
+                    ));
+                for (int k = 0; k < fl_out.Length; k++)
+                {
+                    if (fl_out[k] == 1)
+                    {
+                        e_type = k;
+                        break;
+                    }
+                }
+                // длина элемента относительно общей длины скелета
+                length /= all_length;
+                // кривизна элемента
+                curvature = (int)max_curvature;
+                result.Add(new Element(e_type, Pb, Pe, length, curvature));
+            }
+
+            return result;
+        }
         public static double calcCurvature(double A, double B, double C, int x, int y)
         {
             return Math.Abs(A * x + B * y + C) / Math.Sqrt(A * A + B * B);
@@ -302,6 +360,16 @@ namespace controlPrg.Classes
         public void SetRelationParametrs(int number, Relation r)
         {
             ms.SetRelationParametrs(number, r);
+        }
+
+        public string getResult(List<Element> input)
+        {
+            Element[] input_elements = new Element[input.Count];
+            for (int i = 0; i < input.Count; i++)
+            {
+                input_elements[i] = input[i];
+            }
+            return ms.getOut(input_elements);
         }
     }
 }

@@ -310,7 +310,7 @@ namespace controlPrg
         private void button5_Click(object sender, EventArgs e)
         {
             ocr = new OCR_System();
-            ocr.teachFirstLayer(@"C:\Users\Никита\Documents\GitHub\controlPrg\controlPrg\bin\Debug\elements");
+            ocr.teachFirstLayer(@"elements\");
             Console.WriteLine("Первый слой обучен");
 
             
@@ -357,6 +357,21 @@ namespace controlPrg
                     Console.Write(result[i] + " ");
                 }
                 Console.WriteLine();
+            }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openFileDialog1 = new OpenFileDialog();
+            openFileDialog1.Filter = "XML files (*.xml)|*.xml";
+            openFileDialog1.FilterIndex = 1;
+            openFileDialog1.RestoreDirectory = true;
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                List<Element> e_list = OCR_System.GetElementsFromXML(openFileDialog1.FileName);
+                e_list[0].Type = 1; //TEST!
+                e_list[1].Type = 0;
+                Console.WriteLine(ocr.getResult(e_list));
             }
         }
 
