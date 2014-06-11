@@ -344,34 +344,6 @@ namespace controlPrg
             ocr = new OCR_System();
             ocr.teachFirstLayer(@"elements\");
             Console.WriteLine("Первый слой обучен");
-
-            
-
-            /*
-            MultiagentSystem mas = new MultiagentSystem();
-            // задаем шаблоны
-            Element template1 = new Element(0, new Point(0, 0), new Point(0, 10), Math.PI * 5 * 0.5, 5); // первая дуга буквы х
-            mas.AddTemplate(template1);
-            Element template2 = new Element(1, new Point(10, 0), new Point(10, 10), Math.PI * 5 * 0.5, 5); // вторая дуга буквы х
-            mas.AddTemplate(template2);
-            Element template3 = new Element(2, new Point(5, 0), new Point(5, 10), 10, 0); // палка буквы ж
-            mas.AddTemplate(template3);
-
-            // задаем отношения между шаблонами буквы х
-            mas.AddRelation(new Relation(template1, template2, 'х', true));// отношение дуг буквы х, финальный
-            // буквы ж
-            Relation first = new Relation(template1, template3, 'ж', false); // отношение первой дуги и палки буквы ж
-            mas.AddRelation(first);
-            mas.AddRelation(new Relation(first, template2, 'ж', true)); // отношение отношения первой дуги и палки и второй дуги буквы ж
-
-            Element[] input = new Element[3];
-            input[0] = new Element(0, new Point(2, 2), new Point(2, 12), Math.PI * 6 * 0.5, 6); // первая дуга буквы х (ж)
-            input[1] = new Element(2, new Point(7, 2), new Point(7, 12), 12, 2); // палка буквы ж
-            input[2] = new Element(1, new Point(12, 2), new Point(12, 12), Math.PI * 6 * 0.5, 6); // первая дуга буквы х (ж)
-            
-
-            Console.WriteLine(mas.getOut(input));
-            //*/
         }
         private void button6_Click(object sender, EventArgs e)
         {
@@ -400,11 +372,21 @@ namespace controlPrg
             openFileDialog1.RestoreDirectory = true;
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
-                List<Element> e_list = OCR_System.GetElementsFromXML(openFileDialog1.FileName);
+                ViewPropertiesOfInputElement_Form edit_form = new ViewPropertiesOfInputElement_Form(openFileDialog1.FileName);
+                edit_form.ShowDialog();
+                if (edit_form.DialogResult == DialogResult.OK)
+                {
+                    List<Element> e_list = edit_form.getElementList();
+                    Console.WriteLine(ocr.getResult(e_list));
+                }
+                
+                
                 //e_list[0].Type = 1; //TEST!
                 //e_list[1].Type = 0;
-                Console.WriteLine(ocr.getResult(e_list));
+                //
             }
+
+            
         }
 
 

@@ -142,12 +142,27 @@ namespace controlPrg
         private void button3_Click(object sender, EventArgs e)
         {
             Skeleton sk = current_skelet_loaded;
+
+            Classes.Element calculatedElement = calcAtributesOfElement(sk, listBox1.SelectedIndex);
+
+            textBox1.Text = calculatedElement.Type.ToString();
+            textBox2.Text = calculatedElement.Curvature.ToString();
+            textBox3.Text = calculatedElement.EndPoint.X.ToString();
+            textBox9.Text = calculatedElement.EndPoint.Y.ToString();
+            textBox5.Text = calculatedElement.BeginPoint.X.ToString();
+            textBox10.Text = calculatedElement.BeginPoint.Y.ToString();
+            textBox4.Text = calculatedElement.Length.ToString();
+            textBox6.Text = Classes.Element.struct_size.ToString();
+        }
+
+        public static Classes.Element calcAtributesOfElement(Skeleton sk, int cell_index)
+        {
             Bitmap bm = new Bitmap(sk.Size.X, sk.Size.Y);
             int all_length = 0;
             foreach (Skeleton.cell sc in sk.list_of_cell)
                 all_length += sc.list_of_node.Count;
 
-            Skeleton.cell selected_cell = sk.list_of_cell[listBox1.SelectedIndex];
+            Skeleton.cell selected_cell = sk.list_of_cell[cell_index];
             int e_type = 0;
             Point Pb, Pe;
             double length = 0;
@@ -189,14 +204,9 @@ namespace controlPrg
             // кривизна элемента
             curvature = (int)max_curvature;
 
-            textBox1.Text = e_type.ToString();
-            textBox2.Text = curvature.ToString();
-            textBox3.Text = Pe.X.ToString();
-            textBox9.Text = Pe.Y.ToString();
-            textBox5.Text = Pb.X.ToString();
-            textBox10.Text = Pb.Y.ToString();
-            textBox4.Text = length.ToString();
-            textBox6.Text = Classes.Element.struct_size.ToString();
+            return new Classes.Element(e_type, Pb, Pe, length, curvature);
         }
+
+        
     }
 }

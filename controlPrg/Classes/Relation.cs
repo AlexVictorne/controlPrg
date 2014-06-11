@@ -82,9 +82,9 @@ namespace controlPrg.Classes
 
         public bool checkRelation(Relation r, Element e)
         {
-            if (this.r1 == null || this.e2 == null) return false;
+            if (this.r1 == null || this.e1 == null) return false;
             if (this.r1.Equals(r))
-                if (this.e2.Equals(e))
+                if (this.e1.Equals(e))
                 {
                     end_flag = true;
                     return true;

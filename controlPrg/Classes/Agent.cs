@@ -40,15 +40,47 @@ namespace controlPrg.Classes
 
         public bool getOut(Element e)
         {
-            //if (e.Type != this.my_element.Type) return false;
+            if (e.Type != this.my_element.Type) return false;
             //double result = activationFunction(compareElements(this.my_element, e)); //убрать сигмоиду НАХУЙ
-            double result = compareElements(this.my_element, e);
-            if (result < 20) 
+            //double result = compareElements(this.my_element, e);
+            //if (result < 20) 
+            //    return true;
+            //else 
+            //    return false;
+            return isMyElement(e);
+        }
+
+        private bool CompareLength(double l1, double l2)
+        {
+            if (Math.Abs(l1 - l2) < 0.3)
                 return true;
-            else 
+            else
                 return false;
         }
 
+        private bool ComparePoints(Point p1, Point p2)
+        {
+            if (calcVectorLength(p1, p2) < 10)
+                return true;
+            else
+                return false;
+        }
+
+        private bool CompareCurvature(int c1, int c2)
+        {
+            if (Math.Abs(c1 - c1) < 10)
+                return true;
+            else
+                return false;
+        }
+
+        private bool isMyElement(Element e)
+        {
+            return ComparePoints(my_element.BeginPoint, e.BeginPoint) &&
+                ComparePoints(my_element.EndPoint, e.EndPoint) &&
+                CompareLength(my_element.Length, e.Length) &&
+                CompareCurvature (my_element.Curvature, e.Curvature);
+        }
         private double compareElements(Element e1, Element e2)
         {
             double beginVectorLength = calcVectorLength(e1.BeginPoint, e2.BeginPoint);
