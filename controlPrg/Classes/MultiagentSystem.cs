@@ -81,6 +81,7 @@ namespace controlPrg.Classes
                     if (agents[j].getOut(input[i]))
                     {
                         agentsLayerOut.Add(agents[j].getSpecializationElement());
+                        break;
                     }
                 }
             }

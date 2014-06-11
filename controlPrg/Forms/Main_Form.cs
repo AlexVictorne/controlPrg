@@ -71,12 +71,13 @@ namespace controlPrg
 
         private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
         {
+            
             if (e.Button == MouseButtons.Right)
                 current_click_point = new Point(e.X, e.Y);
             if (e.Button == MouseButtons.Left)
             {
                 int res = check_in_circle_el(new Point(e.X,e.Y));
-                if (res > -1)
+                if (res > -1 && res != number_of_first_element)
                 {
                     if (number_of_first_element == -1)
                         number_of_first_element = res;
@@ -111,7 +112,39 @@ namespace controlPrg
                     }
                 }
             }
+            int chose_counter = 0;
+            for (int i = 0; i < ocr.GetCountOfRelations(); i++)
+            {
+                if (ocr.GetRelation(i).Was_chosen)
+                    chose_counter++;
+                if (chose_counter > 2)
+                {
+                    Deselect();
+                    return;
+                }
+            }
+            for (int i = 0; i < ocr.GetCountOfElements(); i++)
+            {
+                if (ocr.GetElement(i).Was_chosen)
+                    chose_counter++;
+                if (chose_counter > 2)
+                {
+                    Deselect();
+                    return;
+                }
+            }
+        }
 
+        private void Deselect()
+        {
+            for (int i = 0; i < ocr.GetCountOfRelations(); i++)
+            {
+                ocr.GetRelation(i).Was_chosen = false;
+            }
+            for (int i = 0; i < ocr.GetCountOfElements(); i++)
+            {
+                ocr.GetElement(i).Was_chosen = false;
+            }
         }
         private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
         {
@@ -152,6 +185,7 @@ namespace controlPrg
                          ocr.SetElementParametrs(res, vpf.Return_Element());
                      }
                      //вызов окна от элемента
+                     //ocr.GetElement(res).Was_chosen = false;
                  }
                  else
                  {
@@ -165,8 +199,9 @@ namespace controlPrg
                              ocr.SetRelationParametrs(res, vrpf.GetRelation());
                          }
                          //вызов окна от отношения
+                         //ocr.GetRelation(res).Was_chosen = false;
                      }
-                 }
+                 }                 
              }
              
          }
@@ -369,8 +404,8 @@ namespace controlPrg
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 List<Element> e_list = OCR_System.GetElementsFromXML(openFileDialog1.FileName);
-                e_list[0].Type = 1; //TEST!
-                e_list[1].Type = 0;
+                //e_list[0].Type = 1; //TEST!
+                //e_list[1].Type = 0;
                 Console.WriteLine(ocr.getResult(e_list));
             }
         }

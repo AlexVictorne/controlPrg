@@ -734,7 +734,7 @@ namespace controlPrg
 
         private void listBox1_Click(object sender, EventArgs e)
         {
-            if (listBox1.Items.Count>0)
+            if (listBox1.Items.Count>0 && listBox1.SelectedIndex > -1)
                 Paint_element(current_skelet_loaded.list_of_cell[listBox1.SelectedIndex], current_skelet_loaded.Size.X, current_skelet_loaded.Size.Y);
         }
 

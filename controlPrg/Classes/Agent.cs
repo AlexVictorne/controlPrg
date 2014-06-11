@@ -40,9 +40,10 @@ namespace controlPrg.Classes
 
         public bool getOut(Element e)
         {
-            double result = activationFunction(compareElements(this.my_element, e));
-
-            if (result < 0.7) 
+            //if (e.Type != this.my_element.Type) return false;
+            //double result = activationFunction(compareElements(this.my_element, e)); //убрать сигмоиду НАХУЙ
+            double result = compareElements(this.my_element, e);
+            if (result < 20) 
                 return true;
             else 
                 return false;
