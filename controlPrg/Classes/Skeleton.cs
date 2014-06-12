@@ -74,5 +74,29 @@ namespace controlPrg
             list_of_cell = cell_buffer;
         }
 
+        public void checkSmallChains()
+        {
+            for (int i = 0; i < list_of_cell.Count; i++)
+            {
+                if (list_of_cell[i].list_of_node.Count < 4)
+                {                 
+                    for (int j = 0; j < list_of_cell[i].list_of_node.Count; j++)
+                    {
+                        if (i > 0)
+                        {
+                            list_of_cell[i - 1].add_node(list_of_cell[i].list_of_node[j].x, 
+                                list_of_cell[i].list_of_node[j].y);
+
+                        }
+                        else
+                        {
+                            list_of_cell[i + 1].list_of_node.Insert(0, list_of_cell[i].list_of_node[j]);
+                        }
+                    }
+                    list_of_cell.RemoveAt(i);
+                }
+            }
+        }
+
     }
 }

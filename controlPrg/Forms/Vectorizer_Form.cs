@@ -518,7 +518,9 @@ namespace controlPrg
             saveFileDialog1.RestoreDirectory = true;
             if (saveFileDialog1.ShowDialog() == DialogResult.OK)
             {
+                // тут надо вставить костыль для элементов меньше 4 пикселей
                 sk.sort();
+                sk.checkSmallChains();
                 XML_Worker.Save_to_xml_file(typeof(Skeleton), sk, saveFileDialog1.FileName);
                 toolStripStatusLabel1.Text = "Найдено " + sk.list_of_cell.Count + " цепочек. Сохранено в " + saveFileDialog1.FileName;
             }
