@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using Emgu.CV;
+using System.Drawing;
 using System.Runtime.Serialization;
 
 namespace controlPrg.Classes
@@ -19,7 +20,7 @@ namespace controlPrg.Classes
         [DataMember]
         public static int struct_size;
 
-
+        private Bitmap img;
         public void Paint(Graphics g)
         {
             if (was_chosen)
@@ -83,6 +84,12 @@ namespace controlPrg.Classes
         {
             get { return length; }
             set { length = value; }
+        }
+
+        public Bitmap Bitmap
+        {
+            get { return img; }
+            set { img = value; }
         }
     }
 }

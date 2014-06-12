@@ -309,6 +309,7 @@ namespace controlPrg
                             }
                             ocr.AddRelation(new Relation(ocr.GetElement(numelem1), ocr.GetElement(numelem2), r.Coordinate.X, r.Coordinate.Y));
                         }
+                        ocr.SetRelationParametrs(ocr.GetCountOfRelations() - 1, r);
                     }
                 }
                 catch (Exception ex)

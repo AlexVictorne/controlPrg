@@ -25,6 +25,11 @@ namespace controlPrg
             this.textBox6.Text = this.el.Struct_Size.ToString();
             this.textBox7.Text = this.el.Coordinate.X.ToString();
             this.textBox8.Text = this.el.Coordinate.Y.ToString();
+            if (this.el.Bitmap != null)
+            {
+                ibReader.Image = new Image<Gray, byte>(this.el.Bitmap);
+                ibReader.Visible = true;
+            }
         }
 
 
@@ -137,6 +142,7 @@ namespace controlPrg
             this.el.BeginPoint = new Point(Convert.ToInt32(this.textBox5.Text), Convert.ToInt32(this.textBox10.Text));
             this.el.Length = Convert.ToDouble(this.textBox4.Text); 
             this.el.Struct_Size = Convert.ToInt32(this.textBox6.Text);
+            this.el.Bitmap = ibReader.Image.Bitmap;
         }
 
         private void button3_Click(object sender, EventArgs e)

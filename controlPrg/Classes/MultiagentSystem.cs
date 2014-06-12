@@ -102,6 +102,9 @@ namespace controlPrg.Classes
             {
                 if (relation_buffer == null)
                 {
+                    int a = 0;
+                    if (k == 5)
+                        a = 0;
                     if (relations[k].checkElement(agentsLayerOut[elements_counter], agentsLayerOut[elements_counter + 1]))
                     {
                         relation_buffer = relations[k]; // клонировать?

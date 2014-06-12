@@ -42,7 +42,12 @@ namespace controlPrg.Classes
             if (was_chosen)
                 g.FillEllipse(Brushes.Red, coordinate.X - 4, coordinate.Y - 4, 8, 8);
             else
-                g.FillEllipse(Brushes.Black, coordinate.X - 4, coordinate.Y - 4, 8, 8);
+            {
+                if (final_relation)
+                    g.FillEllipse(Brushes.Blue, coordinate.X - 4, coordinate.Y - 4, 8, 8);
+                else
+                    g.FillEllipse(Brushes.Black, coordinate.X - 4, coordinate.Y - 4, 8, 8);
+            }
             g.DrawLine(Pens.Black, e1.Coordinate,coordinate);
             if (e2!=null)
                 g.DrawLine(Pens.Black, e2.Coordinate,coordinate);
@@ -50,25 +55,6 @@ namespace controlPrg.Classes
                 g.DrawLine(Pens.Black, r1.coordinate, coordinate);
 
         }
-        /*
-        public Relation(Element e1, Element e2, char c, bool final_relation)
-        {
-            this.e1 = e1;
-            this.e2 = e2;
-            this.my_char = c;
-            this.final_relation = final_relation;
-        }
-
-        public Relation(Relation r, Element e, char c, bool final_relation)
-        {
-            r1 = r;
-            e2 = e;
-            this.my_char = c;
-            this.final_relation = final_relation;
-        }
-         */
-
-
         public bool itRel()
         {
             if (r1 == null)
