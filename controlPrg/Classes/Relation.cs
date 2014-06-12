@@ -68,6 +68,27 @@ namespace controlPrg.Classes
         }
          */
 
+
+        public bool itRel()
+        {
+            if (r1 == null)
+                return false;
+            else
+                return true;
+        }
+        public Element GetElem(int i)
+        {
+            if (i == 1)
+                return e1;
+            else
+                return e2;
+        }
+        public Relation GetRel()
+        {
+            return r1;
+        }
+
+
         public bool checkElement(Element e1, Element e2)
         {
             if (this.e1 == null || this.e2 == null) return false;

@@ -70,7 +70,11 @@ namespace controlPrg.Classes
             relations[number].Specialization_Char = r.Specialization_Char;
             relations[number].setFinal(r.isFinal());
         }
-
+        public void ClearAll()
+        {
+            templates.Clear();
+            relations.Clear();
+        }
         public string getOut(Element[] input)
         {
             List<Element> agentsLayerOut = new List<Element>();

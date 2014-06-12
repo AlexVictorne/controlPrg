@@ -82,6 +82,10 @@ namespace controlPrg.Classes
         {
             return ms.GetCountRelations();
         }
+        public void ClearAll()
+        {
+            ms.ClearAll();
+        }
         public bool teachFirstLayer(string path_to_folder_with_images)
         {
             if (!Directory.Exists(path_to_folder_with_images)) return false;

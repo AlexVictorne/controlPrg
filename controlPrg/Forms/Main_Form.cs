@@ -245,8 +245,7 @@ namespace controlPrg
 
         private void toolStripMenuItem3_Click(object sender, EventArgs e)
         {
-            le.Clear();
-            lr.Clear();
+            ocr.ClearAll();
         }
 
 
@@ -254,15 +253,15 @@ namespace controlPrg
         private void button4_Click(object sender, EventArgs e)
         {
             Structure s = new Structure();
-            s.list_of_elements = le;
-            s.list_of_relations = lr;
+            s.list_of_elements = ocr.GetElements();
+            s.list_of_relations = ocr.GetRelations();
             SaveFileDialog saveFileDialog1 = new SaveFileDialog();
             saveFileDialog1.Filter = "XML files (*.xml)|*.xml";
             saveFileDialog1.FilterIndex = 1;
             saveFileDialog1.RestoreDirectory = true;
             if (saveFileDialog1.ShowDialog() == DialogResult.OK)
             {
-                Save_to_xml_file(s, saveFileDialog1.FileName);
+                XML_Worker.Save_to_xml_file(typeof(Structure),s, saveFileDialog1.FileName);
             }
         }
         private void button7_Click(object sender, EventArgs e)
@@ -276,9 +275,41 @@ namespace controlPrg
             {
                 try
                 {
-                    s = Read_from_xml_file(openFileDialog1.FileName);
-                    le = s.list_of_elements;
-                    lr = s.list_of_relations;
+                    s = (Structure)XML_Worker.Read_from_xml(typeof(Structure), openFileDialog1.FileName);
+                    foreach (Element el in s.list_of_elements)
+                    {
+                        ocr.AddElement(el);
+                    }
+                    foreach (Relation r in s.list_of_relations)
+                    {
+                        if (r.itRel())
+                        {
+                            int numelem1 = -1, numrel1 = -1;
+                            for (int i = 0; i < ocr.GetCountOfElements(); i++)
+                            {
+                                if ((ocr.GetElement(i).Coordinate.X == r.GetElem(1).Coordinate.X) && (ocr.GetElement(i).Coordinate.Y == r.GetElem(1).Coordinate.Y))
+                                    numelem1 = i;
+                            }
+                            for (int i = 0; i < ocr.GetCountOfRelations(); i++)
+                            {
+                                if ((ocr.GetRelation(i).Coordinate.X == r.GetRel().Coordinate.X) && (ocr.GetRelation(i).Coordinate.Y == r.GetRel().Coordinate.Y))
+                                    numrel1 = i;
+                            }
+                            ocr.AddRelation(new Relation(ocr.GetRelation(numrel1), ocr.GetElement(numelem1), r.Coordinate.X, r.Coordinate.Y));
+                        }
+                        else
+                        {
+                            int numelem1 = -1, numelem2 = -1;
+                            for (int i = 0; i < ocr.GetCountOfElements(); i++)
+                            {
+                                if ((ocr.GetElement(i).Coordinate.X==r.GetElem(1).Coordinate.X)&&(ocr.GetElement(i).Coordinate.Y==r.GetElem(1).Coordinate.Y))
+                                    numelem1 = i;
+                                if ((ocr.GetElement(i).Coordinate.X == r.GetElem(2).Coordinate.X) && (ocr.GetElement(i).Coordinate.Y == r.GetElem(2).Coordinate.Y))
+                                    numelem2 = i;
+                            }
+                            ocr.AddRelation(new Relation(ocr.GetElement(numelem1), ocr.GetElement(numelem2), r.Coordinate.X, r.Coordinate.Y));
+                        }
+                    }
                 }
                 catch (Exception ex)
                 {
