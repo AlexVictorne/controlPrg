@@ -63,6 +63,18 @@ namespace controlPrg
             this.table_DataTableAdapter.Fill(this.databaseDataSet.Table_Data, classifier, description, par1, par2);
         }
 
+        public string readed_xml = "";
+        private void button3_Click(object sender, EventArgs e)
+        {
+            if (dataGridView2.SelectedRows.Count == 1)
+                readed_xml = dataGridView2.SelectedRows[0].Cells[2].Value.ToString();
+                
+        }
+
+
+
+
+
         
 
     }

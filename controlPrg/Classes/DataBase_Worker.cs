@@ -33,11 +33,11 @@ namespace controlPrg
             connection.Close();
         }
         
-        public string ReadXml_from_DataBase(string Classifier)
+        public string ReadXml_from_DataBase(string Classifier,string description)
         {
             Skeleton sk = new Skeleton();
             string connectionString = @"Data Source=(LocalDB)\v11.0;AttachDbFilename=|DataDirectory|\Database.mdf;Integrated Security=True";
-            string queryString = "SELECT Description, Data FROM  [Table_Data] where classifier=N'" + Classifier + "'";
+            string queryString = "SELECT Description, Data FROM  [Table_Data] where classifier=N'" + Classifier + "' and Description=N'"+description+"'";
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 SqlCommand command =
