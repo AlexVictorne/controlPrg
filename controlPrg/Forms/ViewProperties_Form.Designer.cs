@@ -50,6 +50,7 @@
             this.textBox8 = new System.Windows.Forms.TextBox();
             this.textBox9 = new System.Windows.Forms.TextBox();
             this.textBox10 = new System.Windows.Forms.TextBox();
+            this.button4 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.ibReader)).BeginInit();
             this.SuspendLayout();
             // 
@@ -174,10 +175,10 @@
             // button1
             // 
             this.button1.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.button1.Location = new System.Drawing.Point(20, 204);
+            this.button1.Location = new System.Drawing.Point(8, 204);
             this.button1.Margin = new System.Windows.Forms.Padding(4);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(125, 28);
+            this.button1.Size = new System.Drawing.Size(149, 28);
             this.button1.TabIndex = 24;
             this.button1.Text = "Сохранить";
             this.button1.UseVisualStyleBackColor = true;
@@ -185,12 +186,12 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(20, 240);
+            this.button2.Location = new System.Drawing.Point(8, 240);
             this.button2.Margin = new System.Windows.Forms.Padding(4);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(125, 28);
+            this.button2.Size = new System.Drawing.Size(149, 28);
             this.button2.TabIndex = 25;
-            this.button2.Text = "Загрузить XML";
+            this.button2.Text = "Загрузить XML из файла";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
@@ -250,10 +251,22 @@
             this.textBox10.Size = new System.Drawing.Size(37, 20);
             this.textBox10.TabIndex = 31;
             // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(8, 276);
+            this.button4.Margin = new System.Windows.Forms.Padding(4);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(149, 28);
+            this.button4.TabIndex = 32;
+            this.button4.Text = "Загрузить XML из БД";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
+            // 
             // ViewProperties_Form
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.ClientSize = new System.Drawing.Size(865, 353);
+            this.Controls.Add(this.button4);
             this.Controls.Add(this.textBox10);
             this.Controls.Add(this.textBox9);
             this.Controls.Add(this.textBox8);
@@ -312,6 +325,7 @@
         private System.Windows.Forms.TextBox textBox8;
         private System.Windows.Forms.TextBox textBox9;
         private System.Windows.Forms.TextBox textBox10;
+        private System.Windows.Forms.Button button4;
 
     }
 }

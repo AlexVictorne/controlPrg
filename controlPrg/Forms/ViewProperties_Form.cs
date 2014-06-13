@@ -213,6 +213,37 @@ namespace controlPrg
             return new Classes.Element(e_type, Pb, Pe, length, curvature);
         }
 
+        private void button4_Click(object sender, EventArgs e)
+        {
+            ibReader.Visible = true;
+            listBox1.Visible = true;
+            button3.Visible = true;
+            Skeleton sk = new Skeleton();
+            listBox1.Items.Clear();
+            Data_Form df = new Data_Form();
+            df.ShowDialog();
+            if (df.DialogResult == DialogResult.OK)
+            {
+                sk = (Skeleton)XML_Worker.Read_from_string(typeof(Skeleton), df.readed_xml);
+                Bitmap bm = new Bitmap(sk.Size.X, sk.Size.Y);
+                foreach (Skeleton.cell sc in sk.list_of_cell)
+                {
+                    foreach (Skeleton.node sn in sc.list_of_node)
+                    {
+                        bm.SetPixel(sn.x, sn.y, Color.White);
+                    }
+                }
+                ibReader.Image = new Image<Gray, byte>(bm);
+                int i = 0;
+                current_skelet_loaded = sk;
+                foreach (Skeleton.cell c in current_skelet_loaded.list_of_cell)
+                {
+                    i++;
+                    listBox1.Items.Add(i);
+                }
+            }
+        }
+
         
     }
 }
