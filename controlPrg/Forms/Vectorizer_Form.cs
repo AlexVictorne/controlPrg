@@ -512,6 +512,13 @@ namespace controlPrg
                 }
             }
             ibProcessed.Image = new Image<Gray, byte>(bitmap);
+            current_skelet_loaded = sk;
+            sk.sort();
+            sk.checkSmallChains();
+            toolStripStatusLabel1.Text = "Найдено " + sk.list_of_cell.Count + " цепочек.";
+        }
+        private void Save_to_File()
+        {
             SaveFileDialog saveFileDialog1 = new SaveFileDialog();
             saveFileDialog1.Filter = "XML files (*.xml)|*.xml";
             saveFileDialog1.FilterIndex = 1;
@@ -519,13 +526,21 @@ namespace controlPrg
             if (saveFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 // тут надо вставить костыль для элементов меньше 4 пикселей
-                sk.sort();
-                sk.checkSmallChains();
-                XML_Worker.Save_to_xml_file(typeof(Skeleton), sk, saveFileDialog1.FileName);
-                toolStripStatusLabel1.Text = "Найдено " + sk.list_of_cell.Count + " цепочек. Сохранено в " + saveFileDialog1.FileName;
+                
+                XML_Worker.Save_to_xml_file(typeof(Skeleton), current_skelet_loaded, saveFileDialog1.FileName);
+                toolStripStatusLabel1.Text = "Скелет сохранен в " + saveFileDialog1.FileName;
             }
-            else
-                toolStripStatusLabel1.Text = "Найдено " + sk.list_of_cell.Count + " цепочек.";
+        }
+        private void Save_to_DataBase()
+        {
+            Save_to_DB_Form stdb = new Save_to_DB_Form();
+            stdb.ShowDialog();
+            if (stdb.DialogResult == DialogResult.OK)
+            {
+                string xml_data = XML_Worker.Save_to_xml_string(typeof(Skeleton), current_skelet_loaded);
+                DBWorker dbw = new DBWorker();
+                dbw.saveXml_to_database(stdb.textBox1.Text, stdb.textBox2.Text, xml_data);
+            }
         }
         private Skeleton Read_path()
         {
@@ -759,27 +774,48 @@ namespace controlPrg
         }
 
 
-        int k = 0;
+
+
+        private void button11_Click(object sender, EventArgs e)
+        {
+            Save_to_DataBase();
+        }
+
+        private void button12_Click(object sender, EventArgs e)
+        {
+            Save_to_File();
+        }
+
         private void button8_Click_1(object sender, EventArgs e)
         {
-            string xml_data = XML_Worker.Save_to_xml_string(typeof(Skeleton),current_skelet_loaded);
-            Console.WriteLine(xml_data);
-            DBWorker dbw = new DBWorker();
-            dbw.saveXml_to_database("Поц","Drost",xml_data);
-            k++;
-            dbw.Save_to_DataBase(1, 0.33, "Поц");
+            Skeleton sk = new Skeleton();
+            listBox1.Items.Clear();
+            Data_Form df = new Data_Form();
+            df.ShowDialog();
+            if (df.DialogResult == DialogResult.OK)
+            {
+                sk = (Skeleton)XML_Worker.Read_from_string(typeof(Skeleton), df.readed_xml);
+                Bitmap bm = new Bitmap(sk.Size.X, sk.Size.Y);
+                foreach (Skeleton.cell sc in sk.list_of_cell)
+                {
+                    foreach (Skeleton.node sn in sc.list_of_node)
+                    {
+                        bm.SetPixel(sn.x, sn.y, Color.White);
+                    }
+                }
+                ibReader.Image = new Image<Gray, byte>(bm);
+                int i = 0;
+                current_skelet_loaded = sk;
+                foreach (Skeleton.cell c in current_skelet_loaded.list_of_cell)
+                {
+                    i++;
+                    listBox1.Items.Add(i);
+                }
+
+                toolStripStatusLabel1.Text = "XML считан из базы данных";
+            }
         }
 
-        private void button10_Click(object sender, EventArgs e)
-        {
-            DBWorker dbw = new DBWorker();
-            string new_xml = dbw.ReadXml_from_DataBase("1");
-            Skeleton sk = (Skeleton)XML_Worker.Read_from_string(typeof(Skeleton),new_xml);
-        }
-
-
-
-  
     }
 
 
