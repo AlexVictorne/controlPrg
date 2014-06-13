@@ -65,6 +65,18 @@ namespace controlPrg.Classes
             templates[number].Struct_Size = e.Struct_Size;
         }
 
+        public void RemoveElementAt(int i)
+        {
+            if (i > -1)
+                templates.RemoveAt(i);
+        }
+
+        public void RemoveRelationAt(int i)
+        {
+            if (i > -1)
+                relations.RemoveAt(i);
+        }
+
         public void SetRelationParametrs(int number, Relation r)
         {
             relations[number].Specialization_Char = r.Specialization_Char;
@@ -75,8 +87,12 @@ namespace controlPrg.Classes
             templates.Clear();
             relations.Clear();
         }
+
+        private Element[] input;
+        private int input_counter = 0;
         public string getOut(Element[] input)
         {
+            this.input = input;
             List<Element> agentsLayerOut = new List<Element>();
             for (int i = 0; i < input.Length; i++)
             {
@@ -127,5 +143,38 @@ namespace controlPrg.Classes
             }
             return result.ToString();
         }
+
+        private char FindNextRelation(Element e1, Element e2)
+        {
+            char result = '-';
+            int k = 0;
+            while (result == '-' && k < relations.Count)
+            {
+                if (relations[k].checkElement(e1, e2))
+                {
+                    //result = FindNextRelation(relations[k],)
+                }
+                k++;
+            }
+            return result;
+        }
+
+        private char FindNextRelation(Relation r, Element e2)
+        {
+            char result = '-';
+
+
+            return result;
+        }
+        /*
+        private Element FindAgent(Element input)
+        {
+            foreach (Agent a in agents)
+            {
+                if (a.getOut(input))
+                    
+            }
+        }
+         */
     }
 }

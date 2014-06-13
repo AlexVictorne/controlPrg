@@ -72,20 +72,26 @@ namespace controlPrg
 
         private void clear_all_chosen()
         {
-            if (number_of_first_element > -1)
+            if (ocr.GetCountOfElements() > 0)
             {
-                ocr.GetElement(number_of_first_element).Was_chosen = false;
-                number_of_first_element = -1;
+                if (number_of_first_element > -1 && number_of_first_element < ocr.GetCountOfElements())
+                {
+                    ocr.GetElement(number_of_first_element).Was_chosen = false;
+                    number_of_first_element = -1;
+                }
+                if (number_of_second_element > -1 && number_of_second_element < ocr.GetCountOfElements())
+                {
+                    ocr.GetElement(number_of_second_element).Was_chosen = false;
+                    number_of_second_element = -1;
+                }
             }
-            if (number_of_second_element > -1)
+            if (ocr.GetCountOfRelations() > 0)
             {
-                ocr.GetElement(number_of_second_element).Was_chosen = false;
-                number_of_second_element = -1;
-            }
-            if (number_of_relation > -1)
-            {
-                ocr.GetRelation(number_of_relation).Was_chosen = false;
-                number_of_relation = -1;
+                if (number_of_relation > -1 && number_of_relation < ocr.GetCountOfRelations())
+                {
+                    ocr.GetRelation(number_of_relation).Was_chosen = false;
+                    number_of_relation = -1;
+                }
             }
         }
         private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
@@ -419,6 +425,32 @@ namespace controlPrg
             }
 
             
+        }
+
+        private void удалитьToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (number_of_first_element > -1)
+            {
+                for (int i = 0; i < ocr.GetCountOfRelations(); i++)
+                {
+                    if (ocr.GetRelation(i).GetElem(1).Equals(ocr.GetElement(number_of_first_element)) ||
+                        ocr.GetRelation(i).GetElem(2).Equals(ocr.GetElement(number_of_first_element)))
+                    {
+                        ocr.RemoveRelationAt(i);
+                    }
+                }
+                ocr.RemoveElementAt(number_of_first_element);
+                number_of_first_element = -1;
+            }
+            else
+            {
+                if (number_of_relation > -1)
+                {
+                    // не удаляется связь с отношением внутри удаляемого отношения
+                    ocr.RemoveRelationAt(number_of_relation);
+                    number_of_relation = -1;
+                }
+            }
         }
 
 

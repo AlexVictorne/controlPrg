@@ -20,7 +20,6 @@ namespace controlPrg.Classes
         private List<int[]> inputList = new List<int[]>();
         private List<int[]> outputList = new List<int[]>();
         public static NeuralNetwork FirstLayer;
-        private string mainPath = @"txt_file_sets\teach\saved_txt\";
 
         //агенты
         MultiagentSystem ms;
@@ -49,6 +48,16 @@ namespace controlPrg.Classes
             {
                 ms.AddTemplate(e);
             }
+        }
+
+        public void RemoveElementAt(int i)
+        {
+            ms.RemoveElementAt(i);
+        }
+
+        public void RemoveRelationAt(int i)
+        {
+            ms.RemoveRelationAt(i);
         }
         public void AddElement(Element el)
         {
