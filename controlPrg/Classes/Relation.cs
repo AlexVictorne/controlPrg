@@ -77,7 +77,12 @@ namespace controlPrg.Classes
 
         public bool checkElement(Element e1, Element e2)
         {
-            if (this.e1 == null || this.e2 == null) return false;
+            if (this.e1 == null && this.e2 == null) return false;
+            if (this.e1.Equals(e1) && e2 == null)
+            {
+                end_flag = true;
+                return true;
+            }
             if (this.e1.Equals(e1))
                 if (this.e2.Equals(e2))
                 {

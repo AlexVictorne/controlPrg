@@ -170,7 +170,6 @@
             this.ibReader.Size = new System.Drawing.Size(439, 297);
             this.ibReader.TabIndex = 2;
             this.ibReader.TabStop = false;
-            this.ibReader.Visible = false;
             // 
             // button1
             // 

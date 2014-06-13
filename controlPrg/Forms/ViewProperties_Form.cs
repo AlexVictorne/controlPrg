@@ -79,6 +79,7 @@ namespace controlPrg
             }
             else
             {
+                
                 ibReader.Visible = false;
                 listBox1.Visible = false;
                 button3.Visible = false;
@@ -142,7 +143,7 @@ namespace controlPrg
             this.el.BeginPoint = new Point(Convert.ToInt32(this.textBox5.Text), Convert.ToInt32(this.textBox10.Text));
             this.el.Length = Convert.ToDouble(this.textBox4.Text); 
             this.el.Struct_Size = Convert.ToInt32(this.textBox6.Text);
-            this.el.Bitmap = ibReader.Image.Bitmap;
+            this.el.Bitmap = (Bitmap) ibReader.Image.Bitmap.Clone();
         }
 
         private void button3_Click(object sender, EventArgs e)

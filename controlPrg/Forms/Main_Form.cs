@@ -392,6 +392,11 @@ namespace controlPrg
         }
         private void button6_Click(object sender, EventArgs e)
         {
+            
+        }
+
+        private void fuck_off()
+        {
             if (ocr == null) return;
             OpenFileDialog openFileDialog1 = new OpenFileDialog();
             openFileDialog1.Filter = "BMP files (*.bmp)|*.bmp|Jpeg files (*.jpg)|*.jpg|All files (*.*)|*.*";
@@ -422,7 +427,8 @@ namespace controlPrg
                 if (edit_form.DialogResult == DialogResult.OK)
                 {
                     List<Element> e_list = edit_form.getElementList();
-                    Console.WriteLine(ocr.getResult(e_list));
+                    //Console.WriteLine(ocr.getResult(e_list));
+                    label1.Text += " " + ocr.getResult(e_list);
                 }
                 
                 
@@ -440,10 +446,20 @@ namespace controlPrg
             {
                 for (int i = 0; i < ocr.GetCountOfRelations(); i++)
                 {
-                    if (ocr.GetRelation(i).GetElem(1).Equals(ocr.GetElement(number_of_first_element)) ||
-                        ocr.GetRelation(i).GetElem(2).Equals(ocr.GetElement(number_of_first_element)))
+                    if (ocr.GetRelation(i).itRel())
                     {
-                        ocr.RemoveRelationAt(i);
+                        if (ocr.GetRelation(i).GetElem(1).Equals(ocr.GetElement(number_of_first_element)))
+                        {
+                            ocr.RemoveRelationAt(i);
+                        }
+                    }
+                    else
+                    {
+                        if (ocr.GetRelation(i).GetElem(1).Equals(ocr.GetElement(number_of_first_element)) ||
+                            ocr.GetRelation(i).GetElem(2).Equals(ocr.GetElement(number_of_first_element)))
+                        {
+                            ocr.RemoveRelationAt(i);
+                        }
                     }
                 }
                 ocr.RemoveElementAt(number_of_first_element);
@@ -460,10 +476,6 @@ namespace controlPrg
             }
         }
 
-
-        
-
-        
     }
 
 

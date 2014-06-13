@@ -138,15 +138,25 @@ namespace controlPrg.Classes
             {
                 if (relation_buffer == null)
                 {
-                    int a = 0;
-                    if (k == 5)
-                        a = 0;
-                    if (relations[k].checkElement(agentsLayerOut[elements_counter], agentsLayerOut[elements_counter + 1]))
+                    try
                     {
-                        relation_buffer = relations[k]; // клонировать?
-                        elements_counter += 2;
-                        if ((result = relations[k].checkChar()) == '-')
-                            k = 0;
+                        if (relations[k].checkElement(agentsLayerOut[elements_counter], agentsLayerOut[elements_counter + 1]))
+                        {
+                            relation_buffer = relations[k]; // клонировать?
+                            elements_counter += 2;
+                            if ((result = relations[k].checkChar()) == '-')
+                                k = 0;
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        if (relations[k].checkElement(agentsLayerOut[elements_counter], null))
+                        {
+                            relation_buffer = relations[k]; // клонировать?
+                            elements_counter += 2;
+                            if ((result = relations[k].checkChar()) == '-')
+                                k = 0;
+                        }
                     }
                 }
                 else
