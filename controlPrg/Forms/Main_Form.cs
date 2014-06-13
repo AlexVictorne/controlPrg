@@ -41,13 +41,14 @@ namespace controlPrg
 
         private void pictureBox1_Paint(object sender, PaintEventArgs e)
         {
-            foreach (Element el in ocr.GetElements())
-            {
-                el.Paint(e.Graphics);
-            }
+
             foreach (Relation re in ocr.GetRelations())
             {
                 re.Paint(e.Graphics);
+            }
+            foreach (Element el in ocr.GetElements())
+            {
+                el.Paint(e.Graphics);
             }
         }
         private void tick_tack_Tick(object sender, EventArgs e)
@@ -59,6 +60,7 @@ namespace controlPrg
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
         {
             ocr.AddElement(new Element(current_click_point.X, current_click_point.Y));
+            ocr.SetNumberElement(ocr.GetCountOfElements() - 1);
         }
 
         int number_of_first_element=-1;

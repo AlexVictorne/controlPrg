@@ -19,14 +19,23 @@ namespace controlPrg.Classes
         private double length;
         [DataMember]
         public static int struct_size;
+        [DataMember]
+        private int number=0;
 
         private Bitmap img;
         public void Paint(Graphics g)
         {
             if (was_chosen)
+            {
+                g.FillEllipse(Brushes.White, coordinate.X - 8, coordinate.Y - 8, 16, 16);
                 g.DrawEllipse(Pens.Red, coordinate.X - 8, coordinate.Y - 8, 16, 16);
+            }
             else
-                g.DrawEllipse(Pens.Black, coordinate.X - 8, coordinate.Y-8, 16, 16);
+            {
+                g.FillEllipse(Brushes.White, coordinate.X - 8, coordinate.Y - 8, 16, 16);
+                g.DrawEllipse(Pens.Black, coordinate.X - 8, coordinate.Y - 8, 16, 16);
+            }
+            g.DrawString(number.ToString(), new Font("Arial", 8), Brushes.Black, new Point(coordinate.X - 6, coordinate.Y - 6));
         }
 
         public Element(int x,int y)
@@ -85,7 +94,11 @@ namespace controlPrg.Classes
             get { return length; }
             set { length = value; }
         }
-
+        public int Number
+        {
+            get { return number; }
+            set { number = value; }
+        }
         public Bitmap Bitmap
         {
             get { return img; }

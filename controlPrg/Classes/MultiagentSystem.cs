@@ -55,6 +55,14 @@ namespace controlPrg.Classes
         {
             return relations.Count;
         }
+        public int GetNumberOfElement(int number)
+        {
+            return templates[number].Number;
+        }
+        public void SetNumberOfElement(int number)
+        {
+            templates[number].Number = number;
+        }
         public void SetElementParametrs(int number, Element e)
         {
             templates[number].BeginPoint = e.BeginPoint;
@@ -158,7 +166,7 @@ namespace controlPrg.Classes
             }
             return result;
         }
-
+        
         private char FindNextRelation(Relation r, Element e2)
         {
             char result = '-';

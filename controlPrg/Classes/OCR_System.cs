@@ -95,6 +95,14 @@ namespace controlPrg.Classes
         {
             ms.ClearAll();
         }
+        public int GetNumberElement(int number)
+        {
+            return ms.GetNumberOfElement(number);
+        }
+        public void SetNumberElement(int number)
+        {
+            ms.SetNumberOfElement(number);
+        }
         public bool teachFirstLayer(string path_to_folder_with_images)
         {
             if (!Directory.Exists(path_to_folder_with_images)) return false;
