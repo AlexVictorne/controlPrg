@@ -104,5 +104,10 @@ namespace controlPrg.Classes
             get { return img; }
             set { img = value; }
         }
+
+        public Element Clone()
+        {
+            return new Element(this.e_type, this.Pb, this.Pe, this.length, this.curvature);
+        }
     }
 }

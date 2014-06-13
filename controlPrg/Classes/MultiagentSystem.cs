@@ -22,6 +22,18 @@ namespace controlPrg.Classes
             agents = new List<Agent>();
         }
 
+        public int AgentExist(Element e)
+        {
+            int result = 0;
+            foreach (Agent a in agents)
+            {
+                if (a.getOut(e))
+                    return result;
+                result++;
+            }
+            return -1;
+        }
+
         public void AddTemplate(Element e)
         {
             templates.Add(e); // клонировать?
