@@ -22,6 +22,18 @@ namespace controlPrg.Classes
             agents = new List<Agent>();
         }
 
+        public int AgentExist(Element e)
+        {
+            int result = 0;
+            foreach (Agent a in agents)
+            {
+                if (a.getOut(e))
+                    return result;
+                result++;
+            }
+            return -1;
+        }
+
         public void AddTemplate(Element e)
         {
             templates.Add(e); // клонировать?
@@ -87,12 +99,8 @@ namespace controlPrg.Classes
             templates.Clear();
             relations.Clear();
         }
-
-        private Element[] input;
-        private int input_counter = 0;
         public string getOut(Element[] input)
         {
-            this.input = input;
             List<Element> agentsLayerOut = new List<Element>();
             for (int i = 0; i < input.Length; i++)
             {
@@ -143,38 +151,5 @@ namespace controlPrg.Classes
             }
             return result.ToString();
         }
-
-        private char FindNextRelation(Element e1, Element e2)
-        {
-            char result = '-';
-            int k = 0;
-            while (result == '-' && k < relations.Count)
-            {
-                if (relations[k].checkElement(e1, e2))
-                {
-                    //result = FindNextRelation(relations[k],)
-                }
-                k++;
-            }
-            return result;
-        }
-
-        private char FindNextRelation(Relation r, Element e2)
-        {
-            char result = '-';
-
-
-            return result;
-        }
-        /*
-        private Element FindAgent(Element input)
-        {
-            foreach (Agent a in agents)
-            {
-                if (a.getOut(input))
-                    
-            }
-        }
-         */
     }
 }

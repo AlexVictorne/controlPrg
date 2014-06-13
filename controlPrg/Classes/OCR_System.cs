@@ -50,6 +50,11 @@ namespace controlPrg.Classes
             }
         }
 
+        public int checkAgentExist(Element e)
+        {
+            return ms.AgentExist(e);
+        }
+
         public void RemoveElementAt(int i)
         {
             ms.RemoveElementAt(i);

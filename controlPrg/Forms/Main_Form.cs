@@ -181,11 +181,16 @@ namespace controlPrg
                  int res = check_in_circle_el(new Point(e.X,e.Y));
                  if (res>-1)
                  {
-                     ViewProperties_Form vpf = new ViewProperties_Form(ocr.GetElement(res));
+                     Element el = ocr.GetElement(res).Clone();
+                     ViewProperties_Form vpf = new ViewProperties_Form(el);
                      vpf.ShowDialog();
                      if (vpf.DialogResult==DialogResult.OK)
                      {
-                         ocr.SetElementParametrs(res, vpf.Return_Element());
+                         int check = ocr.checkAgentExist(vpf.Return_Element());
+                         if (check == -1)
+                             ocr.SetElementParametrs(res, vpf.Return_Element());
+                         else
+                             MessageBox.Show("Подобный агент уже существует, его номер: " + check.ToString());
                      }
                      //вызов окна от элемента
                      //ocr.GetElement(res).Was_chosen = false;
