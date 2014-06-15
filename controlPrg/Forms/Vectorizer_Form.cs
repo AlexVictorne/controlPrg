@@ -28,11 +28,12 @@ namespace controlPrg
 
 
         Image<Bgr, Byte> OriginalImage;
+        Image<Gray, Byte> ProcessedImage;
         List<Contour<Point>> contours = new List<Contour<Point>>();
+        List<Bitmap> bitmaps = new List<Bitmap>();
 
 
-
-
+        Bitmap bmp;
         void Segm_Process()
         {
             bool equalizeHist =  autocont_chb.Checked;
@@ -57,10 +58,11 @@ namespace controlPrg
             //затемнение
             if (blur)
                 imgProcessed = smoothedGrayFrame;
+            imgProcessed._Not();
             //пороговое преобразование
-            CvInvoke.cvAdaptiveThreshold(imgProcessed, imgProcessed, 255, Emgu.CV.CvEnum.ADAPTIVE_THRESHOLD_TYPE.CV_ADAPTIVE_THRESH_MEAN_C, Emgu.CV.CvEnum.THRESH.CV_THRESH_BINARY, 4 + 4 % 2 + 1, thresVal);
+            CvInvoke.cvAdaptiveThreshold(imgProcessed, imgProcessed, 255, Emgu.CV.CvEnum.ADAPTIVE_THRESHOLD_TYPE.CV_ADAPTIVE_THRESH_MEAN_C, Emgu.CV.CvEnum.THRESH.CV_THRESH_BINARY, 7/*4 + 4 % 2 + 1*/, thresVal);
             //белое в черное 
-            //imgProcessed._Not();
+            
             try
             {
                 if (cannyFrame != null)
@@ -73,7 +75,17 @@ namespace controlPrg
             var sourceContours = imgProcessed.FindContours(Emgu.CV.CvEnum.CHAIN_APPROX_METHOD.CV_CHAIN_APPROX_TC89_KCOS, Emgu.CV.CvEnum.RETR_TYPE.CV_RETR_LIST);
             //фильтруем контуры
             contours = FilterContours(sourceContours, cannyFrame, imgProcessed.Width, imgProcessed.Height);
+            //страдаем
+            bitmaps.Clear();
+            bmp = new Bitmap(imgProcessed.Bitmap.Width,imgProcessed.Bitmap.Height);
+            Graphics g = Graphics.FromImage(bmp);
+            foreach (var c in contours)
+            {
+                Rectangle r = Contour(c, 0, c.Total);
+                g.DrawImage(imgProcessed.Bitmap, r.X, r.Y, r, GraphicsUnit.Pixel);           
+            }
             ibOriginal.Image = imgProcessed;
+            ProcessedImage = imgProcessed;
             toolStripStatusLabel1.Text= "Найдено "+contours.Count.ToString()+" контура(-ов).";
         }
 
@@ -85,6 +97,7 @@ namespace controlPrg
             List<Contour<Point>> results = new List<Contour<Point>>();
             while (con != null)
             {
+                //Rectangle rec = CvInvoke.cvBoundingRect(con.MCvContour.ptr, true);
                 //фильтруем по размеру
                 if (con.Total < (int)minContLen_tb.Value || con.Total > (int)maxContLen_tb.Value ||
                         con.Area < (int)minContAr_tb.Value || con.Area > maxArea ||
@@ -656,7 +669,9 @@ namespace controlPrg
             if (contours != null)
                 foreach (var contour in contours)
                     if (contour.Total > 1)
-                        e.Graphics.DrawPolygon(Pens.Red, contour.ToArray());
+                    {
+                            e.Graphics.DrawPolygon(Pens.Red, contour.ToArray());
+                    }
         }
 
         private void button6_Click(object sender, EventArgs e)
@@ -815,6 +830,29 @@ namespace controlPrg
                 toolStripStatusLabel1.Text = "XML считан из базы данных";
             }
         }
+
+
+
+
+
+
+
+        private Bitmap createpolygon()
+        {
+            Bitmap bmm = new Bitmap(ibOriginal.Image.Bitmap.Width, ibOriginal.Image.Bitmap.Height);
+            //Image<Gray, Byte> imgProcessed = new Image<Gray, byte>(new Size(ibOriginal.Image.Bitmap.Width, ibOriginal.Image.Bitmap.Height));
+            foreach (var contour in contours)
+                if (contour.Total > 1)
+                    //CvInvoke.cvDrawContours(imgProcessed, contour, new MCvScalar(255), new MCvScalar(100),2,1, Emgu.CV.CvEnum.LINE_TYPE.FOUR_CONNECTED,new Point(0,0));
+                    Graphics.FromImage((Image)bmm).DrawPolygon(Pens.Red, contour.ToArray());
+            return bmm;
+        }
+        private void button10_Click(object sender, EventArgs e)
+        {
+            contours.Clear();
+            ibOriginal.Image = new Image<Gray, byte>(bmp);
+        }
+    
 
     }
 
