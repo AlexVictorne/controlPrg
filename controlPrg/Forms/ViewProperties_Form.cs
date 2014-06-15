@@ -172,8 +172,12 @@ namespace controlPrg
             int all_length = 0;
             foreach (Skeleton.cell sc in sk.list_of_cell)
                 all_length += sc.list_of_node.Count;
-
-            Skeleton.cell selected_cell = sk.list_of_cell[cell_index];
+            Skeleton.cell selected_cell = null;
+            try
+            {
+                selected_cell = sk.list_of_cell[cell_index];
+            }
+            catch (Exception e) { }
             int e_type = 0;
             Point Pb, Pe;
             double length = 0;
