@@ -78,7 +78,7 @@ namespace controlPrg
         {
             for (int i = 0; i < list_of_cell.Count; i++)
             {
-                if (list_of_cell[i].list_of_node.Count < 4)
+                if (list_of_cell[i].list_of_node.Count < 7)
                 {                 
                     for (int j = 0; j < list_of_cell[i].list_of_node.Count; j++)
                     {

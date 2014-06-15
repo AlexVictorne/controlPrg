@@ -258,7 +258,10 @@ namespace controlPrg
 
         private void toolStripMenuItem3_Click(object sender, EventArgs e)
         {
-            ocr.ClearAll();
+            DialogResult result = MessageBox.Show("Вы уверены?", "Удаление текущей схемы", 
+                MessageBoxButtons.YesNo);
+            if (result == DialogResult.Yes)
+                ocr.ClearAll();
         }
 
 

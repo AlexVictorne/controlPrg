@@ -109,20 +109,20 @@
             // edit_btn
             // 
             this.edit_btn.Name = "edit_btn";
-            this.edit_btn.Size = new System.Drawing.Size(149, 22);
+            this.edit_btn.Size = new System.Drawing.Size(152, 22);
             this.edit_btn.Text = "Редактор";
             // 
             // db_btn
             // 
             this.db_btn.Name = "db_btn";
-            this.db_btn.Size = new System.Drawing.Size(149, 22);
+            this.db_btn.Size = new System.Drawing.Size(152, 22);
             this.db_btn.Text = "Просмотр БД";
             this.db_btn.Click += new System.EventHandler(this.db_btn_Click);
             // 
             // vectorizerToolStripMenuItem
             // 
             this.vectorizerToolStripMenuItem.Name = "vectorizerToolStripMenuItem";
-            this.vectorizerToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+            this.vectorizerToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.vectorizerToolStripMenuItem.Text = "Vectorizer";
             this.vectorizerToolStripMenuItem.Click += new System.EventHandler(this.vectorizerToolStripMenuItem_Click);
             // 
@@ -137,10 +137,10 @@
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripMenuItem1,
             this.toolStripMenuItem2,
-            this.toolStripMenuItem3,
-            this.удалитьToolStripMenuItem});
+            this.удалитьToolStripMenuItem,
+            this.toolStripMenuItem3});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(193, 92);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(193, 114);
             // 
             // toolStripMenuItem1
             // 

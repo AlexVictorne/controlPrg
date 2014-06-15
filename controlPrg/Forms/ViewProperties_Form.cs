@@ -143,7 +143,11 @@ namespace controlPrg
             this.el.BeginPoint = new Point(Convert.ToInt32(this.textBox5.Text), Convert.ToInt32(this.textBox10.Text));
             this.el.Length = Convert.ToDouble(this.textBox4.Text); 
             this.el.Struct_Size = Convert.ToInt32(this.textBox6.Text);
-            this.el.Bitmap = (Bitmap) ibReader.Image.Bitmap.Clone();
+            try
+            {
+                this.el.Bitmap = (Bitmap)ibReader.Image.Bitmap.Clone();
+            }
+            catch (Exception exp) { }
         }
 
         private void button3_Click(object sender, EventArgs e)

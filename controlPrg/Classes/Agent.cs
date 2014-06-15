@@ -52,7 +52,7 @@ namespace controlPrg.Classes
 
         private bool CompareLength(double l1, double l2)
         {
-            if (Math.Abs(l1 - l2) < 0.3)
+            if (Math.Abs(l1 - l2) < 0.15)
                 return true;
             else
                 return false;
