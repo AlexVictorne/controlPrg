@@ -37,9 +37,10 @@
             // checkBox1
             // 
             this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(12, 12);
+            this.checkBox1.Location = new System.Drawing.Point(16, 15);
+            this.checkBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(195, 17);
+            this.checkBox1.Size = new System.Drawing.Size(250, 21);
             this.checkBox1.TabIndex = 1;
             this.checkBox1.Text = "Является конечным отношением";
             this.checkBox1.UseVisualStyleBackColor = true;
@@ -48,25 +49,28 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(13, 36);
+            this.label1.Location = new System.Drawing.Point(17, 44);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(219, 13);
+            this.label1.Size = new System.Drawing.Size(287, 17);
             this.label1.TabIndex = 2;
             this.label1.Text = "Символ, за который отвечает отношение:";
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(238, 33);
+            this.textBox1.Location = new System.Drawing.Point(317, 41);
+            this.textBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(34, 20);
+            this.textBox1.Size = new System.Drawing.Size(44, 22);
             this.textBox1.TabIndex = 3;
             // 
             // button2
             // 
             this.button2.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.button2.Location = new System.Drawing.Point(197, 59);
+            this.button2.Location = new System.Drawing.Point(263, 73);
+            this.button2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
+            this.button2.Size = new System.Drawing.Size(100, 28);
             this.button2.TabIndex = 5;
             this.button2.Text = "Сохранить";
             this.button2.UseVisualStyleBackColor = true;
@@ -74,15 +78,20 @@
             // 
             // ViewRelationProperies_Form
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 89);
+            this.ClientSize = new System.Drawing.Size(379, 110);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.checkBox1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "ViewRelationProperies_Form";
-            this.Text = "ViewRelationProperies_Form";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.Text = "Свойства отношения";
             this.ResumeLayout(false);
             this.PerformLayout();
 

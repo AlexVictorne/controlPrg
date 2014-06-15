@@ -385,13 +385,15 @@ namespace controlPrg
 
 
 
-        //TEST
+        //TEST  
         OCR_System ocr = new OCR_System();
         private void button5_Click(object sender, EventArgs e)
         {
             ocr = new OCR_System();
-            ocr.teachFirstLayer(@"elements\");
-            Console.WriteLine("Первый слой обучен");
+            if (ocr.teachFirstLayer(@"elements\"))
+                toolStripStatusLabel1.Text = "Первый слой обучен.";
+            else
+                toolStripStatusLabel1.Text = "Первый слой не обучен.";
         }
         private void button6_Click(object sender, EventArgs e)
         {

@@ -58,9 +58,9 @@ namespace controlPrg
             //затемнение
             if (blur)
                 imgProcessed = smoothedGrayFrame;
-            imgProcessed._Not();
+            //imgProcessed._Not();
             //пороговое преобразование
-            CvInvoke.cvAdaptiveThreshold(imgProcessed, imgProcessed, 255, Emgu.CV.CvEnum.ADAPTIVE_THRESHOLD_TYPE.CV_ADAPTIVE_THRESH_MEAN_C, Emgu.CV.CvEnum.THRESH.CV_THRESH_BINARY, 7/*4 + 4 % 2 + 1*/, thresVal);
+            CvInvoke.cvAdaptiveThreshold(imgProcessed, imgProcessed, 255, Emgu.CV.CvEnum.ADAPTIVE_THRESHOLD_TYPE.CV_ADAPTIVE_THRESH_MEAN_C, Emgu.CV.CvEnum.THRESH.CV_THRESH_BINARY, 4 + 4 % 2 + 1, thresVal);
             //белое в черное 
             
             try
@@ -639,8 +639,6 @@ namespace controlPrg
         }
         private void button4_Click(object sender, EventArgs e)
         {
-            ibOriginal.Image = new Image<Gray, byte>(Resizez(ibOriginal.Image.Bitmap));
-            toolStripStatusLabel1.Text = "Изображение обрезано до размера контуров (" + ibOriginal.Image.Bitmap.Width.ToString() + ", " + ibOriginal.Image.Bitmap.Height.ToString() + ").";
         }
         private void button5_Click(object sender, EventArgs e)
         {
@@ -654,6 +652,8 @@ namespace controlPrg
         }
         private void button2_Click(object sender, EventArgs e)
         {
+            contours.Clear();
+            ibOriginal.Image = new Image<Gray, byte>(Resizez(ibOriginal.Image.Bitmap));
             GetSkelet();
         }
 
@@ -849,7 +849,6 @@ namespace controlPrg
         }
         private void button10_Click(object sender, EventArgs e)
         {
-            contours.Clear();
             ibOriginal.Image = new Image<Gray, byte>(bmp);
         }
     

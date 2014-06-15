@@ -75,9 +75,9 @@
             this.panel1.Controls.Add(this.tabControl1);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 0);
-            this.panel1.Margin = new System.Windows.Forms.Padding(2);
+            this.panel1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(689, 461);
+            this.panel1.Size = new System.Drawing.Size(919, 567);
             this.panel1.TabIndex = 0;
             // 
             // tabControl1
@@ -86,9 +86,10 @@
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
+            this.tabControl1.Margin = new System.Windows.Forms.Padding(4);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(689, 461);
+            this.tabControl1.Size = new System.Drawing.Size(919, 567);
             this.tabControl1.TabIndex = 29;
             // 
             // tabPage1
@@ -101,12 +102,13 @@
             this.tabPage1.Controls.Add(this.label1);
             this.tabPage1.Controls.Add(this.textBox2);
             this.tabPage1.Controls.Add(this.textBox3);
-            this.tabPage1.Location = new System.Drawing.Point(4, 22);
+            this.tabPage1.Location = new System.Drawing.Point(4, 25);
+            this.tabPage1.Margin = new System.Windows.Forms.Padding(4);
             this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(681, 435);
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(4);
+            this.tabPage1.Size = new System.Drawing.Size(911, 538);
             this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "tabPage1";
+            this.tabPage1.Text = "Нейроны";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
             // dataGridView1
@@ -122,32 +124,32 @@
             this.weightDataGridViewTextBoxColumn});
             this.dataGridView1.DataSource = this.tableBindingSource;
             this.dataGridView1.Location = new System.Drawing.Point(0, 0);
-            this.dataGridView1.Margin = new System.Windows.Forms.Padding(2);
+            this.dataGridView1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.RowHeadersVisible = false;
             this.dataGridView1.RowTemplate.Height = 24;
-            this.dataGridView1.Size = new System.Drawing.Size(468, 433);
+            this.dataGridView1.Size = new System.Drawing.Size(624, 533);
             this.dataGridView1.TabIndex = 29;
             // 
             // neuronDataGridViewTextBoxColumn
             // 
             this.neuronDataGridViewTextBoxColumn.DataPropertyName = "neuron";
-            this.neuronDataGridViewTextBoxColumn.HeaderText = "neuron";
+            this.neuronDataGridViewTextBoxColumn.HeaderText = "№ НЕЙРОНА";
             this.neuronDataGridViewTextBoxColumn.Name = "neuronDataGridViewTextBoxColumn";
             this.neuronDataGridViewTextBoxColumn.ReadOnly = true;
             // 
             // classifierDataGridViewTextBoxColumn
             // 
             this.classifierDataGridViewTextBoxColumn.DataPropertyName = "classifier";
-            this.classifierDataGridViewTextBoxColumn.HeaderText = "classifier";
+            this.classifierDataGridViewTextBoxColumn.HeaderText = "КЛАССИФИКАТОР";
             this.classifierDataGridViewTextBoxColumn.Name = "classifierDataGridViewTextBoxColumn";
             this.classifierDataGridViewTextBoxColumn.ReadOnly = true;
             // 
             // weightDataGridViewTextBoxColumn
             // 
             this.weightDataGridViewTextBoxColumn.DataPropertyName = "weight";
-            this.weightDataGridViewTextBoxColumn.HeaderText = "weight";
+            this.weightDataGridViewTextBoxColumn.HeaderText = "ВЕС ВХОДА НЕЙРОНА";
             this.weightDataGridViewTextBoxColumn.Name = "weightDataGridViewTextBoxColumn";
             this.weightDataGridViewTextBoxColumn.ReadOnly = true;
             // 
@@ -164,37 +166,35 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(588, 35);
-            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label2.Location = new System.Drawing.Point(756, 66);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(87, 13);
+            this.label2.Size = new System.Drawing.Size(112, 17);
             this.label2.TabIndex = 27;
             this.label2.Text = "Классификатор";
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(588, 58);
-            this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label3.Location = new System.Drawing.Point(756, 94);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(71, 13);
+            this.label3.Size = new System.Drawing.Size(92, 17);
             this.label3.TabIndex = 28;
             this.label3.Text = "Вес нейрона";
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(509, 9);
-            this.textBox1.Margin = new System.Windows.Forms.Padding(2);
+            this.textBox1.Location = new System.Drawing.Point(651, 34);
+            this.textBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(76, 20);
+            this.textBox1.Size = new System.Drawing.Size(100, 22);
             this.textBox1.TabIndex = 22;
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(509, 187);
-            this.button1.Margin = new System.Windows.Forms.Padding(2);
+            this.button1.Location = new System.Drawing.Point(675, 133);
+            this.button1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(130, 30);
+            this.button1.Size = new System.Drawing.Size(173, 37);
             this.button1.TabIndex = 23;
             this.button1.Text = "Обновить данные";
             this.button1.UseVisualStyleBackColor = true;
@@ -203,27 +203,26 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(588, 12);
-            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label1.Location = new System.Drawing.Point(756, 38);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(86, 13);
+            this.label1.Size = new System.Drawing.Size(111, 17);
             this.label1.TabIndex = 26;
             this.label1.Text = "Номер нейрона";
             // 
             // textBox2
             // 
-            this.textBox2.Location = new System.Drawing.Point(509, 32);
-            this.textBox2.Margin = new System.Windows.Forms.Padding(2);
+            this.textBox2.Location = new System.Drawing.Point(651, 62);
+            this.textBox2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(76, 20);
+            this.textBox2.Size = new System.Drawing.Size(100, 22);
             this.textBox2.TabIndex = 24;
             // 
             // textBox3
             // 
-            this.textBox3.Location = new System.Drawing.Point(509, 55);
-            this.textBox3.Margin = new System.Windows.Forms.Padding(2);
+            this.textBox3.Location = new System.Drawing.Point(651, 91);
+            this.textBox3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(76, 20);
+            this.textBox3.Size = new System.Drawing.Size(100, 22);
             this.textBox3.TabIndex = 25;
             // 
             // tabPage2
@@ -235,20 +234,22 @@
             this.tabPage2.Controls.Add(this.textBox4);
             this.tabPage2.Controls.Add(this.button2);
             this.tabPage2.Controls.Add(this.dataGridView2);
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Location = new System.Drawing.Point(4, 25);
+            this.tabPage2.Margin = new System.Windows.Forms.Padding(4);
             this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(681, 435);
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(4);
+            this.tabPage2.Size = new System.Drawing.Size(911, 538);
             this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "tabPage2";
+            this.tabPage2.Text = "XML данные";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
             // button3
             // 
             this.button3.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.button3.Location = new System.Drawing.Point(416, 169);
+            this.button3.Location = new System.Drawing.Point(555, 208);
+            this.button3.Margin = new System.Windows.Forms.Padding(4);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(130, 27);
+            this.button3.Size = new System.Drawing.Size(173, 33);
             this.button3.TabIndex = 31;
             this.button3.Text = "Использовать данные";
             this.button3.UseVisualStyleBackColor = true;
@@ -257,41 +258,45 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(522, 64);
+            this.label5.Location = new System.Drawing.Point(696, 79);
+            this.label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(57, 13);
+            this.label5.Size = new System.Drawing.Size(74, 17);
             this.label5.TabIndex = 28;
             this.label5.Text = "Описание";
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(522, 38);
+            this.label4.Location = new System.Drawing.Point(696, 47);
+            this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(87, 13);
+            this.label4.Size = new System.Drawing.Size(112, 17);
             this.label4.TabIndex = 27;
             this.label4.Text = "Классификатор";
             // 
             // textBox5
             // 
-            this.textBox5.Location = new System.Drawing.Point(416, 61);
+            this.textBox5.Location = new System.Drawing.Point(555, 75);
+            this.textBox5.Margin = new System.Windows.Forms.Padding(4);
             this.textBox5.Name = "textBox5";
-            this.textBox5.Size = new System.Drawing.Size(100, 20);
+            this.textBox5.Size = new System.Drawing.Size(132, 22);
             this.textBox5.TabIndex = 26;
             // 
             // textBox4
             // 
-            this.textBox4.Location = new System.Drawing.Point(416, 35);
+            this.textBox4.Location = new System.Drawing.Point(555, 43);
+            this.textBox4.Margin = new System.Windows.Forms.Padding(4);
             this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(100, 20);
+            this.textBox4.Size = new System.Drawing.Size(132, 22);
             this.textBox4.TabIndex = 25;
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(416, 113);
-            this.button2.Margin = new System.Windows.Forms.Padding(2);
+            this.button2.Location = new System.Drawing.Point(555, 139);
+            this.button2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(130, 30);
+            this.button2.Size = new System.Drawing.Size(173, 37);
             this.button2.TabIndex = 24;
             this.button2.Text = "Обновить данные";
             this.button2.UseVisualStyleBackColor = true;
@@ -310,29 +315,30 @@
             this.dataDataGridViewTextBoxColumn});
             this.dataGridView2.DataSource = this.tableDataBindingSource;
             this.dataGridView2.Location = new System.Drawing.Point(-1, 0);
+            this.dataGridView2.Margin = new System.Windows.Forms.Padding(4);
             this.dataGridView2.Name = "dataGridView2";
             this.dataGridView2.ReadOnly = true;
-            this.dataGridView2.Size = new System.Drawing.Size(382, 432);
+            this.dataGridView2.Size = new System.Drawing.Size(509, 532);
             this.dataGridView2.TabIndex = 0;
             // 
             // classifierDataGridViewTextBoxColumn1
             // 
             this.classifierDataGridViewTextBoxColumn1.DataPropertyName = "Classifier";
-            this.classifierDataGridViewTextBoxColumn1.HeaderText = "Classifier";
+            this.classifierDataGridViewTextBoxColumn1.HeaderText = "КЛАССИФИКАТОР";
             this.classifierDataGridViewTextBoxColumn1.Name = "classifierDataGridViewTextBoxColumn1";
             this.classifierDataGridViewTextBoxColumn1.ReadOnly = true;
             // 
             // descriptionDataGridViewTextBoxColumn
             // 
             this.descriptionDataGridViewTextBoxColumn.DataPropertyName = "Description";
-            this.descriptionDataGridViewTextBoxColumn.HeaderText = "Description";
+            this.descriptionDataGridViewTextBoxColumn.HeaderText = "ОПИСАНИЕ";
             this.descriptionDataGridViewTextBoxColumn.Name = "descriptionDataGridViewTextBoxColumn";
             this.descriptionDataGridViewTextBoxColumn.ReadOnly = true;
             // 
             // dataDataGridViewTextBoxColumn
             // 
             this.dataDataGridViewTextBoxColumn.DataPropertyName = "Data";
-            this.dataDataGridViewTextBoxColumn.HeaderText = "Data";
+            this.dataDataGridViewTextBoxColumn.HeaderText = "XML ДАННЫЕ";
             this.dataDataGridViewTextBoxColumn.Name = "dataDataGridViewTextBoxColumn";
             this.dataDataGridViewTextBoxColumn.ReadOnly = true;
             // 
@@ -351,12 +357,14 @@
             // 
             // Data_Form
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(689, 461);
+            this.ClientSize = new System.Drawing.Size(919, 567);
             this.Controls.Add(this.panel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "Data_Form";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Просмотр Данных";
             this.Load += new System.EventHandler(this.Data_Form_Load);
             this.panel1.ResumeLayout(false);
@@ -397,15 +405,15 @@
         private DatabaseDataSet databaseDataSet;
         private System.Windows.Forms.BindingSource tableBindingSource;
         private DatabaseDataSetTableAdapters.TableTableAdapter tableTableAdapter;
+        private System.Windows.Forms.BindingSource tableDataBindingSource;
+        private DatabaseDataSetTableAdapters.Table_DataTableAdapter table_DataTableAdapter;
+        private System.Windows.Forms.Button button3;
         private System.Windows.Forms.DataGridViewTextBoxColumn neuronDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn classifierDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn weightDataGridViewTextBoxColumn;
-        private System.Windows.Forms.BindingSource tableDataBindingSource;
-        private DatabaseDataSetTableAdapters.Table_DataTableAdapter table_DataTableAdapter;
         private System.Windows.Forms.DataGridViewTextBoxColumn classifierDataGridViewTextBoxColumn1;
         private System.Windows.Forms.DataGridViewTextBoxColumn descriptionDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataDataGridViewTextBoxColumn;
-        private System.Windows.Forms.Button button3;
 
 
     }

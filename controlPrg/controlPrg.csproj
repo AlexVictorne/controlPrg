@@ -96,12 +96,6 @@
     <Compile Include="Forms\Data_Form.designer.cs">
       <DependentUpon>Data_Form.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Editor_Form.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\Editor_Form.Designer.cs">
-      <DependentUpon>Editor_Form.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\Entry_Form.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -156,9 +150,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Forms\Data_Form.resx">
       <DependentUpon>Data_Form.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Editor_Form.resx">
-      <DependentUpon>Editor_Form.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Entry_Form.resx">
       <DependentUpon>Entry_Form.cs</DependentUpon>
