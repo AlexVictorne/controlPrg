@@ -86,12 +86,16 @@ namespace controlPrg.Forms
 
         private void button2_Click(object sender, EventArgs e)
         {
-            int index = listBox1.SelectedIndex;
-            element_list[index].Type = Convert.ToInt32(textBox1.Text);
-            element_list[index].Curvature = Convert.ToInt32(textBox2.Text);
-            element_list[index].EndPoint = new Point(Convert.ToInt32(textBox3.Text), Convert.ToInt32(textBox9.Text));
-            element_list[index].BeginPoint = new Point(Convert.ToInt32(textBox5.Text), Convert.ToInt32(textBox10.Text));
-            element_list[index].Length = Convert.ToDouble(textBox4.Text);
+            try
+            {
+                int index = listBox1.SelectedIndex;
+                element_list[index].Type = Convert.ToInt32(textBox1.Text);
+                element_list[index].Curvature = Convert.ToInt32(textBox2.Text);
+                element_list[index].EndPoint = new Point(Convert.ToInt32(textBox3.Text), Convert.ToInt32(textBox9.Text));
+                element_list[index].BeginPoint = new Point(Convert.ToInt32(textBox5.Text), Convert.ToInt32(textBox10.Text));
+                element_list[index].Length = Convert.ToDouble(textBox4.Text);
+            }
+            catch (Exception exp) { MessageBox.Show("ошибка при вооде данных: \r\n" + exp.Message); }
         }
 
         public List<Classes.Element> getElementList()

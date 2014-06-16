@@ -389,7 +389,6 @@ namespace controlPrg
         OCR_System ocr = new OCR_System();
         private void button5_Click(object sender, EventArgs e)
         {
-            ocr = new OCR_System();
             if (ocr.teachFirstLayer(@"elements\"))
                 toolStripStatusLabel1.Text = "Первый слой обучен.";
             else
@@ -400,22 +399,101 @@ namespace controlPrg
             
         }
 
-        private void fuck_off()
+        private void testFirstLayer()
         {
             if (ocr == null) return;
-            OpenFileDialog openFileDialog1 = new OpenFileDialog();
-            openFileDialog1.Filter = "BMP files (*.bmp)|*.bmp|Jpeg files (*.jpg)|*.jpg|All files (*.*)|*.*";
-            openFileDialog1.FilterIndex = 1;
-            openFileDialog1.RestoreDirectory = true;
-            int[] result;
-            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            FolderBrowserDialog fbd = new FolderBrowserDialog();
+            if (fbd.ShowDialog() == DialogResult.OK)
             {
-                result = ocr.testFirstLayer(openFileDialog1.FileName);
-                for (int i = 0; i < result.Length; i++)
+                int[] result;
+                int e_type;
+                DirectoryInfo dir = new DirectoryInfo(fbd.SelectedPath);
+                int inputFilesCount = dir.GetFiles().Length;
+                int success_recognize = 0;
+                for (int i = 0; i < inputFilesCount; i++)
                 {
-                    Console.Write(result[i] + " ");
+                    string file_name = dir.GetFiles()[i].FullName;
+                    if (file_name.Contains("thumbs.db") || file_name.Contains("Thumbs.db")) 
+                        continue;
+                    result = ocr.testFirstLayer(dir.GetFiles()[i].FullName);
+                    e_type = dir.GetFiles()[i].FullName.ElementAt(dir.GetFiles()[i].FullName.LastIndexOf('.') - 1) - 48;
+                    for (int j = 0; j < result.Length; j++)
+                    {
+                        if (result[j] == 1)
+                        {
+                            if (j == e_type)
+                            {
+                                success_recognize++;
+                            }
+                        }
+                    }
                 }
-                Console.WriteLine();
+                Console.WriteLine("Тестирование нейронов первого слоя");
+                Console.WriteLine("Общее количество тестовых файлов: " + inputFilesCount);
+                Console.WriteLine("Количество успешно распознанных файлов: " + success_recognize);
+                Console.WriteLine("Результат тетирования в процентах:" + 
+                    Math.Round(success_recognize*1.0/inputFilesCount * 100, 2));
+            }
+        }
+
+        private void testMultiagentSystem()
+        {
+            if (ocr == null) return;
+            FolderBrowserDialog fbd = new FolderBrowserDialog();
+            if (fbd.ShowDialog() == DialogResult.OK)
+            {
+                DirectoryInfo dir = new DirectoryInfo(fbd.SelectedPath);
+                int inputFilesCount = dir.GetFiles().Length;
+                int success_recognize = 0;
+                Skeleton current_skelet_loaded;//
+                for (int i = 0; i < inputFilesCount; i++)
+                {
+                    char expected_result = dir.GetFiles()[i].FullName.ElementAt(dir.GetFiles()[i].FullName.LastIndexOf('.') - 1);
+                    ViewPropertiesOfInputElement_Form edit_form = 
+                        new ViewPropertiesOfInputElement_Form(dir.GetFiles()[i].FullName);
+                    //*
+                    current_skelet_loaded = ViewProperties_Form.Read_from_xml(dir.GetFiles()[i].FullName);
+                    List<Element> e_list = new List<Element>();
+                    for (int j = 0; j < current_skelet_loaded.list_of_cell.Count; j++)
+                    {
+                        e_list.Add(ViewProperties_Form.calcAtributesOfElement(current_skelet_loaded, j));
+                    }
+                    string recognize_result = ocr.getResult(e_list);
+                    if (recognize_result.Equals(expected_result.ToString()))
+                    {
+                        //Console.WriteLine("Успешно распознанный сивол: " + recognize_result);
+                        //Console.WriteLine("Количество прочитанных файлов: " + (i + 1) + " из " + inputFilesCount);
+                        //Console.WriteLine("Количество успешно распознанных символов: " + ++success_recognize);
+                        ++success_recognize;
+                    }
+                    // */
+                    /*
+                    edit_form.ShowDialog();
+                    if (edit_form.DialogResult == DialogResult.OK)
+                    {
+                        List<Element> e_list = edit_form.getElementList();
+                        string recognize_result = ocr.getResult(e_list);
+                        if (recognize_result.Equals(expected_result.ToString()))
+                        {
+                            Console.WriteLine("Успешно распознанный сивол: " + recognize_result);
+                            Console.WriteLine("Количество прочитанных файлов: " + (i + 1) + " из " + inputFilesCount);
+                            Console.WriteLine("Количество успешно распознанных символов: " + ++success_recognize);
+                        }
+                    }
+                    /*
+                    current_skelet_loaded = ViewProperties_Form.Read_from_xml(dir.GetFiles()[i].FullName);
+                    List<Element> element_list = new List<Element>();
+                    for (int j = 0; j < current_skelet_loaded.list_of_cell.Count; j++)
+                    {
+                        element_list.Add(ViewProperties_Form.calcAtributesOfElement(current_skelet_loaded, j));
+                    }
+                     */                    
+                }
+                Console.WriteLine("Тестирование мультиагентной системы");
+                Console.WriteLine("Общее количество тестовых файлов: " + inputFilesCount);
+                Console.WriteLine("Количество успешно распознанных файлов: " + success_recognize);
+                Console.WriteLine("Результат тетирования в процентах:" +
+                    Math.Round(success_recognize * 1.0 / inputFilesCount * 100, 2));
             }
         }
 
@@ -432,14 +510,8 @@ namespace controlPrg
                 if (edit_form.DialogResult == DialogResult.OK)
                 {
                     List<Element> e_list = edit_form.getElementList();
-                    //Console.WriteLine(ocr.getResult(e_list));
                     label1.Text += " " + ocr.getResult(e_list);
                 }
-                
-                
-                //e_list[0].Type = 1; //TEST!
-                //e_list[1].Type = 0;
-                //
             }
 
             
@@ -484,6 +556,12 @@ namespace controlPrg
         private void edit_btn_Click(object sender, EventArgs e)
         {
 
+        }
+        
+        private void button2_Click(object sender, EventArgs e)
+        {
+            //testFirstLayer();
+            testMultiagentSystem();
         }
 
     }

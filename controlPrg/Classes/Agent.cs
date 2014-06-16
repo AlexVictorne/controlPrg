@@ -102,5 +102,10 @@ namespace controlPrg.Classes
         {
             return my_element;
         }
+
+        public bool checkResult(Element e)
+        {
+            return isMyElement(e);
+        }
     }
 }

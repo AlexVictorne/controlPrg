@@ -126,7 +126,7 @@ namespace controlPrg.Classes
                 }
             }
 
-            if (agentsLayerOut.Count != input.Length) return "-1";
+            if (agentsLayerOut.Count != input.Length) return CheckResult(input);
 
             Relation relation_buffer = null;
             int elements_counter = 0;
@@ -174,37 +174,76 @@ namespace controlPrg.Classes
             return result.ToString();
         }
 
-        private char FindNextRelation(Element e1, Element e2)
+        private string CheckResult(Element[] input)
         {
-            char result = '-';
-            int k = 0;
-            while (result == '-' && k < relations.Count)
+            string result = "-1";
+
+            List<Element> agentsLayerOut = new List<Element>();
+            for (int i = 0; i < input.Length; i++)
             {
-                if (relations[k].checkElement(e1, e2))
+                for (int j = 0; j < agents.Count; j++)
                 {
-                    //result = FindNextRelation(relations[k],)
+                    if (agents[j].checkResult(input[i]))
+                    {
+                        agentsLayerOut.Add(agents[j].getSpecializationElement());
+                    }
                 }
-                k++;
             }
+
+            List<Relation> possibleRelations = new List<Relation>();
+
+            for (int i = 0; i < agentsLayerOut.Count; i++)
+            {
+                for (int j = 0; j < agentsLayerOut.Count; j++)
+                {
+                    if (i != j)
+                    {
+                        for (int k = 0; k < relations.Count; k++)
+                        {
+                            if (!relations[k].itRel())
+                            {
+                                if (relations[k].checkElement(agentsLayerOut[i], agentsLayerOut[j]))
+                                {
+                                    possibleRelations.Add(relations[k]);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            for (int i = 0; i < possibleRelations.Count; i++)
+            {
+                result = FindRelations(possibleRelations[i], agentsLayerOut).ToString();
+                if (!result.Equals("-1") && !result.Equals("-1"))
+                    return result;
+            }
+
             return result;
         }
         
-        private char FindNextRelation(Relation r, Element e2)
+        private char FindRelations(Relation rel, List<Element> el)
         {
             char result = '-';
 
+            List<Relation> possibleRelations = new List<Relation>();
 
+            for (int j = 0; j < el.Count; j++)
+            {
+                for (int k = 0; k < relations.Count; k++)
+                {
+                    if (relations[k].itRel())
+                    {
+                        if (relations[k].checkRelation(rel, el[j]))
+                        {
+                            if ((result = relations[k].checkChar()) == '-')
+                                result = FindRelations(relations[k], el);
+                        }
+                    }
+                }
+                
+            }
             return result;
         }
-        /*
-        private Element FindAgent(Element input)
-        {
-            foreach (Agent a in agents)
-            {
-                if (a.getOut(input))
-                    
-            }
-        }
-         */
     }
 }
